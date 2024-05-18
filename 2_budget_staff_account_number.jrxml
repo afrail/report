@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_budget_staff_account_number" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="22f117e5-c298-4892-8147-cee8df04eab8">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[with employee_info as (
+select 
+CODE||', '||GET_COM_LOOKUP_NAME(B.DESIGNATION_ID) ||', '||  EMPLOYEE_NAME  EMP_NAME 
+,CODE||', '||get_com_lookup_bn_name(B.DESIGNATION_ID) ||', '||  EMPLOYEE_NAME_BANGLA  EMP_NAME 
+,a.id
+from budget_transaction_details btd
+join budget_transaction_master_detail_list mdt on mdt.detail_list_id=btd.id
+join budget_transaction_master btm on btm.id=mdt.transaction_master_id 
+join budget_economic_code bec on bec.id=btd.economic_code_id 
+join HRM_EMPLOYEE_PERSONAL_INFORMATION A on a.id=btd.employe_id 
+INNER JOIN  HRM_EMPLOYEE_OFFICIAL_INFORMATION B
+ON A.ID=B.EMPLOYEE_ID
+where 1=1 and coalesce (employe_id,0)>0
+and date(btm.bill_date) between  $P{P_FROM_DATE}   and  $P{P_TO_DATE} 
+),
+amount_info as (
+select
+employe_id 
+,bec.economic_code 
+,sum(coalesce(btd.debit_amount,0)) amount
+from budget_transaction_details btd
+join budget_transaction_master_detail_list mdt on mdt.detail_list_id=btd.id
+join budget_transaction_master btm on btm.id=mdt.transaction_master_id 
+join budget_economic_code bec on bec.id=btd.economic_code_id 
+where 1=1 and coalesce (employe_id,0)>0
+and date(btm.bill_date) between  $P{P_FROM_DATE}   and  $P{P_TO_DATE} 
+GROUP BY employe_id,bec.economic_code 
+)
+select * from employee_info
+join amount_info on amount_info.employe_id=employee_info.id]]>
+	</queryString>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<field name="COLUMN_2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employe_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employe_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employe_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_transaction_details"/>
+	</field>
+	<field name="economic_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="economic_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="economic_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="amount" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+	</field>
+	<variable name="total_amount" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="50" width="440" height="20" isRemoveLineWhenBlank="true" uuid="b66edaaa-ac80-494a-86ce-beaa12340661"/>
+				<box rightPadding="10">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[বিওএফ কর্মচারীদের জিপিএফ বিলের ব্যাংক হিসাব ও নীট প্রসঙ্গে]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="-20" y="0" width="595" height="50" isRemoveLineWhenBlank="true" uuid="b9fadfef-78f3-41c6-a762-372856e6a7c6"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="440" height="20" isRemoveLineWhenBlank="true" uuid="f7505f87-1af4-434b-9e69-3b8bed353cca"/>
+				<box rightPadding="10">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[বিওএফ কর্মচারীদের জিপিএফ বিলের ব্যাংক হিসাব ও নীট প্রদান করা হলো]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="0" width="270" height="30" isRemoveLineWhenBlank="true" uuid="682c6c66-28dd-4533-ace5-724db3a6256a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c00bacfd-624a-4ab8-8a70-ad3f9d7bb2bb"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নম্বর, পদবি ও নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="310" y="0" width="130" height="30" isRemoveLineWhenBlank="true" uuid="80ef42f4-37ef-4a8d-9264-bbe157677cc2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0897e677-a22f-4cde-896d-5f1f9eb31e3c"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[হিসাব নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="100" height="30" isRemoveLineWhenBlank="true" uuid="b7e27561-b82c-40e0-ba82-6e65aaf71e94">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5b38d767-6759-494c-b2aa-d1fb77e560af"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="30" isRemoveLineWhenBlank="true" uuid="fa1ea74c-208b-4938-96db-65c5546a07bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c00bacfd-624a-4ab8-8a70-ad3f9d7bb2bb"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField  isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="270" height="20" isRemoveLineWhenBlank="true" uuid="b7748360-1f36-4bcc-a0ff-8149671efeb2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c00bacfd-624a-4ab8-8a70-ad3f9d7bb2bb"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_2}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="310" y="0" width="130" height="20" isRemoveLineWhenBlank="true" uuid="1f23b838-61a2-4910-b295-0813adc1d009">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0897e677-a22f-4cde-896d-5f1f9eb31e3c"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{economic_code}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="440" y="0" width="100" height="20" isRemoveLineWhenBlank="true" uuid="177e32d8-cbbe-4a39-ba45-b2c318ff4359">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5b38d767-6759-494c-b2aa-d1fb77e560af"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="20" isRemoveLineWhenBlank="true" uuid="9d1cc2d6-ed8c-42ff-997d-6024af073650"/>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="40" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="100" height="20" isRemoveLineWhenBlank="true" uuid="d9554eaa-500e-47af-a7f4-e7777be4e9b2"/>
+				<box rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="440" height="20" isRemoveLineWhenBlank="true" uuid="cb4b26ea-f8a1-42bb-984b-380aca251070"/>
+				<box rightPadding="10">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[মোট টাকা =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="440" height="20" isRemoveLineWhenBlank="true" uuid="1bd1fbee-b03f-44c7-b5e1-d076da9635b9"/>
+				<box rightPadding="10">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[বিষয়টি আপনার অবগতি ও পরবর্তী কার্যক্রমের জন্য প্রেরণ করা হলো :]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

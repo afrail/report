@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acc_id_card_sub_second" pageWidth="150" pageHeight="242" whenNoDataType="AllSectionsNoDetail" columnWidth="150" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="718edbf3-c541-4792-8720-8b762b79bd25">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_SERVER"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="253"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="735"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="mm"/>
+	<parameter name="P_CARD_ISSUE_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select
+	card.id,
+	card.card_no,
+	emp.code "per_no",
+	get_com_lookup_name(card.designation_id) "rank",
+	emp.employee_name,
+	(select get_com_lookup_name(hep.blood_group) from hrm_employee_personal_information hep where id = emp.id) "blood_group",
+	card.issue_date,
+	case
+		when emp.image_url is null then '/bof/data/images/not_found.jpg'
+		when emp.image_url = '/' then '/bof/data/images/not_found.jpg'
+		when emp.image_url != '/' then concat(  emp.image_url, emp.image)
+	end "image_url",
+	case
+		when emp.signature_url is null then '/bof/data/images/not_found.jpg'
+		when emp.signature_url = '/' then '/bof/data/images/not_found.jpg'
+		when emp.signature_url != '/' then concat(emp.signature_url, emp.signature)
+	end "signature_url",
+	(
+	select
+	case
+		when a.signature_url is null then ' /bof/data/images/not_found.jpg'
+		when a.signature_url = '/' then ' /bof/data/images/not_found.jpg'
+		when a.signature_url != '/' then concat(a.signature_url, a.signature)
+	end "auth_signature_url"
+	from
+		hrm_employee_personal_information a
+	where
+		a.id = 2649 ) "auth_signature_url"
+from
+	acc_employee_id_card_entry card,
+	hrm_employee_personal_information emp
+where
+	1 = 1
+	and emp.id = card.employee_id
+	and card.id = $P{P_CARD_ISSUE_ID}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="card_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="card_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="card_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="per_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="per_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="rank" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+	</field>
+	<field name="issue_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="issue_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="image_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="image_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="image_url"/>
+	</field>
+	<field name="signature_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="signature_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="signature_url"/>
+	</field>
+	<field name="auth_signature_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_signature_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_signature_url"/>
+	</field>
+	<title>
+		<band/>
+	</title>
+	<summary>
+		<band height="239" splitType="Stretch">
+			<image hAlign="Center" onErrorType="Icon">
+				<reportElement x="39" y="130" width="70" height="70" uuid="f7f99460-0799-4f62-ac87-75ee04488c14"/>
+				<imageExpression><![CDATA["/bof/data/images/bof_water_img.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" onErrorType="Icon">
+				<reportElement x="39" y="200" width="70" height="31" uuid="b34736ec-1f03-4510-8d76-d35ab632f28b"/>
+				<imageExpression><![CDATA[$F{auth_signature_url}]]></imageExpression>
+			</image>
+		</band>
+	</summary>
+</jasperReport>

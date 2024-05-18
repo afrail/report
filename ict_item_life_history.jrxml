@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ict_item_life_history" pageWidth="650" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="610" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="27887466-317c-41f6-a019-232547082426">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="net.sf.jasperreports.print.create.bookmarks" value="true"/>
+	<parameter name="P_ICT_ITEM" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+m.name as ITEM,rcvdet.item_description as item_desc,rcvm.id rec_id,
+rn.item_name as item_id,rcvdet.purchase_date as purchase_date,rcvdet.purchase_amount as purchase_amt,
+rcvdet.warranty_date as warr_date,
+issuems.issue_date as issue_date,date(rn.return_date) as ret_date,rep.problems as problem,rep.solution as solution,
+ict_get_name(issuedet.item_brand,'BRAND')item_BRAND,
+ict_get_name(m.category_id,'CAT')item_cat,m.id
+from ict_item_return rn,ict_repare_description rep,
+ict_item_issue_master issuems,ict_item_issue_details issuedet,
+ict_item_received_master rcvm,ict_item_received_details rcvdet, ICT_ITEM_MASTER m
+where 1=1
+and m.id=rcvdet.item_master
+and m.id=issuedet.item_master
+and m.reusable='true'
+---and rcvm.id=46
+and rn.item_code =issuedet.item_code 
+and  issuems.id=issuedet.item_issue_master
+and m.id=issuedet.item_master 
+and rn.item_name=rep.item_name 
+and  rcvm.id=rcvdet.group_master_id
+and rcvdet.item_code =issuedet.item_code 
+and  rn.employee_id=issuedet.issue_to
+and  rep.item_name=rcvdet.item_master
+and rep.item_name=issuedet.item_master
+and issuedet.item_master=COALESCE( $P{P_ICT_ITEM} ,issuedet.item_master) 
+order by item_cat, ITEM, purchase_date asc]]>
+	</queryString>
+	<field name="item" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item"/>
+		<property name="com.jaspersoft.studio.field.label" value="item"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_master"/>
+	</field>
+	<field name="item_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_received_details"/>
+	</field>
+	<field name="rec_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="rec_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="rec_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_received_master"/>
+	</field>
+	<field name="item_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="item_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_return"/>
+	</field>
+	<field name="purchase_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="purchase_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="purchase_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_received_details"/>
+	</field>
+	<field name="purchase_amt" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="purchase_amt"/>
+		<property name="com.jaspersoft.studio.field.label" value="purchase_amt"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_received_details"/>
+	</field>
+	<field name="warr_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="warr_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="warr_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_received_details"/>
+	</field>
+	<field name="issue_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="issue_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_issue_master"/>
+	</field>
+	<field name="ret_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="ret_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="ret_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_return"/>
+	</field>
+	<field name="problem" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="problem"/>
+		<property name="com.jaspersoft.studio.field.label" value="problem"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_repare_description"/>
+	</field>
+	<field name="solution" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="solution"/>
+		<property name="com.jaspersoft.studio.field.label" value="solution"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_repare_description"/>
+	</field>
+	<field name="item_brand" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item_brand"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_brand"/>
+	</field>
+	<field name="item_cat" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item_cat"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_cat"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ict_item_master"/>
+	</field>
+	<group name="item_name">
+		<groupExpression><![CDATA[$F{id}]]></groupExpression>
+		<groupHeader>
+			<band height="83">
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="30" y="57" width="110" height="26" isPrintWhenDetailOverflows="true" printWhenGroupChanges="item_name" uuid="491d760d-7483-4118-9afd-7d2b6e9879d0"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Issue Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="57" width="30" height="26" isPrintWhenDetailOverflows="true" printWhenGroupChanges="item_name" uuid="4f41c7be-f8a5-4709-93c0-0c39c083048c"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Ser]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="247" y="57" width="107" height="26" isPrintWhenDetailOverflows="true" uuid="9626dab4-968b-4ac5-8c0c-475b8581cfd2"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Problem Details]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="140" y="57" width="107" height="26" isPrintWhenDetailOverflows="true" uuid="84bbeb90-2874-42cb-9818-6157b5ab3b86"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Return Date ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="512" y="57" width="98" height="26" isPrintWhenDetailOverflows="true" uuid="981b30f3-76b5-4031-9658-82dd54ec826b"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Remarks]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="140" y="36" width="107" height="21" isPrintWhenDetailOverflows="true" uuid="a4a744b0-9b40-486e-b084-da4da8b778ee"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{item_brand}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd-MMM-yyyyy" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="247" y="36" width="107" height="21" isPrintWhenDetailOverflows="true" uuid="f07aa180-9e40-4f98-88af-a8d51a74b0b0"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{purchase_date}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="#,#00.00#;(#,#00.00#-)" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="354" y="36" width="158" height="21" isPrintWhenDetailOverflows="true" uuid="63b419c9-663d-4683-ab1d-9d5341be653e"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{purchase_amt}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true" pattern="dd-MMM-yyyyy" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="512" y="36" width="98" height="21" isPrintWhenDetailOverflows="true" uuid="75408a5f-8eb0-4a08-8456-02d13edcece8"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{warr_date}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement stretchType="RelativeToTallestObject" x="354" y="57" width="158" height="26" isPrintWhenDetailOverflows="true" uuid="38f7070d-410a-4ed9-ac46-c56b53d40c83"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Solution]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="16" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="a7147901-6eed-4151-9cd7-ede2725aa294"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Item]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="140" y="16" width="107" height="20" isPrintWhenDetailOverflows="true" uuid="abdc02fc-b0a5-4ba0-8d7c-4042c524635b"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Item Brand]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="247" y="16" width="107" height="20" isPrintWhenDetailOverflows="true" uuid="13f55780-0a11-4eb0-9787-671f4a908fc0"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Purchase Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="354" y="16" width="158" height="20" isPrintWhenDetailOverflows="true" uuid="6fab432b-8cd2-4622-a7c6-bc8ec3408f87"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Purchase Amt.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="512" y="16" width="98" height="20" isPrintWhenDetailOverflows="true" uuid="be9854f5-a6f1-43ea-b2a4-efb81bf0645e"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Warranty Date]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="36" width="140" height="21" isPrintWhenDetailOverflows="true" uuid="abdde105-51a9-44bd-9607-6fe67be1abbe"/>
+					<box leftPadding="4">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25"/>
+						<leftPen lineWidth="0.25"/>
+						<bottomPen lineWidth="0.25"/>
+						<rightPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{item}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="52" splitType="Stretch">
+			<subreport>
+				<reportElement x="3" y="0" width="487" height="52" uuid="7b69125f-0d61-4153-859b-8ab4a68a2d1b"/>
+				<subreportParameter name="P_ICT_ITEM">
+					<subreportParameterExpression><![CDATA[$P{P_ICT_ITEM}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="30">
+			<textField>
+				<reportElement x="490" y="8" width="69" height="16" uuid="4ec28c44-3c26-434f-840d-2baa5c3094da"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="560" y="8" width="40" height="16" uuid="f1e4fb14-4157-4b45-bb1b-bceb3ca3ad4b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="3" y="0" width="606" height="30" uuid="a9c05201-3cbd-43f6-bb13-8c8f135a947c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Item Life History]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="0" y="0" width="30" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="item_name" uuid="97f92d6d-adf0-4785-ae5c-a9707c2b979a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{item_name_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="0" width="110" height="16" isPrintWhenDetailOverflows="true" uuid="28fdc24e-d286-419d-b82e-d0388cfc131c"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issue_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="140" y="0" width="107" height="16" isPrintWhenDetailOverflows="true" uuid="ad963d48-701d-4ea4-8e95-270339f3d542"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ret_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="247" y="0" width="107" height="16" isPrintWhenDetailOverflows="true" uuid="81437c67-30ab-457b-897f-2980e34be12f"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{problem}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="512" y="0" width="98" height="16" isPrintWhenDetailOverflows="true" uuid="3b6b7b28-9389-4348-96a3-69d983a7301b"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="354" y="0" width="158" height="16" isPrintWhenDetailOverflows="true" uuid="1a0d1203-475d-4b4e-919a-dc5ec2922913"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{solution}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="88" splitType="Stretch">
+			<staticText>
+				<reportElement x="440" y="70" width="90" height="18" isPrintWhenDetailOverflows="true" uuid="6d1b1810-d099-433b-83f4-d60ece11971a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="67" width="268" height="17" isPrintWhenDetailOverflows="true" uuid="8a7dbf98-424c-4ef4-a050-5325ca61958d"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="530" y="70" width="79" height="18" uuid="c375d1fb-3b85-417c-b202-15226a526817"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="24" splitType="Stretch"/>
+	</summary>
+</jasperReport>

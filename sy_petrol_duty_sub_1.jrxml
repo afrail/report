@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sy_petrol_duty_sub_1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4c258fea-086d-4976-b2f1-9a2c78c7792f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_apdm_id" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT a.description,
+	a.serial_no, get_emp_bn_name(b.manager_id) Manager_name,
+get_com_lookup_bn_Name(b.designation_id) mgr_Designation
+FROM acc_petrol_duty_description a,
+	acc_petrol_duty_master b
+WHERE 
+	 1 = 1 
+	 AND a.class_type = b.class_type 
+	 AND b.id = $P{P_apdm_id} 
+ORDER BY a.serial_no ASC]]>
+	</queryString>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="description"/>
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_petrol_duty_description"/>
+	</field>
+	<field name="serial_no" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="serial_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="serial_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_petrol_duty_description"/>
+	</field>
+	<field name="manager_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="manager_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="manager_name"/>
+	</field>
+	<field name="mgr_designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mgr_designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="mgr_designation"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="550" height="20" uuid="c43e918d-2547-443a-9881-6f321139dd35">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4bbcb38a-4f0f-42ef-88df-ad4f27691860"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="109">
+			<staticText>
+				<reportElement x="370" y="90" width="180" height="19" uuid="021fe944-543c-471d-98fb-a6ba9605b050"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পক্ষে কমান্ড্যান্ট ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="70" width="180" height="20" uuid="d568620c-c266-4193-9527-87ffde04af1b"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mgr_designation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="50" width="180" height="20" uuid="029b43ea-45c5-446d-917d-50eacce91948"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{manager_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="isi_comment_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0ccaf445-1453-4eed-b293-87b2008177e7">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IBCS"/>
+	<parameter name="P_REFERENCE_NO" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select get_com_lookup_bn_name(a.section_id)||' শপ এর পত্র নং '||coalesce (a.section_ref_no,'') letter_no, a.section_ref_no  
+from isi_comment_details a, isi_comment_master b 
+where a.master_id = b.id 
+--and a.section_ref_no is not null
+and b.isi_sent_ref_no =  $P{P_REFERENCE_NO} 
+group by a.section_ref_no,letter_no]]>
+	</queryString>
+	<field name="letter_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="letter_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="letter_no"/>
+	</field>
+	<field name="section_ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="section_ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="section_ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="isi_comment_details"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="-20" y="0" width="340" height="20" uuid="b8447641-8dbe-41a4-953b-bb411bc60ffc"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{letter_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

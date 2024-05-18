@@ -1,0 +1,682 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="date_wise_ration_distribution" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="79532295-2bba-44f9-806a-d5e2bc6d7a9f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_SERVER"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="184"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="804"/>
+	<subDataset name="ration_distributions" uuid="d0040de5-0676-49eb-a2e7-b1cd34fa645f">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="report_footer_portrait" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[with itemdata as (
+select
+	id,
+	name,
+	bangla_name
+from
+	raw_item_master rim
+where
+	active = true ),
+memo as (
+select
+	id ,
+	date(voucher_date) voucher_date,
+	ration_no ,
+	ration_no card_no ,
+	employee_id ID_NO,
+	voucher_no,
+	rrvm.total_amount  M_total_amount
+from
+	raw_ration_voucher_master rrvm
+where
+	date(rrvm.voucher_date) BETWEEN COALESCE( $P{P_FROM_DATE},DATE(rrvm.voucher_date))  and COALESCE( $P{P_TO_DATE},DATE(rrvm.voucher_date)) 
+
+	),
+rationsummary as (
+select
+	rrvs.ration_voucher_master_id ,
+	itemdata.name,
+	itemdata.bangla_name,
+	rrvs.total,
+	rrvs.rate,
+	rrvs.amount,
+	(rrvs.total*rrvs.rate) total_amount
+from
+	itemdata
+left join raw_ration_voucher_summary rrvs on
+	itemdata.id = rrvs.item_master_id ),
+rationvoucherco as (
+select
+	ration_voucher_master_id ,
+	sum((case when name = 'Rice' then total else null end)) rice ,
+	sum((case when name = 'Flour' then total else null end)) flour ,
+	sum((case when name = 'Oil' then total else null end)) oil ,
+	sum((case when name = 'Sugar' then total else null end)) suger ,
+	sum((case when name = 'Rice' then rate else null end)) rice_rate ,
+	sum((case when name = 'Flour' then rate else null end)) rate_flour ,
+	sum((case when name = 'Oil' then rate else null end)) rate_oil ,
+	sum((case when name = 'Sugar' then rate else null end)) rate_suger,
+	SUM(total_amount) total_amount
+from
+	rationsummary
+where
+	1 = 1
+	and ration_voucher_master_id is not null
+group by
+	ration_voucher_master_id )
+select
+	memo.* ,
+	ration_voucher_master_id ,
+	rice_rate,
+	round( CAST(rice_rate as numeric), 4) rice_rate_cal,
+	rate_flour,
+		round( CAST(rate_flour as numeric), 4) rate_flour_cal,
+		round( CAST(rate_oil as numeric), 4) rate_oil_cal,
+		rate_oil,
+		round( CAST(rate_suger as numeric), 4) rate_suger_cal,
+		rate_suger,
+	rice ,
+	round( CAST(rice as numeric), 4) rice_cal,
+	flour ,
+	round( CAST(flour as numeric), 4) flour_cal,
+	oil ,
+	round( CAST(oil as numeric), 4) oil_cal,
+	suger,
+		round( CAST(suger as numeric), 4) suger_cal,	
+		round( CAST(rice as numeric), 4)*round( CAST(rice_rate as numeric), 4) rice_price_cal,	
+	total_amount as row_total
+from
+	rationvoucherco
+join memo on
+	memo.id = rationvoucherco.ration_voucher_master_id
+order by
+	cast (ID_NO as int) asc;]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_master"/>
+	</field>
+	<field name="voucher_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="voucher_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="voucher_date"/>
+	</field>
+	<field name="ration_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ration_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ration_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_master"/>
+	</field>
+	<field name="card_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="card_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="card_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_master"/>
+	</field>
+	<field name="id_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="id_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_master"/>
+	</field>
+	<field name="voucher_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="voucher_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="voucher_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_master"/>
+	</field>
+	<field name="m_total_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="m_total_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="m_total_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_master"/>
+	</field>
+	<field name="ration_voucher_master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ration_voucher_master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="ration_voucher_master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_voucher_summary"/>
+	</field>
+	<field name="rice_rate" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="rice_rate"/>
+		<property name="com.jaspersoft.studio.field.label" value="rice_rate"/>
+	</field>
+	<field name="rice_rate_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rice_rate_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="rice_rate_cal"/>
+	</field>
+	<field name="rate_flour" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="rate_flour"/>
+		<property name="com.jaspersoft.studio.field.label" value="rate_flour"/>
+	</field>
+	<field name="rate_flour_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rate_flour_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="rate_flour_cal"/>
+	</field>
+	<field name="rate_oil_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rate_oil_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="rate_oil_cal"/>
+	</field>
+	<field name="rate_oil" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="rate_oil"/>
+		<property name="com.jaspersoft.studio.field.label" value="rate_oil"/>
+	</field>
+	<field name="rate_suger_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rate_suger_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="rate_suger_cal"/>
+	</field>
+	<field name="rate_suger" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="rate_suger"/>
+		<property name="com.jaspersoft.studio.field.label" value="rate_suger"/>
+	</field>
+	<field name="rice" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="rice"/>
+		<property name="com.jaspersoft.studio.field.label" value="rice"/>
+	</field>
+	<field name="rice_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rice_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="rice_cal"/>
+	</field>
+	<field name="flour" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="flour"/>
+		<property name="com.jaspersoft.studio.field.label" value="flour"/>
+	</field>
+	<field name="flour_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="flour_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="flour_cal"/>
+	</field>
+	<field name="oil" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="oil"/>
+		<property name="com.jaspersoft.studio.field.label" value="oil"/>
+	</field>
+	<field name="oil_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="oil_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="oil_cal"/>
+	</field>
+	<field name="suger" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="suger"/>
+		<property name="com.jaspersoft.studio.field.label" value="suger"/>
+	</field>
+	<field name="suger_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="suger_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="suger_cal"/>
+	</field>
+	<field name="rice_price_cal" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="rice_price_cal"/>
+		<property name="com.jaspersoft.studio.field.label" value="rice_price_cal"/>
+	</field>
+	<field name="row_total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="row_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="row_total"/>
+	</field>
+	<variable name="Sugar_total_cal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{suger_cal}]]></variableExpression>
+	</variable>
+	<variable name="oil_total_cal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{oil_cal}]]></variableExpression>
+	</variable>
+	<variable name="rice_total_cal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{rice_cal}]]></variableExpression>
+	</variable>
+	<variable name="rice_qty_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{rice_cal}]]></variableExpression>
+	</variable>
+	<variable name="rice_avg_rate" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{rice_rate}]]></variableExpression>
+	</variable>
+	<variable name="att_total_cal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{flour_cal}]]></variableExpression>
+	</variable>
+	<variable name="atta_avg_rate" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{rate_flour}]]></variableExpression>
+	</variable>
+	<variable name="oil_avg_rate" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{rate_oil}]]></variableExpression>
+	</variable>
+	<variable name="sugar_avg_rate" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{rate_suger}]]></variableExpression>
+	</variable>
+	<variable name="rice_avg_qty" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{rice}]]></variableExpression>
+	</variable>
+	<variable name="attaa_avg_qty" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{flour}]]></variableExpression>
+	</variable>
+	<variable name="oil_avg_qty" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{oil}]]></variableExpression>
+	</variable>
+	<variable name="sugar_avg_qty" class="java.lang.Float" calculation="Average">
+		<variableExpression><![CDATA[$F{flour}]]></variableExpression>
+	</variable>
+	<variable name="atta_qty_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{flour}]]></variableExpression>
+	</variable>
+	<variable name="oil_qty_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{oil}]]></variableExpression>
+	</variable>
+	<variable name="sugar_qty_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{suger}]]></variableExpression>
+	</variable>
+	<variable name="rice_total_price" class="java.lang.Float">
+		<variableExpression><![CDATA[$V{rice_qty_total} * $V{rice_avg_rate}]]></variableExpression>
+	</variable>
+	<variable name="atta_total_price" class="java.lang.Float">
+		<variableExpression><![CDATA[$V{atta_qty_total} * $V{atta_avg_rate}]]></variableExpression>
+	</variable>
+	<variable name="oil_total_price" class="java.lang.Float">
+		<variableExpression><![CDATA[$V{oil_qty_total} * $V{oil_avg_rate}]]></variableExpression>
+	</variable>
+	<variable name="sugar_total_price" class="java.lang.Float">
+		<variableExpression><![CDATA[$V{sugar_qty_total} * $V{sugar_avg_rate}]]></variableExpression>
+	</variable>
+	<variable name="row_total_price" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{rice_rate} * $F{rice} + $F{oil} * $F{rate_oil} + $F{flour} * $F{rate_flour} + $F{suger} * $F{rate_suger}]]></variableExpression>
+		<initialValueExpression><![CDATA[5]]></initialValueExpression>
+	</variable>
+	<variable name="avg_price" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{oil}]]></variableExpression>
+	</variable>
+	<variable name="report_total_price" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{m_total_amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="205" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="62" width="70" height="16" backcolor="#E6DFDF" uuid="8e36f0ce-6297-43ed-9db1-9e8c8c074c44">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[দ্রব্যের নাম ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="78" width="70" height="16" uuid="a9663f45-12b2-4273-8457-1836f2ccbbbe">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[চাউল ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="94" width="70" height="16" uuid="0e06d5f9-6f3f-43b9-894b-b00f9db68dc1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[আটা ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="110" width="70" height="16" uuid="b1d29a23-604f-40f3-b692-78a2ba2fe4cd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[তৈল ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="126" width="70" height="16" uuid="3a71a198-1e98-4eb5-8546-0443a96b8a7e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[চিনি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="62" width="120" height="16" backcolor="#E6DFDF" uuid="20bd2c48-8ddc-4ea4-bf5c-2a2b9fcbc928"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পরিমান]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="62" width="120" height="16" backcolor="#E6DFDF" uuid="69f2ab81-7b8d-4175-aa3e-a48384ff7177"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[দর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="62" width="90" height="16" backcolor="#E6DFDF" uuid="0e664b57-d190-443b-add2-1ccad3192816"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[মোট মূল্য]]></text>
+			</staticText>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="150" y="78" width="120" height="16" uuid="906b1875-4ba7-4724-9db8-f18c5f4f0ed4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{rice_total_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="270" y="78" width="120" height="16" uuid="aba31c4a-e113-485b-b41b-1d0dff47f200"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rice_rate_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="150" y="94" width="120" height="16" uuid="d4ee89b7-fb7b-493a-b1ef-7e2b1f733fbb"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{att_total_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="150" y="110" width="120" height="16" uuid="b6052737-d9ee-4651-ad01-bb46b2ca6284"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{oil_total_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="150" y="126" width="120" height="16" uuid="693ddedc-2a4d-4659-92bc-50ca88720d45"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Sugar_total_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="270" y="94" width="120" height="16" uuid="673f9aa7-94d0-4d99-bb66-253eb0a40422"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rate_flour_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="270" y="110" width="120" height="16" uuid="edf58c5d-cba3-474c-95b7-50bbde5d8d18"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rate_oil_cal}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.0000;(#,##0.0000)" isBlankWhenNull="true">
+				<reportElement x="270" y="126" width="120" height="16" uuid="bf6e447b-abea-4ddf-b6b0-217c6abe90f5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rate_suger}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.0000;(#,###.0000-)" isBlankWhenNull="true">
+				<reportElement x="390" y="94" width="90" height="16" uuid="75ce4659-fa4d-4492-9555-6fc11994f47b"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{att_total_cal}.doubleValue()*$F{rate_flour_cal}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.0000;(#,###.0000-)" isBlankWhenNull="true">
+				<reportElement x="390" y="110" width="90" height="16" uuid="81b0edd0-c5cd-4447-afe6-f0b7cb6b31ae"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{oil_total_cal}.doubleValue()*$F{rate_oil_cal}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.0000;(#,###.0000-)" isBlankWhenNull="true">
+				<reportElement x="390" y="126" width="90" height="16" uuid="49d1483d-c694-42f7-9050-eaa941264646"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Sugar_total_cal}.doubleValue()*$F{rate_suger_cal}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,###.0000;(#,###.0000-)" isBlankWhenNull="true">
+				<reportElement x="390" y="142" width="90" height="20" uuid="82ef5ec7-8675-4f7a-be84-78b813176b0e"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{rice_total_cal}.doubleValue()*$F{rice_rate}.doubleValue())+
+($V{att_total_cal}.doubleValue()*$F{rate_flour_cal}.doubleValue())+
+($V{oil_total_cal}.doubleValue()*$F{rate_oil_cal}.doubleValue())+
+($V{Sugar_total_cal}.doubleValue()*$F{rate_suger_cal}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="142" width="370" height="20" uuid="66ae85bc-9125-463a-a7a7-8c9247a375de"/>
+				<box rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট =]]></text>
+			</staticText>
+			<textField pattern="#,###.0000;(#,###.0000-)">
+				<reportElement x="390" y="78" width="90" height="16" uuid="3f165ac1-27df-4ba0-b801-fc7bbe187861">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{rice_total_cal}.doubleValue()*$F{rice_rate}.doubleValue()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.000;(#,##0.000-)" isBlankWhenNull="true">
+				<reportElement x="390" y="162" width="90" height="20" uuid="3cb08bb9-ad87-44e5-8c17-2a470d3fe9fe"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="162" width="370" height="20" uuid="b879c6b7-ce11-4853-b123-0574ecab61d6"/>
+				<box rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[এফসি(+)]]></text>
+			</staticText>
+			<textField pattern="#,###.0000;(#,###.0000-)" isBlankWhenNull="true">
+				<reportElement x="390" y="182" width="90" height="20" uuid="e68c0677-99b7-4f42-b645-3e3aa60283a7"/>
+				<box padding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($V{rice_total_cal}.doubleValue()*$F{rice_rate}.doubleValue())+
+($V{att_total_cal}.doubleValue()*$F{rate_flour_cal}.doubleValue())+
+($V{oil_total_cal}.doubleValue()*$F{rate_oil_cal}.doubleValue())+
+($V{Sugar_total_cal}.doubleValue()*$F{rate_suger_cal}.doubleValue())]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="182" width="370" height="20" uuid="7d626932-9680-410e-892f-be045b095839"/>
+				<box rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সর্বমোট =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="62" width="60" height="16" backcolor="#E6DFDF" uuid="8ee5eda0-7ff3-4e24-8aa3-79304d8eb9b8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="78" width="60" height="16" uuid="789818a6-5b81-4c5b-b125-1643fc7f6e04">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক।  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="94" width="60" height="16" uuid="8b25edb0-61c3-4dc0-bbe0-60f6aafe161a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[খ।  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="110" width="60" height="16" uuid="4b76b597-47d7-48ac-afc5-d06f170505a7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গ।  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="126" width="60" height="16" uuid="825cf4d0-93ec-43ee-a975-c40439e928b7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ঘ।  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="20" uuid="2eaf6234-da2f-4292-8037-38abcecca0b7"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সারাংশ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="20" width="40" height="20" uuid="4d0bf2b1-ab38-47ac-95a6-b30af22de674"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<text><![CDATA[তারিখ: ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="220" y="20" width="80" height="20" uuid="3b429c31-d52f-4834-b40c-899c5bda3a4d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_FROM_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="20" width="40" height="20" uuid="1e4d3b81-1280-435a-9477-35ef017a3693"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[হতে ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="310" y="20" width="70" height="20" uuid="e2091b3e-8a89-4b6b-a800-810b75156337"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_TO_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="20" width="50" height="20" uuid="5407475b-dea1-4808-b0b7-c8069f554764"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পর্যন্ত ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="41" width="246" height="20" uuid="c5b88569-8879-47db-8871-877aff994e03"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[সাধারণ দর]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

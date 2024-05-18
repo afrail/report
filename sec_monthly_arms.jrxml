@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sec_monthly_arms" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="723c18e4-17ed-4e58-a602-8f8082b96b68">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="report_header_common_bangla_landscape" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select m.id,m.bangla_name, required_quantity, SUM(d.arms_quantity) arms_quantity, SUM(d.arms_quantity) bof_quantity,
+case when required_quantity-SUM(d.arms_quantity)<0 then required_quantity-SUM(d.arms_quantity) else 0 end less_qty,
+case when required_quantity-SUM(d.arms_quantity)>0 then required_quantity-SUM(d.arms_quantity) else 0 end extra_qty
+from acc_modc_arms_master m ,acc_arms_ammunition_receive d
+where 1=1
+and arm_id is null
+and m.id=d.arms_id
+and d.arms_quantity>0
+group by required_quantity,m.id]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_arms_master"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_arms_master"/>
+	</field>
+	<field name="required_quantity" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="required_quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="required_quantity"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_arms_master"/>
+	</field>
+	<field name="arms_quantity" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="arms_quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="arms_quantity"/>
+	</field>
+	<field name="bof_quantity" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="bof_quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="bof_quantity"/>
+	</field>
+	<field name="less_qty" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="less_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="less_qty"/>
+	</field>
+	<field name="extra_qty" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="extra_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="extra_qty"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="840" height="70" uuid="6b48c0bf-dc68-42d6-b13a-b40833dd41f8"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla_landscape}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="320" y="0" width="160" height="20" uuid="471b9f70-b3c4-4fe8-ac40-74d7821662f8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মাসিক অস্ত্র মজুদ গণনা"]]></textFieldExpression>
+			</textField>
+			<textField pattern="M/d/yyyy" isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="130" height="20" uuid="7bd3f120-53b2-4c36-a540-9797bd78947b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_TO_DATE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMMM , yyyy" isBlankWhenNull="true">
+				<reportElement x="480" y="0" width="139" height="20" uuid="0cbe043d-c153-4a02-8dea-b349ea6af4b2"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_TO_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="30" uuid="3c9e1e36-fca7-4f38-9dd3-c46f6f694a4e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e1203ce-9194-4925-9c84-9e6a5c4faeb7"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="190" height="30" uuid="90a48429-3b07-41d5-9705-c59b3b4f6732">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="44c93940-6a65-4262-b2e1-7ac0b0038ce3"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অস্ত্রের প্রকার]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="80" height="30" uuid="59c104b3-dab2-468a-95d7-0d10a582c099">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0ad71e0a-bf8b-4361-b31f-5874d9b15ccd"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রাধিকার]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="70" height="30" uuid="0b07d569-fad0-4748-b896-c1811197ffd5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="594b611d-773c-440e-9ea8-c6f9de7e4739"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রাপ্ত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="70" height="30" uuid="2d2eeed8-a949-48a6-84fd-fc3edb161a9c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b5b80b7-0a5a-4d10-9abe-ba5bc922925c"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ইউনিটে মজুদ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="0" width="70" height="30" uuid="da2c4ba3-8331-49ce-b9b0-52d3ed9b7671">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d9316c5d-9b05-4f87-a74d-93a8750da910"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ঘাটতি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="610" y="0" width="100" height="30" uuid="af5a639f-ea4f-4a1e-890e-940494db5c6d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9d13cb75-77b8-49eb-aeea-28ffab17063b"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বাড়তি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="0" width="80" height="30" uuid="9e28b2da-b809-4ff3-8196-fbbe98c9a304"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" isBold="true"/>
+				</textElement>
+				<text><![CDATA[হিসাবের একক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="710" y="0" width="100" height="30" uuid="cb657aca-6a22-407b-8dd8-38198554e264"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[মন্তব্য]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="50" height="30" uuid="f6a2407a-4e8b-406a-916a-a2b9d126ca84">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e1203ce-9194-4925-9c84-9e6a5c4faeb7"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="190" height="30" uuid="310146a1-8120-4fc7-a77b-8d54a0def07a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="44c93940-6a65-4262-b2e1-7ac0b0038ce3"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="80" height="30" uuid="facb3c7a-4605-4194-9c2e-81bbcdd8dd72">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0ad71e0a-bf8b-4361-b31f-5874d9b15ccd"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{required_quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="70" height="30" uuid="9d2110b8-a3f9-454c-84a2-2042f9aff81c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="594b611d-773c-440e-9ea8-c6f9de7e4739"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{arms_quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="470" y="0" width="70" height="30" uuid="f93f52f6-d7f5-4b4d-b73f-5c48ca4cb307">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0b5b80b7-0a5a-4d10-9abe-ba5bc922925c"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bof_quantity}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="540" y="0" width="70" height="30" uuid="d36e073a-8bc1-49de-8fa3-d2637f59c457">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d9316c5d-9b05-4f87-a74d-93a8750da910"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{less_qty}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="610" y="0" width="100" height="30" uuid="138c125d-809f-414c-ba0a-1f099419aa9b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9d13cb75-77b8-49eb-aeea-28ffab17063b"/>
+				</reportElement>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{extra_qty}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="710" y="0" width="100" height="30" uuid="340e2727-22fb-4431-8758-6cffcf0f4717"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="240" y="0" width="80" height="30" uuid="d97df166-b85e-4fd2-8836-3ab9bcab5d9c"/>
+				<box leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="11.5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

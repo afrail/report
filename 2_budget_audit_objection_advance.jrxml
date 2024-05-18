@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_budget_audit_objection" pageWidth="1008" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6179532e-b224-40cd-8afc-42832a236dd1">
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="229"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="760"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof live"/>
+	<parameter name="P_FINANCIAL_YEAR_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla_landscape_legal" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[with auditmaster_count as (
+select
+	1 cid ,
+	count(a.id) count_number
+from
+	audit_objection_master a
+join budget_financail_year bfy on
+	bfy.financial_year = a.audit_financial_year
+where
+	1 = 1
+	and objection_type_id = 2
+	and bfy.id = coalesce ( $P{P_FINANCIAL_YEAR_ID} ,
+	bfy.id)
+group by
+	1
+),
+auditmaster_data as (
+select
+	1 cid,
+	a.id ,
+	a.objection_subject ,
+	a.dp_number ,
+	a.audit_financial_year ,
+	a.objection_amount ,
+	a.financial_year_id ,
+	a.objection_details,
+	a.objection_number ,
+	a.paragraph_no ,
+	a.ap_number ,
+	a.objection_type_id
+from
+	audit_objection_master a
+join budget_financail_year bfy on
+	bfy.financial_year = a.audit_financial_year
+where
+	1 = 1
+	and objection_type_id = 2
+	and bfy.id = coalesce ( $P{P_FINANCIAL_YEAR_ID} ,
+	bfy.id)
+),
+auditmaster as (
+select
+	*
+from
+	auditmaster_data
+join auditmaster_count on
+	auditmaster_count.cid = auditmaster_data.cid
+),
+auditobjectiondetail as (
+select
+	b.id ,
+	b.master_id ,
+	b.bof_comments ,
+	b.comment_date ,
+	b.higher_authority_comment ,
+	b.higher_authority_comment_date
+from
+	audit_objection_details b ),
+auditobjectionstatus as(
+select
+	c.id ,
+	c.audit_objection_master_id ,
+	c.comment_date ,
+	c.updated_comment
+from
+	audit_objection_status c )
+select
+	master.dp_number ,
+	master.audit_financial_year ,
+	master.objection_amount ,
+	master.objection_subject ,
+	master .objection_details ,
+	detail.bof_comments ,
+	detail .comment_date ,
+	detail .higher_authority_comment ,
+	detail .higher_authority_comment_date ,
+	status .updated_comment ,
+	status.comment_date status_comment_date,
+	master.objection_number ,
+	master.paragraph_no ,
+	master.ap_number,
+	master.count_number
+from
+	auditmaster master
+left join auditobjectiondetail detail on
+	detail.master_id = master.id
+left join auditobjectionstatus status on
+	status.audit_objection_master_id = master.id]]>
+	</queryString>
+	<field name="dp_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dp_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="dp_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="audit_financial_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="audit_financial_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="audit_financial_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="objection_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="objection_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="objection_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="objection_subject" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="objection_subject"/>
+		<property name="com.jaspersoft.studio.field.label" value="objection_subject"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="objection_details" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="objection_details"/>
+		<property name="com.jaspersoft.studio.field.label" value="objection_details"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="bof_comments" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bof_comments"/>
+		<property name="com.jaspersoft.studio.field.label" value="bof_comments"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_details"/>
+	</field>
+	<field name="comment_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="comment_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="comment_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_details"/>
+	</field>
+	<field name="higher_authority_comment" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="higher_authority_comment"/>
+		<property name="com.jaspersoft.studio.field.label" value="higher_authority_comment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_details"/>
+	</field>
+	<field name="higher_authority_comment_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="higher_authority_comment_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="higher_authority_comment_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_details"/>
+	</field>
+	<field name="updated_comment" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="updated_comment"/>
+		<property name="com.jaspersoft.studio.field.label" value="updated_comment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_status"/>
+	</field>
+	<field name="status_comment_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="status_comment_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="status_comment_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_status"/>
+	</field>
+	<field name="objection_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="objection_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="objection_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="paragraph_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="paragraph_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="paragraph_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="ap_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ap_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="ap_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="audit_objection_master"/>
+	</field>
+	<field name="count_number" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="count_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="count_number"/>
+	</field>
+	<variable name="audit_subject" class="java.lang.String">
+		<variableExpression><![CDATA["শিরোনামঃ " +$F{objection_subject} + "\n"  +"টাকার পরিমানঃ  "+   $F{objection_amount}  + " টাকা "  + "\n" + "\n" +"বিবরণঃ "+  $F{objection_details}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{objection_subject}  +"  "+   $F{objection_amount}  + " টাকা "  + "\n" + "\n" +  $F{objection_details}]]></initialValueExpression>
+	</variable>
+	<variable name="dp_number_financial_year" class="java.lang.String">
+		<variableExpression><![CDATA[($F{ap_number}  == null ? "" : $F{ap_number})  + "\n" +($F{paragraph_no} == null ? "" : $F{paragraph_no})]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{dp_number}  + "\n" + "\n" +  "অডিট সনঃ" + "\n" + $F{audit_financial_year}]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="49" width="965" height="30" uuid="35c9107c-f728-4416-ab76-d20ced94091b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বিওএফ এর অনিষ্পন্ন " + $F{count_number} + "টি অগ্রিম অনু্চ্ছেদভুক্ত আপত্তির কার্যপত্র "]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-20" y="2" width="1007" height="19" uuid="0a44f7d4-5374-4f4b-8c6e-63ca2aaff262"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla_landscape_legal}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="82" y="0" width="80" height="46" uuid="029c2500-2320-49c1-8d4c-561d14a7c407">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="13812fec-f498-48f1-914c-216fefc8e5c0"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[এপি নম্বর, অনুচ্ছেদ নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="162" y="0" width="379" height="46" uuid="01672a24-7d17-48fa-9606-5c1e13361d96">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e5d7afd2-ea04-47df-bcb8-7f18ea93df95"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[আপত্তির বিবরণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="541" y="0" width="288" height="46" uuid="1ad1fd56-df5c-4e66-94c8-2db1bf3dcdd5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="624d17c2-7a8f-4688-b923-ccaa6fae77e0"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[দপ্তর/সংস্থার হালনাগাদ জবাব]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="830" y="0" width="137" height="46" uuid="d55aa32b-b638-4d8c-b9f6-1c280c4465ac">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="db1627e3-3ec6-441a-86b1-8b94b8039d00"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ত্রি-পক্ষীয় সভার সুপারিশ/মতামত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="32" height="46" uuid="c70ac88e-a559-4691-98f6-a156960c1e91">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34806c26-e389-45dc-a48b-0f5873a2c0c1"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="0" width="50" height="46" uuid="a31b7b0d-5f71-4b27-b2c6-a315aad06696">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34806c26-e389-45dc-a48b-0f5873a2c0c1"/>
+				</reportElement>
+				<box padding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অর্থ বছর]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="82" y="0" width="80" height="60" isPrintWhenDetailOverflows="true" uuid="43630190-b426-4934-aab8-3f9c2fb344bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="13812fec-f498-48f1-914c-216fefc8e5c0"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{dp_number_financial_year}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="541" y="0" width="288" height="60" isPrintWhenDetailOverflows="true" uuid="b49d2cd1-dfe9-4487-aaf6-28d869649a08">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="624d17c2-7a8f-4688-b923-ccaa6fae77e0"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bof_comments}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="830" y="0" width="137" height="60" isPrintWhenDetailOverflows="true" uuid="2412541b-ec27-4e48-a05b-7888a2cc1503">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="db1627e3-3ec6-441a-86b1-8b94b8039d00"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{higher_authority_comment}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="162" y="0" width="379" height="60" isPrintWhenDetailOverflows="true" uuid="00d4a023-96a5-4e66-942b-73f89e88c823"/>
+				<box padding="5">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{audit_subject}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="32" y="0" width="50" height="60" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="d1de0c07-ef51-455c-93a4-1b8d13f24e0f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a2bd4f24-448c-44f1-bca4-96b1a01a4613"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{audit_financial_year}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="32" height="60" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="3413df87-2ab4-450b-a0e0-b6e110555897">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="60" width="967" height="1" uuid="be5a7d3f-c152-4698-b318-26f129cb8192"/>
+			</break>
+		</band>
+	</detail>
+</jasperReport>

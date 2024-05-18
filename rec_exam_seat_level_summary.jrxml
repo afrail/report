@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rec_exam_seat_level_summary" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="49682575-9d44-4c1d-a586-d07e63c70127">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ibcs database adapter"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="267"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="721"/>
+	<parameter name="P_CENTRE_ID" class="java.lang.Integer"/>
+	<parameter name="P_EXAM_TYPE" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_RECRUITMENT_REFERENCE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT srw.recruitment_reference_id,
+	srw.center_id,
+	srw.center_name,
+	srw.center_name_native,
+	srw.room_number,
+	srw.room_title,
+	srw.room_title_native,
+	srw.designation_id,
+	srw.designation_title,
+	srw.designation_title_native,
+	srw.type_of_examination_id,
+	srw.examination_id,
+	srw.examination_date,
+	srw.examination_time,
+	srw.roll_starts_from,
+	srw.roll_ends_at,
+	srw.applicant_total,
+	ret.name examType,
+	ret.bangla_name examTypeNative
+FROM v_rec_seat_plan_summary_room_wise srw,
+	rec_exam_type ret
+WHERE 
+	 1 = 1 
+	 AND ret.id = srw.type_of_examination_id 
+	 AND srw.recruitment_reference_id = coalesce( $P{P_RECRUITMENT_REFERENCE_ID} ,srw.recruitment_reference_id ) 
+	 AND srw.center_id = coalesce( $P{P_CENTRE_ID} ,srw.center_id ) 
+	 AND srw.type_of_examination_id = coalesce( $P{P_EXAM_TYPE},srw.type_of_examination_id ) ]]>
+	</queryString>
+	<field name="recruitment_reference_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="recruitment_reference_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="recruitment_reference_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="center_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="center_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="center_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="center_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="center_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="center_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="center_name_native" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="center_name_native"/>
+		<property name="com.jaspersoft.studio.field.label" value="center_name_native"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="room_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="room_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="room_title_native" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_title_native"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_title_native"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="designation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="designation_title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_title"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="designation_title_native" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_title_native"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_title_native"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="type_of_examination_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="type_of_examination_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="type_of_examination_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="examination_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="examination_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="examination_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="examination_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="examination_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="examination_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="examination_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="examination_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="examination_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="roll_starts_from" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="roll_starts_from"/>
+		<property name="com.jaspersoft.studio.field.label" value="roll_starts_from"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="roll_ends_at" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="roll_ends_at"/>
+		<property name="com.jaspersoft.studio.field.label" value="roll_ends_at"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="applicant_total" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="applicant_total"/>
+		<property name="com.jaspersoft.studio.field.label" value="applicant_total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_rec_seat_plan_summary_room_wise"/>
+	</field>
+	<field name="examtype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="examtype"/>
+		<property name="com.jaspersoft.studio.field.label" value="examtype"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_type"/>
+	</field>
+	<field name="examtypenative" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="examtypenative"/>
+		<property name="com.jaspersoft.studio.field.label" value="examtypenative"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_type"/>
+	</field>
+	<variable name="V_total_seat" class="java.lang.Integer" resetType="Group" resetGroup="type_of_examination_id" calculation="Sum">
+		<variableExpression><![CDATA[$F{applicant_total}]]></variableExpression>
+	</variable>
+	<group name="exam_centre">
+		<groupExpression><![CDATA[$F{center_id}]]></groupExpression>
+		<groupHeader>
+			<band height="32">
+				<textField isBlankWhenNull="true">
+					<reportElement x="99" y="0" width="241" height="32" uuid="2bf39d16-0b6b-4fd8-97d2-b961722b4233"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{center_name_native}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="80" height="32" uuid="48f4d9de-a2b0-4503-922c-4e533477d3aa"/>
+					<box leftPadding="3"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[কেন্দ্র]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="80" y="1" width="19" height="31" uuid="168cd1e8-0370-485b-bb91-de083a614556"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="type_of_examination_id">
+		<groupExpression><![CDATA[$F{type_of_examination_id}]]></groupExpression>
+		<groupHeader>
+			<band height="62">
+				<textField isBlankWhenNull="true">
+					<reportElement x="99" y="0" width="241" height="32" uuid="6f9d79ac-18ba-4715-b634-2d62acd41396"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{examtypenative}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="477" y="32" width="77" height="30" uuid="d1ee59a4-46ef-4e71-a5fc-78d11a723aa1">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[অনুপস্থিত]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="341" y="32" width="74" height="30" uuid="0ef07574-8090-429d-a73f-28394a976489">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[মোট পরীক্ষার্থী সংখ্যা]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="241" y="32" width="100" height="30" uuid="786d976d-316f-41cb-8bfa-66a8ec119aee">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="21412705-b315-4901-9319-ff39f06ae5f9"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[রোল নং]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="130" y="32" width="111" height="30" uuid="7c0e22bb-fadf-46db-b123-1e36a4b69b6f">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37dca204-66d6-4798-8026-8717753d7ab3"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[অবস্থান]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="56" y="32" width="74" height="30" uuid="bd05d567-e9f1-47fe-94aa-f6cae261841c">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40fa9c18-5749-4ee2-b191-68612c327676"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[কক্ষ নম্বর]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="32" width="56" height="30" uuid="1ef2d761-0db5-479e-bc3b-7e1c9527d0a5">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40fa9c18-5749-4ee2-b191-68612c327676"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[ক্রমিক নম্বর]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="415" y="32" width="62" height="30" uuid="ca85b8fa-bb5b-4e01-8242-1690fe2892a5">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="0">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11"/>
+					</textElement>
+					<text><![CDATA[উপস্থিত]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="0" width="80" height="32" uuid="a626d4b1-ee97-4cc8-950b-5938e2c51c86"/>
+					<box leftPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[পরীক্ষার ধরন]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="80" y="0" width="19" height="32" uuid="5ae5cbaf-93e4-4ee4-8398-fccaada19be1"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Nirmala UI" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="595" height="50" uuid="1d02eb6f-1daf-4bba-b4a6-c9855a42f72c"/>
+				<subreportParameter name="P_CENTRE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_CENTRE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_EXAM_TYPE">
+					<subreportParameterExpression><![CDATA[$P{P_EXAM_TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="40" uuid="6f0a53f0-0bc4-4a9e-a94e-8ba75efde7b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="14"/>
+				</textElement>
+				<text><![CDATA[পরীক্ষার আসন স্তরের সারাংশ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="56" y="0" width="74" height="30" uuid="3171e2c6-085a-4dbb-ab2c-f7b827a18b1f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="679e54df-936b-4941-89a0-ec71bab2c9d9"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{room_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="111" height="30" uuid="d7533f29-3897-47ab-a829-46994e1950eb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="79080d1f-c8a4-43ef-945b-7f87e6004e30"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{room_title_native}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="241" y="0" width="100" height="30" uuid="4a55f444-636e-418e-b544-32eea0510eff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b96744bf-3070-45d1-9bc9-8ef986e597be"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{roll_starts_from}+ " হতে " + $F{roll_ends_at}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="341" y="0" width="74" height="30" uuid="8fd137db-b2de-4b41-9592-a7bc5f083fa0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="17f2fb99-6fa0-4aab-ba21-179e2cf7c120"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{applicant_total}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="415" y="0" width="62" height="30" uuid="976a5fd8-a4df-4000-95cc-4dcb63031a67">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="17f2fb99-6fa0-4aab-ba21-179e2cf7c120"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="10"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="477" y="0" width="77" height="30" uuid="85c2a31c-b4b7-4375-927c-783f3571a8bb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="17f2fb99-6fa0-4aab-ba21-179e2cf7c120"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="10"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="56" height="30" uuid="c2bfe4fa-48e4-4b19-80bc-f5ad7640bf1b"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="84" splitType="Stretch">
+			<textField>
+				<reportElement x="476" y="51" width="79" height="18" uuid="204ba64e-6e2b-41fb-9583-10a08d66cd49"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="387" y="51" width="90" height="18" isPrintWhenDetailOverflows="true" uuid="5c22232d-1c3e-45a5-968a-6c9d8fc2c349"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="52" width="317" height="17" isPrintWhenDetailOverflows="true" uuid="bec414eb-7ecf-4abe-9c68-36eb716d9346"/>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="477" y="0" width="77" height="20" uuid="8dc0974f-4e05-4793-bdd1-b7be7b833700"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="0" width="62" height="20" uuid="58b281db-1d78-4274-9bcf-336a22ae461c"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="341" height="20" uuid="17f34444-cb29-44be-adb6-693a0aa328bb"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[মোট:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="341" y="0" width="74" height="20" uuid="f275711a-796b-4602-92c2-6dddc58315d1"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$V{V_total_seat}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

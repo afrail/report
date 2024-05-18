@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acc_late_night_entry" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2777ff29-b32c-44db-b72a-f150222a021c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="281"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="707"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof database adapter"/>
+	<parameter name="P_EMP_CODE" class="java.lang.String"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="report_header_common_landscape" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_MOVEMENT_TYPE" class="java.lang.Integer"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select * from v_sec_late_night_in_out
+where 1=1 
+and code = coalesce ($P{P_EMP_CODE},	code)
+and movement_type = coalesce (f_com_lookup($P{P_MOVEMENT_TYPE}), movement_type)
+AND CASE 
+        WHEN (DATE( $P{P_FROM_DATE}) is not null and DATE( $P{P_TO_DATE}) is not null) THEN (DATE(movement_date_time) BETWEEN DATE( $P{P_FROM_DATE}) AND DATE( $P{P_TO_DATE}))
+        WHEN (DATE( $P{P_FROM_DATE}) is not null and DATE( $P{P_TO_DATE}) is     null) THEN (DATE(movement_date_time) >= DATE( $P{P_FROM_DATE}))
+        WHEN (DATE( $P{P_FROM_DATE}) is     null and DATE( $P{P_TO_DATE}) is not null) THEN (DATE(movement_date_time) <= DATE( $P{P_TO_DATE}))
+        ELSE true 
+     END;]]>
+	</queryString>
+	<field name="master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="details_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="details_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="details_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="gate_information_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="gate_information_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="gate_information_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="employee_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="hostess_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="hostess_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="hostess_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="hostess_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="hostess_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="hostess_info"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="branch_wing_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_wing_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_wing_group"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="mobile_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="house_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="house_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="house_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="person_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="person_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="person_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="relation_with_emp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="relation_with_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation_with_emp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="in_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="in_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="in_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="in_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="in_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="in_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="movement_date_time" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="movement_date_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_date_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="movement_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="out_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="out_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="out_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="out_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="out_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="out_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="out_date_time" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="out_date_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="out_date_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="movement_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="movement_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<field name="movement_hour" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="movement_hour"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_hour"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_sec_late_night_in_out"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56">
+			<staticText>
+				<reportElement x="0" y="0" width="801" height="10" uuid="e73cf4ed-b543-40c5-a16c-ced3dcb63422">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="17" width="801" height="32" uuid="2f9be98a-94ae-4e55-a6f2-bdbcc03c7129">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Report on Late Night Enter in BOF" + "\n" +
+"Date: "+  (new SimpleDateFormat("dd/MM/yyyy").format($P{P_FROM_DATE}) )]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="801" height="10" uuid="f80f4b16-7228-4f69-a04e-438d72519c42">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} >1]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="630" y="0" width="60" height="32" uuid="d4bfb4ee-5453-415f-8310-f562c97941bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7717e4d8-a5ab-4db2-a81f-36ff4208f56e"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[In Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="690" y="0" width="60" height="32" uuid="40926461-f024-452a-990f-2d0b2c88ffca">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fd9fe8f9-4afa-4dd0-ae63-eb5cdff58003"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Out Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="0" width="50" height="32" uuid="d7840604-5761-401c-a36f-5d003fc2e8eb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aaf344b2-fddb-4ac7-9528-775256967042"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reason]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="0" width="51" height="32" uuid="0633aa87-3235-4e6d-b6bf-e6271bfa60de">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4a510d9-8cf4-4f40-ae77-d47558716619"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="524" y="0" width="56" height="32" uuid="fc9d271b-8def-46bb-989a-03e562b33100">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2624b650-0536-45e0-8703-39066ee9db58"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="0" width="50" height="32" uuid="8e2add35-4f0f-46d9-a968-839e169fe47b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18ca9385-4b1e-4eb5-8b07-1f0f5a05e2c5"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pes No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="20" height="32" forecolor="#000000" uuid="daa64df2-879b-46ed-9fcb-d73eae6810f8"/>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sl No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="92" height="32" uuid="31c34289-b028-4a90-9866-c04bc09c9f47">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3621bd6c-91d9-4a0b-a7e4-8e1fa875a4d7"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Hostess Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="322" y="0" width="125" height="32" uuid="a71d51fa-7194-4b06-a946-13b8a0d73d1d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9d821c4b-0ad7-4d49-a3ee-437553c06ec5"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="77" height="32" uuid="c86abdf3-3f21-4f49-b18d-87d884d8da3c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0de51e65-1fff-4297-955c-deb47e1371b2"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mobile No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="0" width="92" height="32" uuid="744d6fcd-b21b-4487-b011-4228b0178a67">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3621bd6c-91d9-4a0b-a7e4-8e1fa875a4d7"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="112" y="0" width="68" height="32" uuid="84119ada-4543-4885-bb6b-6ec53888978c">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="281"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="707"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof"/>
+					<property name="com.jaspersoft.studio.unit." value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Address & Mobile No.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="580" y="0" width="50" height="20" uuid="694f338f-1e44-4c11-a624-cc6f7f87597b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aaf344b2-fddb-4ac7-9528-775256967042"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="750" y="0" width="51" height="20" uuid="c72a8b10-6ff0-4790-b874-75dcdbc4f723">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4a510d9-8cf4-4f40-ae77-d47558716619"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="524" y="0" width="56" height="20" uuid="b57c7cee-5601-4f89-b17b-05ac2cf4a3f8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2624b650-0536-45e0-8703-39066ee9db58"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relation_with_emp}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="272" y="0" width="50" height="20" uuid="b061591b-8ab2-40ba-94bf-77ac2bcc2f3d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18ca9385-4b1e-4eb5-8b07-1f0f5a05e2c5"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="20" height="20" forecolor="#000000" uuid="b8d2888c-d778-4df7-92cb-b5acb98cdc96"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="112" y="0" width="68" height="20" uuid="d61e9d56-9302-4098-b5b9-968c9de2aed0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3621bd6c-91d9-4a0b-a7e4-8e1fa875a4d7"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{house_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="180" y="0" width="92" height="20" uuid="78627ca2-e34a-4e99-93e0-f4a7c492a1db">
+					<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="281"/>
+					<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="707"/>
+					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof"/>
+					<property name="com.jaspersoft.studio.unit." value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hostess_info}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="322" y="0" width="125" height="20" uuid="22101c0f-52b2-4aab-90ad-5a4ca24c1026">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="2">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{branch_wing_group}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="447" y="0" width="77" height="20" uuid="a0163975-363c-4ef0-859c-78fb6851775a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0de51e65-1fff-4297-955c-deb47e1371b2"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobile_number}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy, h:mm a" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="630" y="0" width="60" height="20" uuid="758ccc87-9f2f-4797-bb57-1e820f4dd740">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8f9e668f-b496-426c-98b1-e4cba6def969"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{in_time}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd-MM-yyyy, h:mm a" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="690" y="0" width="60" height="20" uuid="cb8cfeef-b822-4a77-819c-ec1eab9263e0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f030622b-d528-4c64-9053-058d421e6355"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_time}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="20" y="0" width="92" height="20" uuid="e026e7c0-f45f-40d1-bcfb-ea742db37584">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3621bd6c-91d9-4a0b-a7e4-8e1fa875a4d7"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{person_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="10" width="137" height="10" uuid="c4f0ab7b-a86f-4898-86e7-213e3a2fb0f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[This report is generated from BOF-ERP by User on]]></text>
+			</staticText>
+			<textField pattern="HH:mm:ss a, dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="137" y="10" width="93" height="10" uuid="62d515d8-fd22-45a5-873b-ec5af9deeccb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="365" y="3" width="70" height="10" uuid="560c1d82-e11c-4ccd-a4c6-526426dd8972">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

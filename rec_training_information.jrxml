@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Training_Information" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7e54f328-577c-4dbf-b174-bcfb7b70488b">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<subDataset name="mainTable" uuid="0fd9474a-62b8-4647-8ce5-d0258b99fbd0">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+		<queryString language="SQL">
+			<![CDATA[select code emp_id, employee_name ,get_training_type_name(b.TRAINING_TYPE_ID) training_type_name,
+b.TRAINING_NAME, b.INSTITUTE_NAME, b.DURATION, b.TRAINING_LOCATION, b.REMARKS
+
+from hrm_employee_personal_information a, HRM_EMPLOYEE_TRAINING_INFORMATION b
+where 1=1
+and a.id=b.employee_id
+and b.employee_id = COALESCE(25,b.employee_id)]]>
+		</queryString>
+		<field name="emp_id" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+			<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+		</field>
+		<field name="employee_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+			<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+		</field>
+		<field name="training_type_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="training_type_name"/>
+			<property name="com.jaspersoft.studio.field.label" value="training_type_name"/>
+		</field>
+		<field name="training_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="training_name"/>
+			<property name="com.jaspersoft.studio.field.label" value="training_name"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+		</field>
+		<field name="institute_name" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="institute_name"/>
+			<property name="com.jaspersoft.studio.field.label" value="institute_name"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+		</field>
+		<field name="duration" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="duration"/>
+			<property name="com.jaspersoft.studio.field.label" value="duration"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+		</field>
+		<field name="training_location" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="training_location"/>
+			<property name="com.jaspersoft.studio.field.label" value="training_location"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+		</field>
+		<field name="remarks" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+			<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+		</field>
+		<group name="emp_id">
+			<groupExpression><![CDATA[$F{emp_id}]]></groupExpression>
+		</group>
+		<group name="employee_name">
+			<groupExpression><![CDATA[$F{employee_name}]]></groupExpression>
+		</group>
+		<group name="training_name">
+			<groupExpression><![CDATA[$F{training_name}]]></groupExpression>
+		</group>
+		<group name="institute_name">
+			<groupExpression><![CDATA[$F{institute_name}]]></groupExpression>
+		</group>
+		<group name="duration">
+			<groupExpression><![CDATA[$F{duration}]]></groupExpression>
+		</group>
+		<group name="training_location">
+			<groupExpression><![CDATA[$F{training_location}]]></groupExpression>
+		</group>
+		<group name="remarks">
+			<groupExpression><![CDATA[$F{remarks}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common_landscape" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[SELECT a.code emp_id,
+	a.employee_name,
+	get_training_type_name( b.TRAINING_TYPE_ID) training_type_name,
+	b.training_name,
+	b.institute_name,
+	b.duration,
+	b.training_location,
+	b.remarks
+FROM hrm_employee_personal_information a,
+	hrm_employee_training_information b
+WHERE 
+	 1 = 1 
+	 AND a.id = b.employee_id 
+	 AND b.employee_id = COALESCE($P{P_EMPLOYEE_ID},b.employee_id  )]]>
+	</queryString>
+	<field name="emp_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="training_type_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_type_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_type_name"/>
+	</field>
+	<field name="training_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="institute_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="institute_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="institute_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="duration" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="duration"/>
+		<property name="com.jaspersoft.studio.field.label" value="duration"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="training_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="59" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="12" width="842" height="37" uuid="0af65042-62a0-4dae-9ef2-1d1cf680de4f"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_landscape}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="325" y="0" width="160" height="20" uuid="35f3f47b-2b32-47d3-bfc7-f33b0570fa87"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Training Information ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="30" y="10" width="50" height="30" uuid="de1d117d-ddfa-4d66-a6d5-0ce703cf2b2f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="19b75149-ddcf-4614-8342-8cda1f65d1dc"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="10" width="100" height="30" uuid="ad7db7b4-a0bb-4a15-b83d-d0cff801fff4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1f2c326d-2bca-418e-915a-54018e892f8b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="10" width="100" height="30" uuid="4bc06f0d-52ed-45b9-97f9-697e7b5674eb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b4e354b9-bec3-4203-a6b9-5d6b79db7d3b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Training Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="10" width="100" height="30" uuid="1c6f84a2-b8a4-4752-928d-56ef4c8d8e6d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="04fee865-43a5-4cb1-91e6-30d679ef733b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Training Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="10" width="100" height="30" uuid="c9c0b554-7284-46bb-a336-f625ef999a79">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4830d859-2deb-473f-b469-f92772f7e413"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Institute Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="10" width="61" height="30" uuid="a314bd65-c2f5-48cc-8bfa-bd775a7abcde">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="983408ff-c929-4531-8cdb-97848fc30b3c"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Duration]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="541" y="10" width="100" height="30" uuid="63d22e70-ecaf-429b-8354-b8a2fd66b7d2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b65a9d4b-7170-45cc-bd39-0cee43c98c34"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Training location]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="641" y="10" width="139" height="30" uuid="4e9f1f73-630f-4aac-9efe-8b4ac942a766">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="267e09c2-7b14-4dc9-8132-8788ff775d69"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="30" height="30" uuid="20434022-54eb-4178-a8ad-92bc8c06cfa1"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ser]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40">
+			<textField>
+				<reportElement x="30" y="0" width="50" height="40" uuid="3c31b7e9-f61d-4ec0-a86a-4a21b07dadce">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="19b75149-ddcf-4614-8342-8cda1f65d1dc"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{emp_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="100" height="40" uuid="4fc681ce-49ff-4329-8d96-f74dc4253dba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1f2c326d-2bca-418e-915a-54018e892f8b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="100" height="40" uuid="0b3bcbb9-8531-42e5-b17f-fb40575436eb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b4e354b9-bec3-4203-a6b9-5d6b79db7d3b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_type_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="100" height="40" uuid="899de179-d061-4b02-ac70-92bc6497dce3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="04fee865-43a5-4cb1-91e6-30d679ef733b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{training_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="100" height="40" uuid="3157df5a-d0f7-407f-b73d-6fcf24fbb540">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4830d859-2deb-473f-b469-f92772f7e413"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{institute_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="61" height="40" uuid="248ffe18-487b-4a1b-ba9e-d461861c92e9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="983408ff-c929-4531-8cdb-97848fc30b3c"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{duration}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="541" y="0" width="100" height="40" uuid="94f6b30d-e928-4f44-9972-0073a9221d80">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b65a9d4b-7170-45cc-bd39-0cee43c98c34"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{training_location}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="641" y="0" width="139" height="40" uuid="37e33ff2-bdc4-4c46-b56e-04caf4ff2733">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="267e09c2-7b14-4dc9-8132-8788ff775d69"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="30" height="40" uuid="22a69487-2f8d-4ce5-8605-7b69f31e9ca5"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

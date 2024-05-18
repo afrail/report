@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_pension_finger_print" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2588ed08-9b20-4ccc-9d8b-92ab66036ab1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<parameter name="P_EMP_CODE" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 'নিম্নে আনুতোষিক ও অবসর ভাতার আবেদনকারী জনাব/বেগম '||case when a.form_type_id = 1 then a.employee_register_name else a.family_name end ||' ব্যাক্তিগত নম্বর- '||a.code||' পদবি (প্রযোজ্য ক্ষেত্রে) '||get_com_lookup_bn_name(b.designation_id)||' '
+||coalesce (get_com_lookup_bn_name(b.wing_id),'')||','||coalesce (get_com_lookup_bn_name(b.shop_id),'')||' পিতা/স্বামী '|| case when a.form_type_id = 1 then a.father_name else a.employee_register_name end||
+'এর তিনটি নমুনা স্বাক্ষর সত্যায়িত করা হইল।' emp_info, 'নিম্নে আনুতোষিক ও অবসরভাতার আবেদনকারী জনাব/বেগম '||case when a.form_type_id = 1 then a.employee_register_name else a.family_name end||' ব্যাক্তিগত নম্বর- '||a.code||' পদবি (প্রযোজ্য ক্ষেত্রে) '||get_com_lookup_bn_name(b.designation_id)||' '
+||coalesce (get_com_lookup_bn_name(b.wing_id),'')||','||coalesce (get_com_lookup_bn_name(b.shop_id)||',','')||' পিতা/স্বামী '||case when a.form_type_id = 1 then a.father_name else a.employee_register_name end||' এর হাতের পাঁচ আঙ্গুলের ছাপ সত্যায়িত করা হইল।' after_finger
+from fin_pension_application_information a, hrm_employee_official_information b 
+where 1=1 
+and a.employee_id=b.employee_id
+and a.code =  $P{P_EMP_CODE}]]>
+	</queryString>
+	<field name="emp_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_info"/>
+	</field>
+	<field name="after_finger" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="after_finger"/>
+		<property name="com.jaspersoft.studio.field.label" value="after_finger"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="152" y="2" width="250" height="20" uuid="b9d4cf66-7fec-436f-9dba-824b9c2d6d85"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নমুনা স্বাক্ষর ও হাতের পাঁচ আঙ্গুলের ছাপ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="0" width="95" height="12" uuid="b251c140-18a7-4476-a74e-fa256bb1ccf2"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[সংযোজনী-৬]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="710" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="0" width="30" height="20" uuid="e99a3bf0-ce8f-42c7-a470-b45f72d6a46f"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="0" width="460" height="60" uuid="9ef7472e-34ba-454c-9cdc-629a1c8d0e61"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_info}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="70" width="40" height="20" uuid="0c7274d5-3b7f-4962-bfed-1e360f6b7be3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="66" width="110" height="20" uuid="ed489a60-521c-4a12-a1d9-08f93b5c676e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[পূর্ণ স্বাক্ষর	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="66" width="110" height="20" uuid="60d92495-02cd-47e8-b8fd-997c4921486c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[সংক্ষিপ্ত স্বাক্ষর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="104" width="40" height="20" uuid="c990f702-5102-4d61-a236-5df35c251a68"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="134" width="40" height="20" uuid="f05f48c1-83ea-42e1-bf9e-15066dc2eae4"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="164" width="40" height="20" uuid="6fbaf665-5c7c-41dc-b145-651397aa9b6f"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="200" width="460" height="63" uuid="ccea2c4b-0a8f-49c5-ab80-1e1de2743374"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{after_finger}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="200" width="30" height="20" uuid="302875ed-6af7-439b-bf31-26a0ca87a752"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="263" width="40" height="20" uuid="d53a2cbe-91a0-4f58-9617-363b766026fc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="263" width="110" height="20" uuid="fc43d595-e9df-408a-80aa-818a7466888c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[আঙ্গুলের নাম	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="382" y="263" width="110" height="20" uuid="aea49d8e-93ab-4451-8a72-89d8cf848bc1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[ছাপ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="302" width="40" height="20" uuid="b1491736-4d39-4ed9-b3a7-cc700f068a93"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="302" width="91" height="20" uuid="9b8784d6-97f5-4df4-83bb-2fc5901d7463"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ বাম/ডান কনিষ্ঠ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="357" width="40" height="20" uuid="d5b8926b-6380-4e5a-a849-30634c58569e"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="357" width="91" height="20" uuid="160010e8-777e-44ea-b205-0d33e4942521"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[বাম/ডান অনামিকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="412" width="40" height="20" uuid="fef8c960-3d41-4334-9808-3b3b501021dd"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="412" width="91" height="20" uuid="2a257a43-680c-4669-bd25-ed1364d03fc9"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[বাম/ডান মধ্যমা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="476" width="40" height="20" uuid="4277d83c-8c82-49d4-9cec-c6e06a7d02d5"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="476" width="91" height="20" uuid="34ced172-3dda-4519-a292-1b24887f8e63"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[বাম/ডান তর্জনী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="550" width="40" height="20" uuid="d9065450-6ee8-4fec-bae1-8a79a50e6ca1"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="550" width="91" height="20" uuid="fb5b9290-9890-42d1-8a26-8e819d193e61"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[বাম/ডান বৃদ্ধাঙ্গুলি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="610" width="30" height="20" uuid="824b9af2-9369-47ad-9f8e-57714ef7b439"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[3.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="610" width="460" height="20" uuid="e1bcbf3c-8e44-4a30-9afb-4f192e24949b"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[উপর্যুক্ত নমুনা স্বাক্ষর ও  হাতের পাঁচ আঙ্গুলের ছাপ আমার সম্মুখে প্রদান করা হইয়াছে।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="640" width="170" height="20" uuid="8a5af1c1-3a94-4cce-849e-45f71cb88cd9"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[সত্যায়নকারী প্রথম শ্রেণির গেজেটেড কর্মকর্তার ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="660" width="170" height="20" uuid="97ba5325-ebf1-4195-a4ab-131fcf613320"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[তারিখসহ স্বাক্ষর সীলমোহর (নামযুক্ত)
+]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="39">
+			<staticText>
+				<reportElement x="0" y="24" width="120" height="15" uuid="737978f4-2ecf-4f96-8315-2d219564631d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[This report is generated from BOF-ERP]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

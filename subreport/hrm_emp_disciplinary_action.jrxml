@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_emp_disciplinary_action" pageWidth="800" pageHeight="842" columnWidth="760" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1915512f-c390-45c9-ad6b-c9505300fcfe">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_BRANCH_ID" class="java.lang.Integer"/>
+	<parameter name="P_GENDER_ID" class="java.lang.Integer"/>
+	<parameter name="P_RELIGION_ID" class="java.lang.Integer"/>
+	<parameter name="P_BLOOD_GROUP_ID" class="java.lang.Integer"/>
+	<parameter name="P_RANK_ID" class="java.lang.Integer"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_MARITAL_STATUS_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select empoff.employee_id,personal.mobile_number||','||
+(select cld.name from common_lookup_details cld 
+ where cld.id=personal.employee_rank)||','||empoff.branch_id
+ ||' & '||(select cld.name from common_lookup_details cld
+where cld.id=empoff.branch_id)no_post_section_nam,
+(select empdis.description from hrm_employee_disciplinary_information empdis 
+ where empdis.employee_id=personal.id)as displ_reason,
+ (select empdis.action from hrm_employee_disciplinary_information empdis 
+ where empdis.employee_id=personal.id)as action_dis,
+ (select empdis.action_date from hrm_employee_disciplinary_information empdis 
+ where empdis.employee_id=personal.id)as action_date,
+(select cld.name from common_lookup_details cld 
+ where cld.id=empoff.wing_id)as wing_name,empoff.branch_id,personal.gender_id,
+ personal.religion_id,personal.blood_group,empoff.joining_date,personal.employee_rank
+FROM hrm_employee_official_information empoff,
+	hrm_employee_personal_information personal,
+	hrm_employee_grade empgrade
+WHERE 
+	 1 = 1 
+	 AND personal.id = empoff.employee_id 
+	 AND empoff.grade_id = empgrade.id 
+	  AND empoff.branch_id = COALESCE($P{P_BRANCH_ID},empoff.branch_id ) 
+	 and personal.gender_id=COALESCE( $P{P_GENDER_ID} ,personal.gender_id)
+and personal.religion_id=COALESCE( $P{P_RELIGION_ID},personal.religion_id )
+and personal.blood_group=COALESCE( $P{P_BLOOD_GROUP_ID},personal.blood_group)
+and empoff.joining_date between  COALESCE($P{P_FROM_DATE},empoff.joining_date )  
+and COALESCE(   $P{P_TO_DATE} ,empoff.joining_date )
+and personal.employee_rank=COALESCE( $P{P_RANK_ID},personal.employee_rank )
+and personal.marital_status_id=COALESCE( $P{P_MARITAL_STATUS_ID},personal.marital_status_id)
+ORDER BY personal.id ASC]]>
+	</queryString>
+	<field name="employee_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="no_post_section_nam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="no_post_section_nam"/>
+		<property name="com.jaspersoft.studio.field.label" value="no_post_section_nam"/>
+	</field>
+	<field name="displ_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="displ_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="displ_reason"/>
+	</field>
+	<field name="action_dis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="action_dis"/>
+		<property name="com.jaspersoft.studio.field.label" value="action_dis"/>
+	</field>
+	<field name="action_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="action_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="action_date"/>
+	</field>
+	<field name="wing_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="wing_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="wing_name"/>
+	</field>
+	<field name="branch_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="branch_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="gender_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="gender_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="gender_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="religion_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="religion_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="religion_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="blood_group" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="joining_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="employee_rank" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_rank"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_rank"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<group name="employee_id">
+		<groupExpression><![CDATA[$F{employee_id}]]></groupExpression>
+	</group>
+	<group name="no_post_section_nam">
+		<groupExpression><![CDATA[$F{no_post_section_nam}]]></groupExpression>
+	</group>
+	<group name="displ_reason">
+		<groupExpression><![CDATA[$F{displ_reason}]]></groupExpression>
+	</group>
+	<group name="action_dis">
+		<groupExpression><![CDATA[$F{action_dis}]]></groupExpression>
+	</group>
+	<group name="action_date">
+		<groupExpression><![CDATA[$F{action_date}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="41" splitType="Stretch">
+			<subreport>
+				<reportElement x="89" y="0" width="584" height="30" uuid="8733b987-e977-4595-9e1a-7ac76f12cd9c"/>
+				<subreportParameter name="P_BRANCH_ID">
+					<subreportParameterExpression><![CDATA[$P{P_BRANCH_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_GENDER_ID">
+					<subreportParameterExpression><![CDATA[$P{P_GENDER_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_RELIGION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_RELIGION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_BLOOD_GROUP_ID">
+					<subreportParameterExpression><![CDATA[$P{P_BLOOD_GROUP_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_RANK_ID">
+					<subreportParameterExpression><![CDATA[$P{P_RANK_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_FROM_DATE">
+					<subreportParameterExpression><![CDATA[$P{P_FROM_DATE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_TO_DATE">
+					<subreportParameterExpression><![CDATA[$P{P_TO_DATE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_MARITAL_STATUS_ID">
+					<subreportParameterExpression><![CDATA[$P{P_MARITAL_STATUS_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="680" y="40" width="80" height="30" uuid="d949a0bd-84fa-4bb9-b1f6-5d40a687a41b"/>
+				<box>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[শাস্তি প্রদানের তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="40" width="240" height="30" uuid="0d9e715b-56f4-44d7-9f92-8caa8e427f95"/>
+				<box>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ব্যাক্তিগত নম্বর,পদবি,শাখা ও নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="520" y="40" width="160" height="30" uuid="309cdb01-6b8d-41c6-8b9f-b3102e9e6b49"/>
+				<box>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[
+শাস্তির বিবরণ ও প্রকার
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="40" width="140" height="30" uuid="03674957-1219-4eb2-a491-6b5d752ee5aa"/>
+				<box>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[কারণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="40" height="30" uuid="4e59d560-4946-4ffa-afa3-5b520f100f8e"/>
+				<box>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="40" width="100" height="30" uuid="f96b7796-18a6-48ac-bacb-bbbf7fcc1a20"/>
+				<box>
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[উইং/ফ্যাক্টরি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="9" width="758" height="30" uuid="6f6eabea-e49d-4eae-9cdf-dd0385e3b384"/>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="14" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[শাস্তিমূলক ব্যবস্থা]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="19" uuid="31e0a6ae-c85d-42fd-bd12-f280e85b9f1c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="10" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="100" height="19" uuid="3c070986-92bb-4e6f-8432-517f116ca074"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="10" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wing_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="0" width="240" height="19" uuid="e263dc2e-de36-4079-aae0-029a2966b422"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="10" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{no_post_section_nam}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="140" height="19" uuid="20ff07c8-0873-4969-94e1-b89b0927b138"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="10" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{displ_reason}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="520" y="0" width="160" height="19" uuid="5dfe4515-9fda-404c-98f1-07953c0ce8f0"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="10" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{action_dis}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d-M-yyyy" isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="80" height="19" uuid="21b204b2-5f31-470c-aad2-ad18702703cf"/>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="10" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{action_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField pattern="M/d/yy h:mm a">
+				<reportElement x="680" y="20" width="79" height="20" uuid="d9a385ab-2fc1-4d0b-958a-7eb29592fe6d"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="598" y="20" width="80" height="20" uuid="0da4ee16-3b98-4618-a819-571e10b481d4"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="20" width="261" height="20" uuid="34a0c2c4-99b9-46f9-b6a4-36db7e171ae3"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[  Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

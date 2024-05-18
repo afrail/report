@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bof_kormoroto_karigori_jonoboler_zelavittik_porisonkhan" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="75d0f137-f033-435c-bb6c-722031fef2cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="240"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="747"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_SERVER"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="533"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="453"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_HRM_TYPE" class="java.lang.Integer"/>
+	<parameter name="P_EMP_TYPE" class="java.lang.Integer"/>
+	<parameter name="p_is_civil" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	cnt,
+	district_name,
+	district_id
+from
+	(
+	select
+		count(a.id) cnt,
+		get_com_lookup_bn_name(a.permanent_district) district_name ,
+		a.permanent_district district_id,
+		case
+			when is_civil = false then 1
+			when is_civil = true then 2
+		end is_civil
+	from
+		hrm_employee_personal_information a,
+		hrm_employee_official_information c
+	where
+		1 = 1
+		and c.employee_id = a.id
+		and c.inactive_date is null
+		and A.HRM_TYPE = coalesce( $P{P_HRM_TYPE} , A.HRM_TYPE)
+		and c.employee_type_id = $P{P_EMP_TYPE}
+	group by
+		a.permanent_district,
+		c.is_civil
+	order by
+		get_com_lookup_bn_name(a.permanent_district)
+)q1
+where
+	1 = 1
+	and is_civil =  $P{p_is_civil}]]>
+	</queryString>
+	<field name="cnt" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="cnt"/>
+		<property name="com.jaspersoft.studio.field.label" value="cnt"/>
+	</field>
+	<field name="district_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="district_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="district_name"/>
+	</field>
+	<field name="district_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="district_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="district_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<variable name="Total_jonobol" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{cnt}]]></variableExpression>
+	</variable>
+	<columnHeader>
+		<band height="18">
+			<staticText>
+				<reportElement x="128" y="0" width="50" height="18" uuid="b7dc7a41-1d17-40d3-9b50-a91ab695d5aa">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="358" y="0" width="120" height="18" uuid="f16586e5-fc9d-4f23-b0f0-d9cb2f045260">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[কর্মরত জনবলের সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="178" y="0" width="180" height="18" uuid="315894ef-1dad-416f-9636-ba594b00ccb5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[জেলার নাম]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="128" y="0" width="50" height="18" uuid="f2f8f9fb-3be5-422d-888d-ac610c4f176b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="358" y="0" width="120" height="18" uuid="53c12933-c039-46f0-960b-ed07665ab0c8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cnt}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="178" y="0" width="180" height="18" uuid="7a6747d3-6df2-40ce-8ad3-9816b97566c0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="5">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{district_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="18">
+			<textField>
+				<reportElement x="358" y="0" width="120" height="18" uuid="c2bf22c4-f278-4b01-957d-34d1ccebc549">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total_jonobol} + " জন"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="128" y="0" width="230" height="18" uuid="a5d769a9-b925-4535-895f-077f1498ce5f"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সর্বোমোট = ]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

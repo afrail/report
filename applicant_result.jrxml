@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="applicant_result" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a9eeb663-6108-48e2-bbb8-cff53a73b311">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<parameter name="P_REC_DESIG_ID" class="java.lang.Integer"/>
+	<parameter name="p_recruitment_reference_id" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT c.reference_name rec_ref,
+	get_com_lookup_name( a.designation_id) designation,
+	b.application_number,
+	a.applicant_name,
+	b.father_name,
+	a.total_obtained_number,
+	a.position
+FROM rec_result_process a,
+	rec_application_information b,
+	rec_recruitment_reference_type c
+WHERE 
+	 1 = 1 
+	 AND a.applicant_id = b.id 
+	 AND c.id = b.recruitment_reference_id 
+	 AND b.recruitment_reference_id = COALESCE(  $P{p_recruitment_reference_id},b.recruitment_reference_id) 
+	 AND a.designation_id = COALESCE( $P{P_REC_DESIG_ID},a.designation_id ) 
+ORDER BY a.position ASC]]>
+	</queryString>
+	<field name="rec_ref" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rec_ref"/>
+		<property name="com.jaspersoft.studio.field.label" value="rec_ref"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_recruitment_reference_type"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="application_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="application_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="application_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="applicant_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="applicant_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="applicant_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_result_process"/>
+	</field>
+	<field name="father_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="father_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="father_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="total_obtained_number" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_obtained_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_obtained_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_result_process"/>
+	</field>
+	<field name="position" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="position"/>
+		<property name="com.jaspersoft.studio.field.label" value="position"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_result_process"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="560" height="30" uuid="ee04c7bc-c91b-4534-8caa-fa5742974c55"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="20" width="300" height="28" uuid="275eae5f-4cfa-4923-8261-7628b266ba6d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5cae5bdb-34a5-4d49-8ddc-bdb51f1fe551"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Recruitment Ref: "+$F{rec_ref}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="20" width="180" height="28" uuid="929196b1-69c4-41ee-8fb1-3a8aa3469b98">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2e998baa-dada-4cf9-a184-aa842e037018"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Designation : "+$F{designation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="175" y="0" width="225" height="20" uuid="30b70016-0ebe-4d56-9d1b-da64b60ca516"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Applicant Result Sheet]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="60" y="-2" width="60" height="31" uuid="725fa96d-96c4-450d-b927-9dcbca79bf2f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0c0f83c5-6a9c-43f9-9ffd-38bb67da9312"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Applicat Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="-2" width="110" height="31" uuid="6de030f3-8ff7-4699-8d1a-a7347ef329a3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="11679687-ca2c-4a8e-83d5-8f864ac6e47a"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Father Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="-2" width="120" height="31" uuid="55400d75-0a8b-47bc-97ae-f78b309857ee">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="393a187a-fb6a-4807-aaa2-7ff12d89d879"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Applicant Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="-2" width="110" height="31" uuid="18a4a239-afde-47da-a112-ad010ef02bdf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f03fb318-dc2f-42a9-9e7e-0d9b577410f7"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Obtained Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="-2" width="60" height="31" uuid="70b50dbf-4007-462a-96b6-b9747777c7bb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4303b9de-cbb3-47f9-b8c8-7a7992c14a94"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Position]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="-2" width="30" height="31" uuid="6ef2d2a8-f545-41a8-bd44-d3d7faaa8c79"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="60" y="-1" width="60" height="30" uuid="c24b4f8a-da19-4dfa-9da5-f1e32497ff91">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0c0f83c5-6a9c-43f9-9ffd-38bb67da9312"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{application_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="-1" width="110" height="30" uuid="ddc2f5a4-428b-4b4f-83a7-f26fe93dbafb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="11679687-ca2c-4a8e-83d5-8f864ac6e47a"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{father_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="-1" width="120" height="30" uuid="f101c97e-ef17-4e73-ae55-395deb13cd9c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="393a187a-fb6a-4807-aaa2-7ff12d89d879"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{applicant_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="-1" width="110" height="30" uuid="2a7cee5d-7a10-4719-ada8-0d0e9b3e1b25">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f03fb318-dc2f-42a9-9e7e-0d9b577410f7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{total_obtained_number}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="-1" width="60" height="30" uuid="82f0eb36-0a64-47c4-b5c2-45e4abede8e9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4303b9de-cbb3-47f9-b8c8-7a7992c14a94"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{position}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="-1" width="30" height="30" uuid="bc461b54-0479-4cb1-9a60-062b8bd1c8c5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

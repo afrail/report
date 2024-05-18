@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_bio_part3" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="1915512f-c390-45c9-ad6b-c9505300fcfe">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IBCS local db"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="145"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="848"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_PERSONAL_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+ 		('Vill- ' || PERSONAL.permanent_village_house) per_village, 
+ 		('P.O.- ' || PERSONAL.permanent_post_office)  per_post_office, 
+ 		('P.S.- ' || get_com_lookup_name(PERSONAL.permanent_upazila)  )  per_police_station, 
+ 		('Dist.- ' || get_com_lookup_name(PERSONAL.permanent_district)  )  per_district ,
+ 		get_com_lookup_name(PERSONAL.marital_status_id)  marital_status , 
+ 		(
+ 			select COUNT(*) son_count 
+ 			from hrm_employee_family_information f  
+ 			where 
+ 			PERSONAL.id = f.employee_id 
+ 			and f.relation  = '42'
+ 		) son_count, 
+ 		(
+ 			select COUNT(*) daughter_count 
+ 			from hrm_employee_family_information f  
+ 			where 
+ 			PERSONAL.id = f.employee_id 
+ 			and f.relation  = '43'
+ 		) daughter_count ,
+ 		'Nil' armed_force_relative, 
+ 		get_com_lookup_name(EDU.exam_id) degree_name, 
+ 		EDU.institute_name institute , 
+ 		EDU.passing_year   
+from hrm_employee_official_information OFFICIAL , 
+     hrm_employee_personal_information PERSONAL ,
+     hrm_employee_education_information EDU
+where 1=1
+and PERSONAL.id = OFFICIAL.employee_id 
+and PERSONAL.id = EDU.employee_id 
+and PERSONAL.code  = $P{P_PERSONAL_ID} -- '10441']]>
+	</queryString>
+	<field name="per_village" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="per_village"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_village"/>
+	</field>
+	<field name="per_post_office" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="per_post_office"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_post_office"/>
+	</field>
+	<field name="per_police_station" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="per_police_station"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_police_station"/>
+	</field>
+	<field name="per_district" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="per_district"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_district"/>
+	</field>
+	<field name="marital_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marital_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="marital_status"/>
+	</field>
+	<field name="son_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="son_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="son_count"/>
+	</field>
+	<field name="daughter_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="daughter_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="daughter_count"/>
+	</field>
+	<field name="armed_force_relative" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="armed_force_relative"/>
+		<property name="com.jaspersoft.studio.field.label" value="armed_force_relative"/>
+	</field>
+	<field name="degree_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="degree_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="degree_name"/>
+	</field>
+	<field name="institute" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="institute"/>
+		<property name="com.jaspersoft.studio.field.label" value="institute"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_education_information"/>
+	</field>
+	<field name="passing_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="passing_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="passing_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_education_information"/>
+	</field>
+	<title>
+		<band height="120" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="0" width="206" height="20" uuid="94f85559-b5b5-4da9-b3c7-180ed1941896"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ 9. Permanent Address]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="0" width="171" height="20" uuid="9f544594-5680-4d08-aec7-145f21887707"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{per_village}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="206" y="0" width="3" height="20" uuid="87f2af30-1cd2-4898-bd3c-e30576d271cf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="206" height="20" uuid="3cde462a-9bc6-4b74-8c30-e0f4298ec7f8"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[10. Marital Status]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="40" width="120" height="20" uuid="421784b3-cbe9-4339-9b67-0cb02dd0e262"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marital_status}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="206" y="40" width="3" height="20" uuid="5452c975-d169-44db-921d-7f96a1a821bd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="206" height="20" uuid="8e6e9d5e-ad0d-4f3d-b639-6f03d14a654c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[11. Description of Children]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="60" width="340" height="20" uuid="602a37fc-4e9a-4019-bbc0-817b1df77417"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{son_count} > 0 &&  $F{daughter_count} > 0 ) ? (
+	(	($F{son_count} == 1 ) ? "0" + $F{son_count} + " X Son" :  "0" + $F{son_count} + " X Sons"	) + "          " + (	($F{daughter_count} == 1 ) ?  "0" + $F{daughter_count} + " X Daughter" :  "0" + $F{daughter_count} + " X Daughters"	)
+) : (
+	($F{son_count} > 0 &&  $F{daughter_count}  == 0 ) ? (
+		(	($F{son_count} == 1 ) ? "0" +  $F{son_count} + " X Son" :  "0" + $F{son_count} + " X Sons"	) 
+	) : ($F{son_count} == 0 &&  $F{daughter_count}  > 0 ) ? (
+			(	($F{daughter_count} == 1 ) ?  "0" + $F{daughter_count} + " X Daughter" :  "0" + $F{daughter_count} + " X Daughters"	)
+		) : "Nil" 
+)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="206" y="60" width="3" height="20" uuid="e1e2b333-fe66-4057-bbab-96880bd9d0f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="206" height="20" uuid="d1032754-b4a7-438f-a1fb-0044e777f81d"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[12. Near Relation in Armed Forces]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="209" y="80" width="120" height="20" uuid="5a98b28f-1371-44f0-9021-315886cb68e5"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{armed_force_relative}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="206" y="80" width="3" height="20" uuid="eb0b433b-a2ce-48ff-a452-3f8b66520f91"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="100" width="150" height="20" uuid="77b4e757-3a87-470f-9162-29b6581b2d8c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Educational Qualification]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="100" width="91" height="20" uuid="362af31a-735d-4aa8-b550-5e5361474f87">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e764136-e8b7-4ab2-b5e1-9a45a086631b"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Passing Year]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="100" width="179" height="20" uuid="770e1159-eb98-456a-9c56-fc2364e06090">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1f303ec-661a-4a87-90a3-c120a13620b0"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Name of Institute]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="380" y="0" width="170" height="20" uuid="f72f4df8-70a7-452d-8c10-cea8e23544af"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{per_post_office}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="20" width="171" height="20" uuid="e390b48f-8e0e-490f-affb-c5471fac064e"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{per_police_station}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="20" width="170" height="20" uuid="60a6187d-c12c-446f-9700-98cf5406a072"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{per_district}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="100" width="20" height="20" uuid="49d58975-da0b-4f21-bff9-b3d735442f87"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[13. ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Immediate">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="170" y="0" width="91" height="20" uuid="775c729c-0c78-48a0-ac07-d2a804102937">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e764136-e8b7-4ab2-b5e1-9a45a086631b"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{passing_year}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="261" y="0" width="289" height="20" uuid="33238f78-008e-4601-ad52-20af0d4d9cbb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e1f303ec-661a-4a87-90a3-c120a13620b0"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["  	  " + $F{institute}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="0" width="150" height="20" uuid="659a79ad-3104-415a-9601-a1ca5e05c7cd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7e764136-e8b7-4ab2-b5e1-9a45a086631b"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{degree_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

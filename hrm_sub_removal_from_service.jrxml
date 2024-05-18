@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_sub_removal_from_service" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4ca4bbe5-a2f9-4f19-9c7b-479259865c1a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-erp"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_REFERENCE_NO" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	emp.id ,
+	emp.code emp_code ,
+	emp.employee_name emp_name ,
+	emp.employee_name_bangla ,
+	get_com_lookup_bn_name(ofc.INACTIVE_TYPE) inactivetype,
+	date(ofc.inactive_date) inactivedate,
+	get_emp_bn_name(ofc.INACTIVE_AUTHORITY_ID) authority,
+	ofc.INACTIVE_REFERENCE_NO,
+	case
+		when ofc.IS_BIHALF_INACTIVE = true then 'পক্ষে কমান্ড্যান্ট'
+		else 'পক্ষে ভারপ্রাপ্ত কমান্ড্যান্ট'
+	end on_behalf,
+	get_com_lookup_bn_name(ofc.BILLING_OFFICE) onbehalf,
+	get_com_lookup_bn_name(ofc.branch_ID) branchname,
+	get_com_lookup_bn_name(ofc.wing_id) wingname,
+	get_com_lookup_bn_name(ofc.shop_id) shopname,
+	get_com_lookup_bn_name(ofc.DESIGNATION_ID) DESIGNATION ,
+	emp.code || '/' || get_com_lookup_bn_name(coalesce(coalesce(ofc.shop_id, ofc.wing_id), ofc.branch_id)) emp_code_shop,
+	emp.code || ', ' || get_com_lookup_bn_name(ofc.DESIGNATION_ID) || ', ' || get_com_lookup_bn_name(ofc.wing_id) || ', ' || coalesce(get_com_lookup_bn_name(emp.EMPLOYEE_RANK) || ', ' || emp.employee_name_bangla, emp.employee_name_bangla) emp_name_with_detail,
+	get_com_lookup_bn_name(ofc.branch_id) billofc
+from
+	hrm_employee_personal_information emp
+join HRM_EMPLOYEE_OFFICIAL_INFORMATION ofc on
+	ofc.employee_id = emp.id
+where
+	1 = 1
+	and ofc.INACTIVE_REFERENCE_NO =  $P{P_REFERENCE_NO}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="emp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="inactivetype" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inactivetype"/>
+		<property name="com.jaspersoft.studio.field.label" value="inactivetype"/>
+	</field>
+	<field name="inactivedate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="inactivedate"/>
+		<property name="com.jaspersoft.studio.field.label" value="inactivedate"/>
+	</field>
+	<field name="authority" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="authority"/>
+		<property name="com.jaspersoft.studio.field.label" value="authority"/>
+	</field>
+	<field name="inactive_reference_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inactive_reference_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="inactive_reference_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="on_behalf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="on_behalf"/>
+		<property name="com.jaspersoft.studio.field.label" value="on_behalf"/>
+	</field>
+	<field name="onbehalf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="onbehalf"/>
+		<property name="com.jaspersoft.studio.field.label" value="onbehalf"/>
+	</field>
+	<field name="branchname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branchname"/>
+		<property name="com.jaspersoft.studio.field.label" value="branchname"/>
+	</field>
+	<field name="wingname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="wingname"/>
+		<property name="com.jaspersoft.studio.field.label" value="wingname"/>
+	</field>
+	<field name="shopname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="shopname"/>
+		<property name="com.jaspersoft.studio.field.label" value="shopname"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="emp_code_shop" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_code_shop"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_code_shop"/>
+	</field>
+	<field name="emp_name_with_detail" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name_with_detail"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name_with_detail"/>
+	</field>
+	<field name="billofc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="billofc"/>
+		<property name="com.jaspersoft.studio.field.label" value="billofc"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="2" width="550" height="18" uuid="e54e9ee8-03b1-40a5-8b91-11f8bc4a1985"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["প্রাধিকারঃ নথি নং " + ($F{inactive_reference_no} ) + " এর নোটিং অনুচ্ছেদ ২৩ তারিখ ০৮-১১-২০২২"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="15" width="180" height="30" uuid="29af808b-c6cc-480b-a592-d68afa723a7a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[জনবলে কমতিঃ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="60" y="0" width="180" height="30" uuid="691132d6-77c7-4a61-a1a5-2a952d4bcba7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="58186e3e-041e-447b-b989-b052c5a7044a"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name_with_detail}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="240" y="0" width="310" height="30" uuid="2bd84867-2ddf-4f8c-93c4-671bf9ddc241"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inactivedate} + " তারিখ সকাল থেকে জনবল হতে বাদ দেয়া হলো। "]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="30" uuid="4ccbe449-59ed-4e3e-af3c-92fd215c48c2"/>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="50" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="5" width="550" height="18" uuid="66d7780f-2ffc-4017-a256-ba747db61dc3"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["প্রাধিকারঃ নথি নং " + ($F{inactive_reference_no} ) + " এর নোটিং অনুচ্ছেদ ২৩ তারিখ ০৮-১১-২০২২"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="24" width="550" height="20" uuid="1804f5c7-c4e3-459c-b46b-e5ffaf225cc6"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[অত্র দৈনিক আদেশনামা ২য় খন্ড প্রথম পাতায় মোট প্রকাশিত কার্যক্রম সংখ্যা ০২ (দুই) টি মাত্র।]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

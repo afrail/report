@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ipftReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4067cf2e-744c-4b06-b5b2-db47cd391fe5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="P_ATTEN_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select a.exam_desc, to_char(a.exam_date,'dd-mm-yyyy')exam_date, a.exam_day ,a.exam_team,
+amep.modc_employee_id soinik_no, amep.bangla_name, get_com_lookup_bn_name(amep.designation_id) podhobi,
+case when b.exam_name_master_id=21 then 9999 else b.exam_name_master_id end exam_name_master_id
+, aien.bangla_name exam_bangla_name,
+b."result",aien.remarks,b.remarks remarks2
+from ACC_IPFT_EXAMINATION_RESULT_MASTER a, 
+ACC_IPFT_EXAMINATION_RESULT_details b, acc_modc_employee_profile amep ,
+acc_ipft_exam_name aien 
+where a.id=b.ipft_result_master_id
+and aien.id=b.exam_name_master_id
+and amep.id=b.modc_employee_id
+and a.id= $P{P_ATTEN_ID}
+---and amep.modc_employee_id='8202138'
+order by exam_name_master_id asc]]>
+	</queryString>
+	<field name="exam_desc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exam_desc"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_desc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_examination_result_master"/>
+	</field>
+	<field name="exam_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exam_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_date"/>
+	</field>
+	<field name="exam_day" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exam_day"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_day"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_examination_result_master"/>
+	</field>
+	<field name="exam_team" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="exam_team"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_team"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_examination_result_master"/>
+	</field>
+	<field name="soinik_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="soinik_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="soinik_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="podhobi" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="podhobi"/>
+		<property name="com.jaspersoft.studio.field.label" value="podhobi"/>
+	</field>
+	<field name="exam_name_master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="exam_name_master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_name_master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_examination_result_details"/>
+	</field>
+	<field name="exam_bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exam_bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_exam_name"/>
+	</field>
+	<field name="result" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="result"/>
+		<property name="com.jaspersoft.studio.field.label" value="result"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_examination_result_details"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_exam_name"/>
+	</field>
+	<field name="remarks2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks2"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks2"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_ipft_examination_result_details"/>
+	</field>
+	<group name="exam_team">
+		<groupExpression><![CDATA[$F{exam_team}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="780" height="30" uuid="dba7999c-068c-4ad4-84b5-4d5a4d079c34"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{exam_team}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="50" width="800" height="50" uuid="60d268d4-42e5-4ee1-ad0a-f7d297c466ec"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{exam_desc}!=null?$F{exam_desc}:"")+" "+"এর নামীয় তালিকা"+"\n"+"বাংলাদেশ সমরাস্ত্র কারখানা,গাজীপুর সেনানিবাস "
++"\n"+"তারিখঃ "+" "+($F{exam_date}!=null?$F{exam_date}:"")+"("+($F{exam_day}!=null?$F{exam_day}:"")+")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="791" height="30" uuid="9e22fe38-9e86-4dad-ae4b-bb98c7098df5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ক্রোড়পত্র খ "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="3" width="800" height="17" uuid="fa9417e7-7c10-40e2-9b2c-1856ff8f1212"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["সীমিত "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="685" y="0" width="69" height="16" uuid="a6be2ce8-de20-457a-9ebf-a6b90b4f892e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পৃষ্ঠা "+$V{PAGE_NUMBER}+" এর মধ্যে"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="754" y="0" width="40" height="16" uuid="bc6f1bf7-a079-4436-be64-a89e80b18491"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<crosstab>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="794" height="60" uuid="30fb8103-1a7a-45dc-998a-19e1a77c686d">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report"/>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents>
+						<staticText>
+							<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="170" height="40" uuid="38fc7fd6-eac4-4b11-9984-dba663307b27"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font fontName="NikoshBAN" size="11"/>
+							</textElement>
+							<text><![CDATA[  সৈনিক নং           পদবী             নাম                                ]]></text>
+						</staticText>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="soinik_no" width="50">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{soinik_no}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="50" height="20" uuid="854d49f6-e499-4f4f-bc72-235b1b8a3505"/>
+								<box leftPadding="3" rightPadding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{soinik_no}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="c65e80df-be5d-4c6a-86ac-74b94d422622"/>
+								<text><![CDATA[Total soinik_no]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="podhobi" width="60">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{podhobi}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="1d748848-8566-4780-bd15-116a5458ba21"/>
+								<box leftPadding="3" rightPadding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{podhobi}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="6ee8d83c-a428-4a6e-ad37-b9324665e800"/>
+								<text><![CDATA[Total podhobi]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="bangla_name" width="60">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{bangla_name}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="fc42b6f0-2d15-4d0f-9907-d389853421ac"/>
+								<box leftPadding="3" rightPadding="3"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{bangla_name}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="1d9de5a3-6bd8-4898-9041-a5e5151a5a43"/>
+								<text><![CDATA[Total bangla_name]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="exam_bangla_name" height="20">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{exam_bangla_name}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="dd084fd9-c1b9-4f2f-9ccc-c3889e10f9bf"/>
+								<box topPadding="3" leftPadding="3" rightPadding="3"/>
+								<textElement textAlignment="Center">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{exam_bangla_name}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="c52b9e46-caee-4860-ac09-1aa85422a1e9"/>
+								<text><![CDATA[Total exam_bangla_name]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="remarks" height="20">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{remarks}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="1fd143d3-9125-42bf-b311-6a13484a7500"/>
+								<box topPadding="3" leftPadding="3" rightPadding="3"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{remarks}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents>
+							<staticText>
+								<reportElement x="0" y="0" width="-2147483648" height="-2147483648" uuid="909d6b96-04fd-48cd-85ff-ebf72fe2b8e9"/>
+								<text><![CDATA[Total remarks]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="result_MEASURE" class="java.lang.String">
+					<measureExpression><![CDATA[$F{result}]]></measureExpression>
+				</measure>
+				<measure name="CopyOFMeasure_1" class="java.lang.String">
+					<measureExpression><![CDATA[$F{remarks2}]]></measureExpression>
+				</measure>
+				<crosstabCell width="60" height="20">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+							<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="20" uuid="b49c8ab3-84de-4038-a5c1-4deafcfa27ce"/>
+							<box topPadding="3" leftPadding="3" rightPadding="3"/>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="NikoshBAN" size="11"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" columnTotalGroup="exam_bangla_name">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="cef7b352-87c3-4c5e-baff-606f95c616b9"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" columnTotalGroup="remarks">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="291e793f-bdbd-40f0-a03e-4badeea489a7"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="soinik_no">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="5a855a1c-77bd-44b0-8b49-c0cac34a076a"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="soinik_no" columnTotalGroup="exam_bangla_name">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="855eac65-a7e2-4236-8fc3-9fac2db9f280"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="soinik_no" columnTotalGroup="remarks">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="d9f455e8-1a00-40b4-8c8d-9707e2d56148"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="podhobi">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="311327ee-53ea-43a3-a0c3-d8d471f89aaf"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="podhobi" columnTotalGroup="exam_bangla_name">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="e8f55186-1647-45d9-8425-855fa61fbd29"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="podhobi" columnTotalGroup="remarks">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="697aadfc-9843-4835-8b8e-65cb3519c039"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="bangla_name">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="88a13a9b-3c0f-43ee-8ae2-8821e0794968"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="bangla_name" columnTotalGroup="exam_bangla_name">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="1b7e71f1-3149-4306-ac8a-9bb6b61443c4"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="bangla_name" columnTotalGroup="remarks">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="efc488c5-b3db-452c-a219-98761b5915bd"/>
+							<textFieldExpression><![CDATA[$V{result_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="50" y="0" width="1" height="60" uuid="9f212dde-f8d9-4cab-bb60-fbd776d91d71"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="110" y="1" width="1" height="59" uuid="149d8cf5-35f5-429e-9eeb-2926e026c9ae"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="170" y="0" width="1" height="40" uuid="e3915b1a-a325-465a-9b0c-7d136f323539"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="230" y="0" width="1" height="40" uuid="cb334ebc-ef3e-4884-951a-84f4545e083b"/>
+			</line>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="530" y="0" width="70" height="60" uuid="7aa9a55a-d68f-49f0-b3d2-16bf5d632194"/>
+				<box topPadding="3" leftPadding="3" rightPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মন্তব্য"+"\n"+($F{remarks2}!=null?$F{remarks2}:"")]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="530" y="54" width="70" height="1" printWhenGroupChanges="exam_team" uuid="11b7c377-598e-495c-b91a-161c5f7f9f16"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modc_duty_roster" columnCount="2" pageWidth="595" pageHeight="842" columnWidth="277" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d187d6a6-6800-432e-a428-be8d200a6634">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_DUTY_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select * from (
+select distinct date(a.duty_date) duty_date, adpm.bangla_name duty_point_bangla_name,b.modc_employee_profile_id,
+ a.duty_point_master_id,
+emp.modc_employee_id, emp.bangla_name||chr(10)||
+(select string_agg(Y.remarks,' ')
+from acc_modc_duty_roster_master X,  acc_modc_duty_roster_detail Y
+where Y.active =true
+and X.id=Y.modc_duty_roster_master_id 
+and Y.modc_employee_profile_id=b.modc_employee_profile_id
+and date(X.duty_date)= $P{P_DUTY_DATE} 
+and X.duty_point_master_id =a.duty_point_master_id 
+group by Y.modc_employee_profile_id,date(X.duty_date))
+emp_bangla_name,(
+select Y.time_from||'-'||Y.time_to ||chr(10)||coalesce (Y.time_from_2 ||'-'||Y.time_to_2,'')
+from acc_modc_duty_roster_master X,  acc_modc_duty_roster_detail Y
+where Y.active =true
+and X.id=Y.modc_duty_roster_master_id 
+and Y.modc_employee_profile_id=b.modc_employee_profile_id
+and x.duty_point_master_id=a.duty_point_master_id 
+and date(X.duty_date)= $P{P_DUTY_DATE} 
+and Y.serial_no =b.serial_no )
+Duty_time_all,emp.designation_id ,get_des_serial(emp.designation_id) serial, b.serial_no ,get_com_lookup_bn_name(emp.designation_id) designation,
+a.remarks ,' ' csual_duty
+from acc_modc_duty_roster_master a,  acc_modc_duty_roster_detail b, acc_duty_point_master adpm ,
+acc_modc_employee_profile emp
+where 1=1
+and b.active =true
+--and b.modc_employee_profile_id=81
+and a.id=b.modc_duty_roster_master_id 
+and a.duty_point_master_id=adpm.id
+and b.modc_employee_profile_id=emp.id 
+and date(a.duty_date)= $P{P_DUTY_DATE} 
+group by date(a.duty_date),b.modc_employee_profile_id,adpm.bangla_name,emp.modc_employee_id, 
+emp.bangla_name,emp.designation_id ,b.serial_no,a.remarks, a.duty_point_master_id  
+union all 
+select date(duty_date)  duty_date,G.location duty_point_bangla_name ,  T.modc_employee_profile_id, 
+null duty_point_master_id,ME.modc_employee_id ,ME.bangla_name||' '||coalesce (T.remarks,'') emp_bangla_name ,
+T.time_from ||'- '||T.time_to duty_time_all,ME.designation_id,
+get_des_serial(ME.designation_id) serial, 
+coalesce(T.serial_no,1) serial_no , get_com_lookup_bn_name(ME.designation_id) designation, G.remarks , '' csual_duty
+ from acc_modc_casual_duty_roster_master G,
+acc_modc_casual_duty_roster_detail T, acc_modc_employee_profile ME
+where 1=1
+and T.modc_employee_profile_id =ME.id
+and G.id=T.modc_casual_duty_roster_master_id
+and date(G.duty_date)= $P{P_DUTY_DATE} 
+union all 
+select date(align_date)  duty_date,G.subject duty_point_bangla_name ,  T.modc_employee_profile_id, 
+algin_type_id duty_point_master_id,ME.modc_employee_id ,ME.bangla_name emp_bangla_name ,
+'' duty_time_all,ME.designation_id,
+get_des_serial(ME.designation_id) serial, 
+coalesce(T.serial_no,0) serial_no,  get_com_lookup_bn_name(ME.designation_id) designation, G.remarks ,'' csual_duty
+ from acc_modc_daily_align_master G,
+acc_modc_daily_align_details T, acc_modc_employee_profile ME
+where 1=1
+and T.modc_employee_profile_id =ME.id
+and G.id=T.modc_daily_align_master_id
+and date(G.align_date)= $P{P_DUTY_DATE} ) a
+where 1=1
+order by duty_point_master_id,duty_point_bangla_name,serial_no asc]]>
+	</queryString>
+	<field name="duty_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="duty_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_date"/>
+	</field>
+	<field name="duty_point_bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="duty_point_bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_point_bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_duty_point_master"/>
+	</field>
+	<field name="modc_employee_profile_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="modc_employee_profile_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="modc_employee_profile_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_duty_roster_detail"/>
+	</field>
+	<field name="duty_point_master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="duty_point_master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_point_master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_duty_roster_master"/>
+	</field>
+	<field name="modc_employee_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="modc_employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="modc_employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="emp_bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="duty_time_all" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="duty_time_all"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_time_all"/>
+	</field>
+	<field name="designation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="serial" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="serial"/>
+		<property name="com.jaspersoft.studio.field.label" value="serial"/>
+	</field>
+	<field name="serial_no" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="serial_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="serial_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_duty_roster_detail"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_duty_roster_master"/>
+	</field>
+	<field name="csual_duty" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="csual_duty"/>
+		<property name="com.jaspersoft.studio.field.label" value="csual_duty"/>
+	</field>
+	<group name="duty_point_bangla_name" keepTogether="true">
+		<groupExpression><![CDATA[$F{duty_point_bangla_name}]]></groupExpression>
+		<groupHeader>
+			<band height="41">
+				<textField>
+					<reportElement x="0" y="0" width="275" height="21" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="c3cf76cb-6828-4f37-af0b-21e9f335568a"/>
+					<box>
+						<pen lineWidth="0.75"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{duty_point_bangla_name}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="21" width="275" height="20" uuid="8dbf4793-041e-4f5c-8909-5f068a68a7ae"/>
+					<box>
+						<pen lineWidth="0.75"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="33" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="1" width="340" height="23" uuid="b0490005-996f-40c3-9cd2-db99fa26b46a"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[দৈনিক ডিউটির বিবরণী তালিকা এমওডিসি বি ও এফ কোম্পানি গাজীপুর সেনানিবাস তারিখ  ]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="340" y="1" width="100" height="23" uuid="f77a589c-7589-4f1e-819f-765b4963b7a5"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duty_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="21" y="0" width="59" height="20" uuid="3fa94652-b2f2-4543-b950-d4095cdbb58d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24919f8e-4eba-45c2-adcc-292af0766727"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[সেনা নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="65" height="20" uuid="eb077d63-8509-45e7-aad3-788bc274aad8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07177cb5-4525-4d7f-8629-5db85253f40b"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পদবী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="145" y="0" width="85" height="20" uuid="fdcc0613-cb36-4d45-922c-f907d4723085">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="203af91a-19b9-4254-9b1b-4df87f71e7cb"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নাম ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="21" height="20" uuid="f01eb18f-597b-41e4-b033-0f948570a85d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[নং ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="0" width="45" height="20" uuid="9d02c2ce-f4c9-4358-abe1-9345b7492224">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ডিউটি টাইম ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="21" y="0" width="59" height="28" uuid="4a0f7527-125b-4a2b-8f20-a9777e1db0e1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24919f8e-4eba-45c2-adcc-292af0766727"/>
+				</reportElement>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{modc_employee_id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="65" height="28" uuid="9b9878cf-ef16-4d6d-9f63-4ecd47d347ec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07177cb5-4525-4d7f-8629-5db85253f40b"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="145" y="0" width="85" height="28" uuid="343135ee-866c-4c39-856a-8ee8d3d1a5de">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="203af91a-19b9-4254-9b1b-4df87f71e7cb"/>
+				</reportElement>
+				<box leftPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_bangla_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="21" height="28" uuid="94ce9c92-ce6b-48fe-b2a6-1b7da2b57667"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serial_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="45" height="28" uuid="cb8e5a08-8267-4f30-95dd-d15c702be146">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duty_time_all}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="30">
+			<textField>
+				<reportElement x="330" y="0" width="100" height="15" uuid="9293b1d4-d151-497e-b182-309cecb4358f"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="430" y="0" width="100" height="15" uuid="28260f01-711b-4835-972d-2028a9b6ab67"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="54">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="9" width="550" height="41" uuid="0783a776-ad06-4420-bacb-480a2278af58"/>
+				<box leftPadding="2"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{csual_duty}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fin_gradewise_tada_bill" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c10790ee-9dc7-41e3-b290-352ce0c8262e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="bof_common_header_A4_portrait_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="bof_common_footer_A4_portrait_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[with civil as (
+select count(a.id) total_emp, get_designation_class_bangla(c.designation_id) emp_class,
+case when get_designation_class_bangla(c.designation_id ) ='প্রথম শ্রেণী' then '1'
+when get_designation_class_bangla(c.designation_id ) ='দ্বিতীয় শ্রেণী' then '2'
+when get_designation_class_bangla(c.designation_id ) ='তৃতীয় শ্রেণী' then '3'
+when get_designation_class_bangla(c.designation_id ) ='চতুর্থ শ্রেণী' then '4'
+else '5' end SLNO
+from fin_tada_bill_master a, hrm_employee_personal_information b, hrm_employee_official_information c 
+where 1=1
+and a.employee_id = b.id
+and c.employee_id = b.id
+and c.is_civil = true
+and a.bill_date between  Coalesce ($P{P_FROM_DATE}, a.bill_date) and  Coalesce($P{P_TO_DATE}, a.bill_date)
+group by emp_class
+order by SLNO
+),
+military as (
+select count(a.id) total_army_emp, get_designation_class_bangla(c.designation_id) emp_class,
+case when get_designation_class_bangla(c.designation_id ) ='প্রথম শ্রেণী' then '1'
+when get_designation_class_bangla(c.designation_id ) ='দ্বিতীয় শ্রেণী' then '2'
+when get_designation_class_bangla(c.designation_id ) ='তৃতীয় শ্রেণী' then '3'
+when get_designation_class_bangla(c.designation_id ) ='চতুর্থ শ্রেণী' then '4'
+else '5' end SLNO
+from fin_tada_bill_master a, hrm_employee_personal_information b, hrm_employee_official_information c 
+where 1=1
+and a.employee_id = b.id
+and c.employee_id = b.id
+and a.bill_date between  Coalesce ($P{P_FROM_DATE}, a.bill_date) and  Coalesce($P{P_TO_DATE}, a.bill_date)
+and c.is_civil = false
+group by emp_class
+order by SLNO
+)
+select * from civil
+left join military on civil.slno = military.slno]]>
+	</queryString>
+	<field name="total_emp" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_emp"/>
+	</field>
+	<field name="emp_class" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_class"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_class"/>
+	</field>
+	<field name="slno" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="slno"/>
+		<property name="com.jaspersoft.studio.field.label" value="slno"/>
+	</field>
+	<field name="total_army_emp" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_army_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_army_emp"/>
+	</field>
+	<field name="COLUMN_5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_class"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_class"/>
+	</field>
+	<field name="COLUMN_6" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="slno"/>
+		<property name="com.jaspersoft.studio.field.label" value="slno"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="102" splitType="Stretch">
+			<subreport>
+				<reportElement x="-11" y="13" width="581" height="40" uuid="ba9181d2-b04e-41ae-899b-e45e87f9a7f9"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_header_A4_portrait_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="0" width="50" height="31" uuid="83d01de0-cde3-40ef-976a-4e960bd50a11">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9225f1a1-349d-48a1-ae33-43f19f1b5ac2"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="150" height="31" uuid="7113ea14-f3b5-42ef-8062-485616431bc3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fcf49760-53b5-43aa-9805-5bae723941f3"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[শ্রেণী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="100" height="31" uuid="0a7fabbb-fa9a-4d23-9106-5188990c0699">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a5510bb-f24b-4222-9822-419cad60df41"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বেসামরিক এমপ্লয়ী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="100" height="31" uuid="5175cd4d-6ddf-48df-93f8-f1bc783c6534">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="569ec9e1-b940-40c5-b557-c3adfff34ea3"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সামরিক এমপ্লয়ী]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="50" height="30" uuid="380e8a2b-6eb4-4791-95fe-f5521abe1e19">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9225f1a1-349d-48a1-ae33-43f19f1b5ac2"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{slno}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="150" height="30" uuid="0b822201-daf5-485d-8461-2137652606fe">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fcf49760-53b5-43aa-9805-5bae723941f3"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_class}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="100" height="30" uuid="edcbcc40-e165-46dc-868a-028160da5be7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a5510bb-f24b-4222-9822-419cad60df41"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_emp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="100" height="30" uuid="38004b24-5d3a-4431-b76f-1f0a512947fd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="569ec9e1-b940-40c5-b557-c3adfff34ea3"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_army_emp}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="595" height="40" uuid="dc76757d-2e4c-476f-8e23-2bbdb5e778b5"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_footer_A4_portrait_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_dangerous_allowance" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isTitleNewPage="true" uuid="a158f9e3-b38d-4398-aeef-12957efd1bb1">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-erp-local"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="304"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="684"/>
+	<parameter name="P_PART2_REGISTER_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="212" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="98" width="555" height="22" uuid="602d5271-5bf6-483f-a3ae-2d63a4f35df2"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["সেচ্ছায় অবসর-উত্তর ছুটি (পিআরএল) মঞ্জুর এবং অবশিষ্ট জমাকৃত ছুটির পরিবর্তে নগদ অর্থ মঞ্জুরী প্রদান-কারিগর"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-20" y="1" width="595" height="79" uuid="a44fc6d9-fb99-4f41-974b-c92c5183730e"/>
+				<subreportParameter name="P_PART2_REGISTER_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PART2_REGISTER_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["/HRM/Sub Report/hrm_part2_register_sub.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="8" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="52" splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="71" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="129" y="0" width="300" height="15" uuid="6bcfa6b5-da71-4177-8e65-eb352b20a62a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="26" width="175" height="44" uuid="8560f0c3-7a5d-4f38-b9a1-978d7d778f6f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মোঃ ইফতে খায়রুল আলম" + "\n" + "ব্যবস্থাপক (চলিত দায়িত্ব) প্রশাসন পার্সোনাল" + "\n" + "পক্ষে ভারপ্রাপ্ত কমাড্যান্ট"]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="311">
+			<staticText>
+				<reportElement x="6" y="126" width="50" height="19" uuid="e9eea388-82be-4d63-9ce3-2d28892eabb3"/>
+				<textElement>
+					<font fontName="Nirmala UI" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[অভ্যন্তরীণঃ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="325" y="63" width="235" height="131" uuid="cc98afc0-a251-4da9-8172-d036b1783335"/>
+				<box padding="3">
+					<leftPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["দৈনিক আদেশনামা প্রাপ্তির ০৭ (সাত) দিনের মধ্যে নিদাবী সনদ সরাসরি পেনশন শাখায় প্রেরণের জন্য অনুরোধ করা যাচ্ছে। "  + "\n"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="272" y="291" width="27" height="20" uuid="f6d857e8-33fc-473e-93e6-41f871023d7c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="164" width="195" height="66" uuid="295d6fe1-f625-41eb-a556-deff15ec83c9"/>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ভারপ্রাপ্ত উপপরিচালক কার্তুজ ও বিস্ফোরক"  + "\n" + "ব্যবস্থাপক নিরাপত্তা" + "\n" +"বিওএফ হাসপাতাল"  + "\n" +"প্রশাসন সাধারণ (এস্টেট মাযানেজমেন্ট ও কল্যাণ)" + "\n" + "প্রশাসন (অর্থ, পেনশন, নিয়োগ ও প্রশিক্ষণ)" + "\n" + "সংশ্লিষ্ট শাখা" + "\n" + "সংশ্লিষ্ট ব্যক্তি" + "\n"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="44" width="50" height="19" uuid="b8eec9de-ef96-4c2b-a614-d560bafad010"/>
+				<textElement>
+					<font fontName="Nirmala UI" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[কার্যক্রমঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="6" width="50" height="19" uuid="70b64b77-7f14-4994-8f2c-310367c39039"/>
+				<textElement>
+					<font fontName="Nirmala UI" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[বিতরনঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="145" width="50" height="19" uuid="4fe69e2a-68ca-440d-81da-5eb15414524e"/>
+				<textElement>
+					<font fontName="Nirmala UI" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[কার্যক্রমঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="25" width="50" height="19" uuid="6f4693f4-059c-4fd9-9f52-29dec9f20f62"/>
+				<textElement>
+					<font fontName="Nirmala UI" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[বহিরগমনঃ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="63" width="195" height="63" uuid="dfd7c0b0-2419-4caa-a808-cd8b4812ee9b"/>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["এডি, সিসিডিএফ (বিওএফ)"  + "\n" + "গাজিপুর সেনানিবাস" + "\n\n" +"জি ই (আর্মি) বিওএফ"  + "\n" + "গাজিপুর সেনানিবাস"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="6" y="230" width="195" height="66" uuid="29d2c5cc-b026-4ce1-85b9-0508f8765ef4"/>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["অবগতিঃ"  + "\n" +"পরিচালক উৎপাদন"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

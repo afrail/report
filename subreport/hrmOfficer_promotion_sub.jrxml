@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrmOfficer_promotion_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="65ece945-39f4-4da3-abcc-eb1b2481b6f1">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[aHJtX2VtcGxveWVlX3Byb21vdGlvbl9pbmZvcm1hdGlvbiAsMTUsMTUsNzE0MjI1M2ItMDE2Yy00
+YzFlLWI5MjctMWE0ZjhiNDRmY2ZkOw==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT get_com_lookup_name( previou_designation_id) previous_designation,
+	get_com_lookup_name( present_designation_id) present_designation,
+	pi.promotion_date promotion_date
+FROM hrm_employee_promotion_information pi
+WHERE 
+	 1 = 1 
+	 AND pi.employee_id =  $P{P_EMPLOYEE_ID} ]]>
+	</queryString>
+	<field name="previous_designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="previous_designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="previous_designation"/>
+	</field>
+	<field name="present_designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_designation"/>
+	</field>
+	<field name="promotion_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="promotion_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="promotion_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_promotion_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="136" height="20" uuid="f27ddc90-b07a-4878-a5be-81bcaad610bc"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Promotion Details ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="240" height="30" uuid="2548e795-1897-4c9d-9f33-3e30a8e73a5b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8dae031f-457c-4462-a0ca-c9acc0ef5896"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Previous Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="0" width="210" height="30" uuid="0a8fce8f-1e49-42a8-8f78-c8352f404d93">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aa195542-1133-4b00-8b2a-28d77d7fc5ff"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Present Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="0" width="90" height="30" uuid="f81532ac-03e0-4184-904d-37882fc28ef7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a0aebcd-aeae-4faa-a835-fe2c17dbf05a"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Promotion Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="240" height="30" uuid="c5c5cbc0-feb2-4c42-be3c-cfbb2bffb53a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8dae031f-457c-4462-a0ca-c9acc0ef5896"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{previous_designation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="0" width="210" height="30" uuid="8199bc7a-b3ec-45c6-88a8-4581bdda0cb3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aa195542-1133-4b00-8b2a-28d77d7fc5ff"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{present_designation}]]></textFieldExpression>
+			</textField>
+			<textField pattern="M/d/yy">
+				<reportElement x="450" y="0" width="90" height="30" uuid="546319ca-13d9-42e6-966c-50a6827e9069">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8a0aebcd-aeae-4faa-a835-fe2c17dbf05a"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{promotion_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

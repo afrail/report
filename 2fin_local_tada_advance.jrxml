@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2fin_local_tada_advance" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dad587c2-56fb-46e6-9192-ce75d9ba660c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<parameter name="tada_bill_master_id" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2fin_local_tada_bill_advance_sub" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select a.id, c.code||' ,'||get_emp_bn_name(a.employee_id)||', '||
+get_com_lookup_bn_name(d.designation_id)||' বাংলাদেশ সমরাস্ত্র কারখানা (বিওএফ)- হতে '
+||a.tour_details|| ' সফর সংক্রান্ত অগ্রিম বিল ' details,
+case when b.local_bill_type = 3 then b.details||' সড়কপথে '||b.others||' কি.মি প্রতি কি.মি ' 
+ ||b.rate|| ' হিসেবে '||b.quantity||' টি ('||b.rate||'*'||b.quantity||'*'||b.others||') টাকা '
+ when b.local_bill_type = 4 then b.details||' রেল ভাড়া '||b.rate||'
+ টাকা হিসেবে '||b.quantity ||' টি ('||b.rate||'*'||b.quantity||'*'||b.others||') টাকা'
+ when b.local_bill_type = 5 THEN b.details||' ('||b.rate||'*'||b.quantity||')'||b.others||'% ইনসিডেস্টাইল চার্জ সহ'
+ when b.local_bill_type = 1 then b.details||' পূর্ণ ডিএ হিসেবে '||b.total_amount||' হারে ('
+ ||b.total_amount||'*'||b.quantity||') টাকা '
+ when b.local_bill_type = 2 then b.details||' অর্ধ ডিএ হিসেবে '||b.total_amount||' হারে ('
+ ||b.total_amount||'/02*'||b.quantity||') টাকা '
+ else b.details end bill_type,b.total_amount total, a.amount amount
+from fin_tada_bill_master a, 
+fin_local_tada_bill_details b,
+hrm_employee_personal_information c,
+hrm_employee_official_information d 
+where
+1=1
+and b.tada_bill_master_id = a.id
+and a.employee_id = c.id
+and c.id = d.employee_id
+and a.id =  $P{tada_bill_master_id}
+order by b.id]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<field name="details" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="details"/>
+		<property name="com.jaspersoft.studio.field.label" value="details"/>
+	</field>
+	<field name="bill_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bill_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_type"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_local_tada_bill_details"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="101" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="50" width="559" height="40" uuid="d6524ef1-ccfc-46b9-a215-5c54f0f42494"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{details}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="100" width="560" height="1" uuid="017f1d94-aea4-4e48-9179-885a8c10ba94"/>
+			</line>
+			<subreport>
+				<reportElement x="-20" y="-10" width="593" height="37" uuid="a3e7d2ba-fd0a-4796-8da6-c30e889060f7"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="180" y="39" width="200" height="13" uuid="57a76363-c2a8-482a-8d2f-5aacbbc85fed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[স্থানীয় অগ্রিম ও সমন্বয়]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="0" width="430" height="40" uuid="013f0ab0-27cb-4b87-acb2-e1d37580fa9f"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_type}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="451" y="0" width="10" height="40" uuid="bc739399-2e0b-41ed-a6f8-5e849b262c9e"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="0.00">
+				<reportElement x="460" y="0" width="100" height="40" uuid="3100df2c-84dd-4aa9-8bc8-1a7e1976a63c"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="20" height="40" uuid="0dae4704-6eb6-498e-98bd-2477734e08cc"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}+" ।"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField pattern="dd/MM/yyyy hh:mm ">
+				<reportElement x="490" y="0" width="79" height="20" uuid="ea7ebca0-7bb5-4023-9dc2-ca9267d01e3e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="460" y="0" width="30" height="20" uuid="9cb4f3b8-fa63-4ad8-8d92-2913e9cfdef0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[তারিখ :]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="90" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="7" width="560" height="1" uuid="ec6d82f3-1456-4e4a-9cb4-79607b6e86a8"/>
+			</line>
+			<textField pattern="0.00">
+				<reportElement x="440" y="10" width="110" height="30" uuid="5e155edd-ac2b-4517-9d3d-f785a606a13a"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মোট   :   "+$F{amount}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement x="0" y="47" width="560" height="1" uuid="9a779230-77e9-4f54-bac9-046c7fc47010"/>
+			</break>
+			<subreport>
+				<reportElement x="-12" y="50" width="585" height="40" uuid="f375aaa5-c4b0-4bd7-bcfc-2034bc672faf"/>
+				<subreportParameter name="tada_bill_master_id">
+					<subreportParameterExpression><![CDATA[$P{tada_bill_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2fin_local_tada_bill_advance_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

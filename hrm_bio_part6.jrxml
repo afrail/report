@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_bio_part6" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" whenResourceMissingType="Empty" uuid="1915512f-c390-45c9-ad6b-c9505300fcfe">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="IBCS local db"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="145"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="848"/>
+	<parameter name="P_PERSONAL_ID" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+ 	get_disciplinary_action_type_name(d.disciplinary_type_id) disc_type, 
+ 	d.action disc_action, 
+ 	to_char(Date(d.action_date) , 'dd-MM-YYYY')  DISCIPLINARY_DATE
+from hrm_employee_personal_information PERSONAL , 
+	 hrm_employee_disciplinary_information d 
+where 1=1 
+and PERSONAL.id = d.employee_id  
+and PERSONAL.code  = $P{P_PERSONAL_ID}  -- '10441'
+order by d.id asc]]>
+	</queryString>
+	<field name="disc_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="disc_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="disc_type"/>
+	</field>
+	<field name="disc_action" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="disc_action"/>
+		<property name="com.jaspersoft.studio.field.label" value="disc_action"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_disciplinary_information"/>
+	</field>
+	<field name="disciplinary_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="disciplinary_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="disciplinary_date"/>
+	</field>
+	<columnHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="206" y="0" width="3" height="20" uuid="0a255d39-ca20-4a8a-b5b5-0d96cc8f2c28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="206" height="20" uuid="5b123172-c2d0-4347-a939-bdf2d487fd8c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[16. Disciplinary Action]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="71" y="20" width="128" height="20" uuid="0a602123-aa30-46fd-8df7-4d13f4f0e9aa"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Disciplinary Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="20" width="140" height="20" uuid="0a36dea9-c059-422c-ad06-4846529c4282"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Action]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="20" width="94" height="20" uuid="84c7db77-de43-4b30-b641-47a2cdbce14b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Immediate">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="71" y="0" width="128" height="20" uuid="61e55f43-f094-4faf-ad0c-d10a9749a057"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disc_type}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="200" y="0" width="160" height="20" uuid="1227630c-4dc1-4d4b-8e51-3954789e31fc"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disc_action}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="360" y="0" width="94" height="20" uuid="343a535f-5a9c-4b27-8317-353a123032fe"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="0" rightPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disciplinary_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

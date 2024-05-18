@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_bio_data_civil_staff_worker" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e262c711-ebe7-473a-b7d6-39f018456f5d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<subDataset name="Dataset1" uuid="8e9696b8-2ced-4d3f-98b9-c224b49ab701">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<parameter name="hrmOffcer_family_info_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="hrmOfficer_education_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="hrmOfficer_promotion_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="hrmOfficer_punishment_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="hrmOfficer_training_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select ep.code, ep.employee_name employee_name, get_com_lookup_name(eo.designation_id) Designation,
+(select case when ep.hrm_type=1 then 'Officer' 
+when ep.hrm_type=2 then 'Staff'
+when ep.hrm_type=3 then 'Technical' end) catagory, 
+	 get_com_lookup_name(eo.shop_id) Section,
+	 get_designation_class(eo.designation_id) d_class,
+	 case 
+		 WHEN ep.GAZZETTED=true THEN 'Gazzeted' 
+		 ELSE  'Non Gazzeted'
+	 end 
+	 as GAZZETTED,
+	 ep.father_name father_name ,
+	 ep.mother_name mother_name ,
+	 ep.identification_mark,
+	 TO_CHAR(ep.date_of_birth, 'DD-mm-yyyy') date_of_birth,
+	 TO_CHAR(eo.joining_date, 'DD-mm-yyyy') joining_date,
+	 TO_CHAR(age(current_date, ep.date_of_birth::date), 'YY "Years" mm "Months" DD "Days"') as present_age,
+TO_CHAR(age(current_date, eo.joining_date::date), 'YY "Years" mm "Months" DD "Days"') as job_duration,
+	 get_com_lookup_name(ep.quota_id) quota,
+	 get_com_lookup_name(ep.gender_id) gender,
+	ep.height ep_height,
+	ep.weight weight,
+	get_com_lookup_name(ep.nationality_id) nationality,
+	get_com_lookup_name(ep.religion_id) religion,
+	get_com_lookup_name(ep.permanent_district) district,
+	get_com_lookup_name(ep.marital_status_id) marital_status,
+	ep.permanent_village_house || ', ' || ep.permanent_post_office || ', ' || 
+		get_com_lookup_name(ep.permanent_upazila) || ', ' || get_com_lookup_name(ep.permanent_district) || ', ' ||
+		ep.permanent_post_code permanent_address,
+	ep.present_village_house || ', ' || ep.present_post_office || ', ' || 
+		get_com_lookup_name(ep.present_upazila) || ', ' || get_com_lookup_name(ep.present_district) || ', ' || 
+		ep.present_post_code present_address,
+	ep.BIRTH_REGISTRATION_ID birth_certificate_no,
+	ep.passport_number passport_no,
+	ep.nid nid,
+	ep.e_tin_number tin_number,
+	eo.office_phone_number telephone_number,
+	ep.mobile_number mobile,
+	ep.email_id email,
+	eo.bank_account_number bank_acc,
+	get_com_lookup_name(ep.blood_group) blood_group ,
+	to_char(ep.lpr_date,'dd-mm-yyyy') prl_date,
+	to_char(ep.retired_date,'dd-mm-yyyy')  retirement_date,
+	(select heg.name
+from hrm_employee_payscale_information hepi , hrm_grade_wise_salary_master hgwsm , hrm_employee_grade heg 
+where 1=1
+and heg.id=hepi.grade_id 
+and hepi.active =true
+and hepi.employee_id =$P{P_EMPLOYEE_ID})
+	present_salary_scale,
+	TO_CHAR(current_date + INTERVAL '1 YEAR','01-07-yyyy') increment_date,
+	get_emp_grade_name(eo.grade_id) grade,
+	(select max(TO_CHAR(ps.active_date,'dd-mm-yyyy')) from hrm_employee_payscale_information ps 
+		where employee_id = eo.employee_id) grade_active_date,
+	eo.employee_id bof_id,
+	null kids_edu_allowance
+from hrm_employee_personal_information ep , hrm_employee_official_information eo
+where 1=1
+and ep.id = eo.employee_id
+and eo.employee_id =  $P{P_EMPLOYEE_ID}]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="catagory" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="catagory"/>
+		<property name="com.jaspersoft.studio.field.label" value="catagory"/>
+	</field>
+	<field name="section" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="section"/>
+		<property name="com.jaspersoft.studio.field.label" value="section"/>
+	</field>
+	<field name="d_class" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="d_class"/>
+		<property name="com.jaspersoft.studio.field.label" value="d_class"/>
+	</field>
+	<field name="gazzetted" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gazzetted"/>
+		<property name="com.jaspersoft.studio.field.label" value="gazzetted"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="father_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="father_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="father_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="mother_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mother_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="mother_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="identification_mark" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="identification_mark"/>
+		<property name="com.jaspersoft.studio.field.label" value="identification_mark"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="date_of_birth" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.label" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="joining_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="present_age" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_age"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_age"/>
+	</field>
+	<field name="job_duration" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="job_duration"/>
+		<property name="com.jaspersoft.studio.field.label" value="job_duration"/>
+	</field>
+	<field name="quota" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="quota"/>
+		<property name="com.jaspersoft.studio.field.label" value="quota"/>
+	</field>
+	<field name="gender" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gender"/>
+		<property name="com.jaspersoft.studio.field.label" value="gender"/>
+	</field>
+	<field name="ep_height" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ep_height"/>
+		<property name="com.jaspersoft.studio.field.label" value="ep_height"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="weight" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="weight"/>
+		<property name="com.jaspersoft.studio.field.label" value="weight"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="nationality" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nationality"/>
+		<property name="com.jaspersoft.studio.field.label" value="nationality"/>
+	</field>
+	<field name="religion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="religion"/>
+		<property name="com.jaspersoft.studio.field.label" value="religion"/>
+	</field>
+	<field name="district" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="district"/>
+		<property name="com.jaspersoft.studio.field.label" value="district"/>
+	</field>
+	<field name="marital_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marital_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="marital_status"/>
+	</field>
+	<field name="permanent_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="permanent_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="permanent_address"/>
+	</field>
+	<field name="present_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_address"/>
+	</field>
+	<field name="birth_certificate_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="birth_certificate_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="birth_certificate_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="passport_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="passport_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="passport_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="nid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nid"/>
+		<property name="com.jaspersoft.studio.field.label" value="nid"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="tin_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tin_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="tin_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="telephone_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telephone_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="telephone_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="mobile" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="bank_acc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bank_acc"/>
+		<property name="com.jaspersoft.studio.field.label" value="bank_acc"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+	</field>
+	<field name="prl_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prl_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="prl_date"/>
+	</field>
+	<field name="retirement_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="retirement_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="retirement_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="present_salary_scale" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_salary_scale"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_salary_scale"/>
+	</field>
+	<field name="increment_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="increment_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="increment_date"/>
+	</field>
+	<field name="grade" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="grade"/>
+		<property name="com.jaspersoft.studio.field.label" value="grade"/>
+	</field>
+	<field name="grade_active_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="grade_active_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="grade_active_date"/>
+	</field>
+	<field name="bof_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="bof_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="bof_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="kids_edu_allowance" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="kids_edu_allowance"/>
+		<property name="com.jaspersoft.studio.field.label" value="kids_edu_allowance"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="655" splitType="Stretch">
+			<subreport>
+				<reportElement x="-11" y="0" width="570" height="30" uuid="f0586db1-a633-4b04-89e1-2462c7611636"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="6" y="76" width="119" height="20" uuid="2580fc36-98a1-4470-9cfa-4cdcbe0ca5b3"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Personnel Number ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="96" width="119" height="20" uuid="50c8f544-b184-4412-b6eb-59e78fbdbb66"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Name ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="116" width="119" height="20" uuid="b5089041-3c70-48ea-9e92-c3c0ed89c597"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Designation ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="156" width="119" height="25" uuid="d71b236c-31ab-4421-86e8-fc03b060ad53"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="181" width="119" height="20" uuid="5682295d-4e0f-4364-a1f2-2d4d72bc0d2d"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Class ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="201" width="119" height="20" uuid="beaf61cd-47f1-435b-a4cd-526ecee918ce"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Gazzetted/Non-Gazzetted]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="221" width="119" height="20" uuid="ee501936-43fc-43cb-bbf6-301ebb751109"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Seniority Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="241" width="119" height="20" uuid="6988e89d-8318-4c64-be60-498b217a2813"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Father's Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="261" width="119" height="21" uuid="6c7886a1-d7a5-4d06-8ab3-6ff0a19d2383"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Mother's Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="282" width="119" height="20" uuid="0b20eda9-43c4-4548-b92c-8da8af91eae9"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Date of Birth ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="302" width="119" height="20" uuid="3a665e0f-16c8-4e48-9d13-bf5855a912ac"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Joining Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="322" width="119" height="20" uuid="e2168426-4a08-4d20-a15d-d48d0f96dae7"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Joining Quota]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="342" width="119" height="20" uuid="5b5366c7-c54e-471e-9c20-786bfb87789c"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Gender]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="362" width="119" height="20" uuid="77014ab0-d450-4e4f-9f28-a986266b3e08"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Height]]></text>
+			</staticText>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="76" width="162" height="20" uuid="05779921-96b8-40aa-861b-083b3262bfe2"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="96" width="162" height="20" uuid="6c073fd7-c7fb-4c7b-a771-28db31326727"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="116" width="162" height="20" uuid="7d350175-6bc5-4b46-bada-275049eb17e8"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="156" width="162" height="25" uuid="119cb9c5-734d-48ed-903a-bb38d19ad360"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{section}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="181" width="162" height="20" uuid="720c84ff-cb3d-429a-852b-6eb33b1e403d"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{d_class}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="201" width="162" height="20" uuid="7535d4d9-fe4f-4182-a1cf-2ef6f74ddb12"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gazzetted}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="221" width="162" height="20" uuid="9a9e7416-ebc2-4344-85f1-dba93f90e074"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="241" width="162" height="20" uuid="e1f5e104-c5ff-4d46-b6f6-6c332eff9ac9"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{father_name}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="261" width="162" height="21" uuid="f5b100f2-9b87-48a2-a6c0-0cf9fbb9a26b"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mother_name}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="282" width="162" height="20" uuid="fc71548e-4802-4939-9cda-7528fda72c6e"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_birth}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="302" width="162" height="20" uuid="339bdce4-b64f-4755-a17f-f21d2dd90b9d"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{joining_date}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="322" width="162" height="20" uuid="dab20045-99f3-4cf1-b7be-113474fb17e4"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quota}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="342" width="162" height="20" uuid="04781b7c-a6a5-4d45-925c-a3d0f11fcd95"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="362" width="162" height="20" uuid="2959f0c2-2c40-498f-8029-bc35a1f94232"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ep_height}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="287" y="76" width="119" height="20" uuid="7afadcee-bec4-474e-a703-3f738df1757d"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Birth Certificate No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="96" width="119" height="20" uuid="8460b47b-d133-42d4-8162-827e22773179"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Passport No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="116" width="119" height="20" uuid="554fead8-61d9-42c6-96e9-6807102bc017"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[National ID Card  No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="136" width="119" height="20" uuid="4f8b8c34-4345-43bd-b44b-d41bc48c9000"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[TIN No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="156" width="119" height="25" uuid="ffd6197b-16fc-455c-ba90-339732b67e1b"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Telephone]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="181" width="119" height="20" uuid="b567e2af-07fb-4817-92ea-2ae1cb5bf0dc"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Mobile ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="201" width="119" height="20" uuid="4dd2e08e-1847-4508-8080-6f28400d0392"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Emial Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="221" width="119" height="20" uuid="b21962fe-421c-4984-9408-d08fe70a3cd0"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Personal Bank A/C No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="241" width="119" height="20" uuid="293a4f5f-2acf-4e7e-817d-2eb87d33f9c6"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Blood Group]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="261" width="119" height="21" uuid="0daf4744-8289-4cb4-b634-91ef21dfe42e"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Visible Identification Mark]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="282" width="119" height="20" uuid="a87af824-a2f3-4f1a-a394-a72fef601ccb"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Advanced Seniority ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="302" width="119" height="20" uuid="8266ada8-d270-4a78-ae96-4df7b0003d81"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Retirement Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="322" width="119" height="20" uuid="6a921378-2120-48bd-a3a0-3fcf07cf071e"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[PRL Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="342" width="119" height="20" uuid="3187efb8-4d77-4dee-906c-99ab309d254c"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Present Salary Scale ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="362" width="119" height="20" uuid="3e775175-c123-4384-ba1b-f4c2c2e69621"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Grade ]]></text>
+			</staticText>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="76" width="144" height="20" uuid="07166bd5-0660-4855-ba33-a9103f5665b6"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{birth_certificate_no}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="96" width="144" height="20" uuid="30128eea-9d99-4555-9174-1dc25d4036bf"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{passport_no}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="116" width="144" height="20" uuid="154acec7-1dc3-4b06-b325-0773f4a0bb89"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nid}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="136" width="144" height="20" uuid="ca13b080-f638-4405-8489-4aebe20f332d"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tin_number}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="156" width="144" height="25" uuid="c77e014c-4318-418e-a2b7-b284030a5dcf"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telephone_number}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="181" width="144" height="20" uuid="498f0aed-e40e-447e-9b99-04029d32c630"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobile}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="201" width="144" height="20" uuid="98a2b88f-36c4-4eb3-96b9-076fe6620b50"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="221" width="144" height="20" uuid="59f7c320-b19c-4096-bf0e-3e400520c5cb"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bank_acc}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="241" width="144" height="20" uuid="3b8ea253-0350-46cc-a504-cc9d2d91ed16"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{blood_group}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="261" width="144" height="21" uuid="4c6af6e8-0657-4b2b-ad92-e11e1caf0270"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{identification_mark}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="406" y="282" width="144" height="20" uuid="501a175c-a013-4d07-93eb-2634dd5aeb55"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement x="406" y="302" width="144" height="20" uuid="635803cf-7d5b-4041-94c3-cb69b8303e26"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retirement_date}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="322" width="144" height="20" uuid="a0d7e87e-8657-4f17-81c5-5cd333d7a985"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prl_date}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="342" width="144" height="20" uuid="8fb88c83-bc6e-4b4a-b2dc-563bacef9351"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{present_salary_scale}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="362" width="144" height="20" uuid="e8f29c28-a88b-41c0-b04e-184b613b50bf"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grade}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="136" width="162" height="20" uuid="31d03252-f1e8-434c-bd02-535dfaec6807"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{catagory}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="136" width="119" height="20" uuid="cc281d8f-0a97-4c42-a589-61706ad6c556"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Catagory]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-3" y="56" width="558" height="20" uuid="b33d9522-eb2a-4939-aa10-8740a1dd15ad"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name} +" Bio-Data "]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="382" width="144" height="20" uuid="575aab5b-7268-4e4d-8175-9c5c35ca4585"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grade_active_date}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="402" width="144" height="20" uuid="227dabbe-e4a9-4eec-b3f4-0df31195d1a9"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{increment_date}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="422" width="144" height="20" uuid="61fe2e76-509f-456b-80dc-62e21445aa51"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="442" width="144" height="20" uuid="1a1ec9dd-acbe-4776-aa81-62501ef7f2e1"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kids_edu_allowance}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="462" width="144" height="49" uuid="3478c5a3-0137-461a-8a92-fd33cf90822a"/>
+				<box leftPadding="6">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{present_age}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="406" y="511" width="144" height="46" uuid="0a1bbfea-5474-4dd0-9fd7-2888ec988681"/>
+				<box topPadding="3" leftPadding="6">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{job_duration}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="287" y="511" width="119" height="46" uuid="5cbd02a4-421e-4c86-bf25-d101f55ea4d3"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Job Duration ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="462" width="119" height="49" uuid="ff979f69-a241-4e1b-a2c4-af11867741be"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Present Age ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="442" width="119" height="20" uuid="06e5c36e-ba30-47d3-9871-73a72d649d07"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Kids For Education]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="422" width="119" height="20" uuid="3c78b8bf-763a-456a-8247-e01e42469e45"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[BOF ID No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="402" width="119" height="20" uuid="a2a16fe2-de26-4e1f-b3fc-559fc7c2bd62"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Increment Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="287" y="382" width="119" height="20" uuid="f9adf53f-c1fa-45f9-b7f4-6a696888cd3f"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Selection Grade/Time Scale
+Achieve Date ]]></text>
+			</staticText>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="382" width="162" height="20" uuid="a7190735-ff9d-4758-92f2-506355d2cc5b"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{weight}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="402" width="162" height="20" uuid="d0fe020f-4205-4e00-b032-aefa5006ace4"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nationality}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="422" width="162" height="20" uuid="76909287-2da0-4275-a7b4-2df1272cd381"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{religion}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="442" width="162" height="20" uuid="bb4ff970-2a91-442b-b466-4a8e6fb0962f"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marital_status}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="462" width="162" height="49" uuid="296fc3cd-5b43-4591-a854-d56b74e8b92b"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{present_address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="462" width="119" height="49" uuid="9db300d6-0240-4a4c-8c55-0cf5e5bf4483"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Present Address ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="442" width="119" height="20" uuid="9c7761b0-0da4-4c9b-bd82-3376710cbe8c"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Marital Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="422" width="119" height="20" uuid="f9865fc6-6ff4-43ce-8682-acca66487430"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Religion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="402" width="119" height="20" uuid="f653134e-d11c-48d0-b1da-9e5c2b95d968"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Nationality]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="382" width="119" height="20" uuid="07fbf7e0-373a-43ac-bc14-d0c697a6b6ce"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Weight]]></text>
+			</staticText>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="511" width="162" height="46" uuid="e2535b65-6718-4fbe-8e1a-a7badf4db345"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{permanent_address}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="125" y="557" width="162" height="30" uuid="e050d90f-924a-408c-bec0-977d506c8bbf"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{district}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="557" width="119" height="30" uuid="9e3e6986-d70d-44de-8cdc-fea1791fd05f"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Own District]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="511" width="119" height="46" uuid="942c0b93-351b-41d6-bc91-a9003fd7a018"/>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Permanent Address ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="30">
+			<subreport>
+				<reportElement x="-20" y="0" width="590" height="30" uuid="19f8c49b-9c39-4b10-b618-56e10c487eb4"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrmOffcer_family_info_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<subreport>
+				<reportElement x="-20" y="0" width="590" height="20" uuid="9a96dd0f-0a28-4256-afcf-24e2e0ed3bca"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrmOfficer_education_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<subreport>
+				<reportElement x="-20" y="-1" width="590" height="20" uuid="6e77136d-f506-4d6d-b38d-29f29ea40bf5"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrmOfficer_training_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="20">
+			<subreport>
+				<reportElement x="-20" y="-1" width="590" height="20" uuid="0256b241-d2ba-4135-828e-36fe32346718"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrmOfficer_promotion_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="30">
+			<subreport>
+				<reportElement x="-20" y="-1" width="590" height="30" uuid="4378901c-aafa-4d11-badf-35b6dc226d63"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrmOfficer_punishment_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

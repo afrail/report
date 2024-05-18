@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rec_vacant_post_summary" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3435a8ae-e9f9-4861-bf21-a483c5598c4e">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_REC_DESIG_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common_landscape" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select get_com_lookup_bn_name(n.designation_id) designation_name,designation_id,get_des_serial(designation_id) SERAL,
+		sum(approved_post) approved_post, sum(emp_id) emp_id, sum(approve_post_by_bof) approve_post_by_bof, sum(approve_post_by_mod) approve_post_by_mod, 
+	sum(approved_post)-sum(emp_id) vacant_post
+from (
+select 0 approved_post, count(ep.id) emp_id, 0 approve_post_by_bof, 0 approve_post_by_mod, get_com_lookup_name(eo.designation_id), eo.designation_id
+from hrm_employee_personal_information ep, hrm_employee_official_information eo
+where 1=1
+and eo.employee_id = ep.id 
+and eo.employee_type_id=36
+and eo.inactive_type is null
+group by eo.designation_id
+	  union all
+select sum(approved_post) approved_post, 0 emp_id, 0 approve_post_by_bof, 0 approve_post_by_mod,  get_com_lookup_name(designation_id), designation_id
+from HRM_GRADE_WISE_DESIGNATION rmc 
+where 2=2
+group by designation_id 
+union all 
+select 0 approved_post, 0 emp_id, approve_post_by_bof, approve_post_by_mod, get_com_lookup_name(designation_id), designation_id
+from rec_vacant_setup) n
+where 1=1
+AND n.designation_id =coalesce($P{P_REC_DESIG_ID},n.designation_id)
+group by n.designation_id
+order by get_des_serial(designation_id) asc]]>
+	</queryString>
+	<field name="designation_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_name"/>
+	</field>
+	<field name="designation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+	</field>
+	<field name="seral" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="seral"/>
+		<property name="com.jaspersoft.studio.field.label" value="seral"/>
+	</field>
+	<field name="approved_post" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="approved_post"/>
+		<property name="com.jaspersoft.studio.field.label" value="approved_post"/>
+	</field>
+	<field name="emp_id" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+	</field>
+	<field name="approve_post_by_bof" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="approve_post_by_bof"/>
+		<property name="com.jaspersoft.studio.field.label" value="approve_post_by_bof"/>
+	</field>
+	<field name="approve_post_by_mod" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="approve_post_by_mod"/>
+		<property name="com.jaspersoft.studio.field.label" value="approve_post_by_mod"/>
+	</field>
+	<field name="vacant_post" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="vacant_post"/>
+		<property name="com.jaspersoft.studio.field.label" value="vacant_post"/>
+	</field>
+	<variable name="V_total_mod" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{approve_post_by_mod}]]></variableExpression>
+	</variable>
+	<variable name="V_total_bof" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{approve_post_by_bof}]]></variableExpression>
+	</variable>
+	<variable name="V_total_vacant_post" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$V{V_total_approved}-$V{V_total_emp}]]></variableExpression>
+	</variable>
+	<variable name="V_total_emp" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{emp_id}]]></variableExpression>
+	</variable>
+	<variable name="V_total_approved" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{approved_post}]]></variableExpression>
+	</variable>
+	<group name="designation_name">
+		<groupExpression><![CDATA[$F{designation_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<subreport>
+				<reportElement x="-10" y="7" width="832" height="33" uuid="8c61b9e1-0034-4275-bb21-3ef2007edc80"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_landscape}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="210" y="0" width="420" height="20" uuid="7a42baf0-5e74-42c5-98a9-0a8c1771887f"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vacant Post Summary]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="660" y="0" width="47" height="20" uuid="5fc9de86-b6f3-49ba-aec4-5da6f5b34afe"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="560" y="0" width="100" height="20" uuid="486a1e11-4a99-4793-8792-a3d3753021cc"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="92" y="0" width="180" height="20" uuid="e58c3589-1079-4566-89ba-69b5753c78db"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="42" height="20" uuid="ef072e7c-3587-40ca-a216-2b45e663fdd6"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="0" width="78" height="20" uuid="fede0260-cc40-454e-897d-bef0e3bc4e72"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Approved Post]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="0" width="77" height="20" uuid="30c50ef9-eafb-40aa-a0e9-000441427135"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Present Emp.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="0" width="103" height="20" uuid="b2d9bfa7-2745-423a-af29-1d7c7a666771"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOF Approved Post]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="0" width="110" height="20" uuid="8f29b470-489b-4356-bb64-af970b40590d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOD Approved Post]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="427" y="0" width="70" height="20" uuid="3faa8578-284e-4624-90d2-8bc24814e57b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vacant Post]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField isBlankWhenNull="true">
+				<reportElement x="92" y="0" width="180" height="20" uuid="5aee51af-7e90-4aa1-83ee-3575df3909ec"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="78" height="20" uuid="8634dc0f-2c01-4afd-bea4-c2625109cff1"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approved_post}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="350" y="0" width="77" height="20" uuid="a33c631b-4e41-4d5f-9797-3a49dd425de8"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="427" y="0" width="70" height="20" uuid="35e658b1-abd5-4065-852a-33d58e6c65bb"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vacant_post}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="110" height="20" uuid="9ad91e3a-df23-40dc-a8c0-1cc20add1308"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approve_post_by_mod}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="497" y="0" width="103" height="20" uuid="0b13d28a-c013-4f45-9dee-5a23d0dcb555"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approve_post_by_bof}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="42" height="20" uuid="ddfe471d-b6a7-4205-8d88-82d3cad4e265"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="83" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement x="632" y="65" width="79" height="18" uuid="b4e18a18-0c0b-413d-bac3-1f93df2c84f7"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="543" y="65" width="90" height="18" isPrintWhenDetailOverflows="true" uuid="2bb22894-da24-414c-9fc8-c0f6b434cba3"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="66" width="377" height="17" isPrintWhenDetailOverflows="true" uuid="c4027f3f-46fd-49be-8c04-41a5d64f0fa0"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="272" y="-1" width="78" height="19" uuid="2ea9c90b-8920-4b20-aeee-287bd7a4816c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{V_total_approved}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="-1" width="77" height="19" uuid="acd471f2-6b0d-4ff3-b652-489abd5fb29d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{V_total_emp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="427" y="-1" width="70" height="19" uuid="996d49ac-1341-4027-ab53-50ea30958730"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+			</textField>
+			<textField>
+				<reportElement x="497" y="-1" width="103" height="19" uuid="1ab234e7-f96e-4991-a40a-0bd65b7b8e5c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{V_total_bof}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="600" y="-1" width="110" height="19" uuid="6c6173e0-c90b-4cd2-a18b-7a94616a71b0"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{V_total_mod}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="50" y="-1" width="222" height="19" uuid="757c20ba-b8f8-4499-87f4-9325568661cc"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

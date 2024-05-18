@@ -1,0 +1,810 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="individual_leave_details" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="466f0ab7-7506-4a52-8c18-26f6ea1dab83">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="267"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="726"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select employee_name_bangla,designation_name,emp_code,joining_date,date_of_birth,
+reference,retired_date,total_days,after_leave,total_earn_leave,net_earn_leave,total_half_leave,half_leave_full,
+net_half_leave,authority,earned_leave,ML_leave,ML_leave_h,LWP_leave,
+INJ_leave,MR_leave, trunc(net_earn_leave/365)||' বছর '||
+trunc(mod(cast (net_earn_leave as int),365)/30) ||' মাস ' ||
+Mod((mod(cast (net_earn_leave as int),365)),30)||' দিন' bang_earn,
+trunc(net_half_leave/365)||' বছর '||
+trunc(mod(cast (net_half_leave as int),365)/30) ||' মাস ' ||
+Mod((mod(cast (net_half_leave as int),365)),30)||' দিন' bang_half_leave,
+get_eng_month_bangla(cast(to_char(current_date,'mm') as int))||' '||to_char(current_date,'-yyyy') cur_date
+from(
+select employee_name_bangla,designation_name,emp_code,joining_date,date_of_birth,
+reference,retired_date,( round(get_total_days_by_retired_date_and_joining_date(date(retired_date), date(joining_date))) -(coalesce(earned_leave,0)+coalesce(ML_leave,0)+coalesce(LWP_leave,0)+coalesce(MR_leave,0)+coalesce(INJ_leave,0))) after_leave,
+round((round(get_total_days_by_retired_date_and_joining_date(date(retired_date), date(joining_date)))-(coalesce(earned_leave,0)+coalesce(ML_leave,0)+coalesce(LWP_leave,0)+coalesce(MR_leave,0)+coalesce(INJ_leave,0)))/11) total_earn_leave,
+round((round(get_total_days_by_retired_date_and_joining_date(date(retired_date), date(joining_date)))-(coalesce(earned_leave,0)+coalesce(ML_leave,0)+coalesce(LWP_leave,0)+coalesce(MR_leave,0)+coalesce(INJ_leave,0)))/11)-coalesce(earned_leave,0) net_earn_leave,
+round((round(get_total_days_by_retired_date_and_joining_date(date(retired_date), date(joining_date)))-(coalesce(earned_leave,0)+coalesce(ML_leave,0)+coalesce(LWP_leave,0)+coalesce(MR_leave,0)+coalesce(INJ_leave,0)))/12) total_half_leave,
+(coalesce(ML_leave,0)*2)  half_leave_full,
+round((DATE_PART('day', retired_date - date(joining_date))-(coalesce(earned_leave,0)+coalesce(ML_leave,0)+coalesce(LWP_leave,0)+coalesce(MR_leave,0)+coalesce(INJ_leave,0)))/12)-((coalesce(ML_leave,0)*2)+coalesce(ML_leave_h,0) )
+net_half_leave, 
+round(get_total_days_by_retired_date_and_joining_date(date(retired_date), date(joining_date))) total_days,
+authority,earned_leave,ML_leave,ML_leave_h,LWP_leave,
+INJ_leave,MR_leave from (
+ select ep.employee_name_bangla , get_com_lookup_bn_name(eo.designation_id) designation_name,ep.code ||'/'||get_com_lookup_bn_name(coalesce(coalesce(eo.shop_id,eo.wing_id),eo.branch_id))
+ ||case when eo.line_id>0 then '/লাইন-'||get_com_lookup_bn_name(eo.line_id) else '' end  emp_code, 
+eo.joining_date  joining_date, date(ep.date_of_birth)date_of_birth,
+case when eo.inactive_date<(ep.retired_date) then (eo.inactive_date)
+when current_date<(ep.retired_date) then (ep.retired_date) 
+else (ep.retired_date)  end retired_date,
+ep.summary_referenceno reference,
+DATE_PART('day', ep.retired_date - date(eo.joining_date)) total_days_1,
+get_emp_bn_name_with_rank(ep.summary_authority_id)||chr(10)||
+get_com_lookup_bn_name(ep.summary_authority_designation_id)||chr(10)||
+case when ep.is_summary_behalf_of_commandant=true then 'পক্ষে কমান্ড্যান্ট' else 'পক্ষে ভারপ্রাপ্ত  কমান্ড্যান্ট' end authority, 
+(select  coalesce (sum(coalesce (total_days,0))) 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id in(10,41)) earned_leave,
+(select  coalesce (sum(coalesce(total_days,0)),0) 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id =11) ML_leave,
+(select  coalesce (sum(coalesce(total_days,0)),0) 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id =47) ML_leave_h,
+(select  coalesce (sum(coalesce(total_days,0)),0) 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id =42) LWP_leave,
+(select  coalesce (sum(coalesce(total_days,0)),0) 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id =34) MR_leave,
+(select  coalesce (sum(coalesce(total_days,0)),0) 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id =49) INJ_leave
+from hrm_employee_personal_information ep, hrm_employee_official_information eo 
+where 1=1
+and ep.id=eo.employee_id 
+and ep.id= $P{P_EMPLOYEE_ID}) q ) g 
+where 1=1
+]]>
+	</queryString>
+	<field name="employee_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="designation_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_name"/>
+	</field>
+	<field name="emp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_code"/>
+	</field>
+	<field name="joining_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="date_of_birth" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.label" value="date_of_birth"/>
+	</field>
+	<field name="reference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reference"/>
+		<property name="com.jaspersoft.studio.field.label" value="reference"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="retired_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="retired_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="retired_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="total_days" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_days"/>
+	</field>
+	<field name="after_leave" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="after_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="after_leave"/>
+	</field>
+	<field name="total_earn_leave" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_earn_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_earn_leave"/>
+	</field>
+	<field name="net_earn_leave" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="net_earn_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="net_earn_leave"/>
+	</field>
+	<field name="total_half_leave" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_half_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_half_leave"/>
+	</field>
+	<field name="half_leave_full" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="half_leave_full"/>
+		<property name="com.jaspersoft.studio.field.label" value="half_leave_full"/>
+	</field>
+	<field name="net_half_leave" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="net_half_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="net_half_leave"/>
+	</field>
+	<field name="authority" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="authority"/>
+		<property name="com.jaspersoft.studio.field.label" value="authority"/>
+	</field>
+	<field name="earned_leave" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="earned_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="earned_leave"/>
+	</field>
+	<field name="ml_leave" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="ml_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="ml_leave"/>
+	</field>
+	<field name="ml_leave_h" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="ml_leave_h"/>
+		<property name="com.jaspersoft.studio.field.label" value="ml_leave_h"/>
+	</field>
+	<field name="lwp_leave" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="lwp_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="lwp_leave"/>
+	</field>
+	<field name="inj_leave" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="inj_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="inj_leave"/>
+	</field>
+	<field name="mr_leave" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="mr_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="mr_leave"/>
+	</field>
+	<field name="bang_earn" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bang_earn"/>
+		<property name="com.jaspersoft.studio.field.label" value="bang_earn"/>
+	</field>
+	<field name="bang_half_leave" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bang_half_leave"/>
+		<property name="com.jaspersoft.studio.field.label" value="bang_half_leave"/>
+	</field>
+	<field name="cur_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cur_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="cur_date"/>
+	</field>
+	<variable name="total_leave" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{earned_leave}.intValue()+$F{ml_leave}.intValue()+$F{lwp_leave}.intValue()]]></variableExpression>
+	</variable>
+	<variable name="Vother_leave" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{mr_leave}.intValue()+$F{inj_leave}.intValue()]]></variableExpression>
+	</variable>
+	<variable name="net_leave" class="java.lang.Integer">
+		<variableExpression><![CDATA[(($F{total_days}.intValue()-$V{total_leave})/11)-$F{earned_leave}.intValue()]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="30" width="552" height="21" uuid="064341c2-332f-4cbd-9980-0682ac53fcb0"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নিরূপণকৃত ছুটির হিসাব বিবরণী  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="51" width="552" height="20" uuid="eafa63ee-d26f-440f-b91b-df4143060570"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name_bangla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="72" width="552" height="19" uuid="cde82248-2154-4f8a-92b0-7ce6f0139d78"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="91" width="552" height="20" uuid="966a3e8f-fc2e-49e2-93b9-1be4e7b01b57"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="16"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="397" y="0" width="51" height="18" uuid="7b51296d-e3ff-4ff2-954a-c5a1730af095"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রোড়পত্র 'ক']]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="398" y="20" width="155" height="20" uuid="aa8f2744-d542-49dc-818d-2cc9d58e8f88"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reference}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="399" y="40" width="154" height="20" uuid="1a1a3c48-5295-4fd4-bb04-8c726df2cc44"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cur_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="21">
+			<staticText>
+				<reportElement x="1" y="0" width="249" height="21" forecolor="#000000" uuid="2dd673c5-9fdc-4147-b823-11613aebf5de"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[This Report Is Generate By BOF ERP System]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="432" splitType="Stretch">
+			<textField pattern="d/M/yyyy" isBlankWhenNull="true">
+				<reportElement x="32" y="0" width="57" height="20" uuid="1044f628-4adf-4cbd-b640-21a3b0640059">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{joining_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="0" width="241" height="19" uuid="e7cd8328-1a4f-43db-8912-e96553f18706">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[তারিখ পর্যন্ত (লীপ ইয়ারসহ) চাকরিকাল =]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="30" height="20" uuid="18fbb9b0-da61-4014-9008-7ba779182d1b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[হতে]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="130" y="0" width="70" height="20" uuid="17a2b0ca-8b1f-4b8a-9b89-e712aeee1b97">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retired_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0;###0-" isBlankWhenNull="true">
+				<reportElement x="451" y="0" width="62" height="20" uuid="59891da9-244d-4342-ace4-fb358c10e0c8"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_days}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="513" y="1" width="28" height="19" uuid="c1364d6f-6fd5-47e7-8682-7bef8f765f39"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="19" width="120" height="20" uuid="0b059133-e390-4c0e-944e-99f51d026885"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ভোগকৃত অর্জিত ছুটি    ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="20" width="50" height="20" uuid="67ecceeb-a606-468c-83b5-8e30d3e3c6a4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{earned_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="32" y="39" width="165" height="20" uuid="852a9c91-4605-4e60-8c44-3bf7e79527c0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ভোগকৃত অর্ধ-অর্জিত ছুটি পূর্ণ বেতনে ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="19" width="40" height="20" uuid="44096850-33da-4f07-bd85-1d89a923fdd1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="39" width="40" height="20" uuid="92b864c3-4064-4d3d-8cd1-9bb6ac011bb3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="40" width="50" height="20" uuid="615b3f1b-4919-4f44-a07a-cf0f861ffbf4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ml_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="318" y="21" width="28" height="19" uuid="12870b59-d913-46b2-98d2-bcba0424a1ec"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="40" width="28" height="20" uuid="756fe7e2-b249-47e1-8323-528a4ff376e3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="59" width="180" height="20" uuid="713fd2dd-afdc-4d7f-a676-aa37e046c812"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[বিনা বেতনে ছুটি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="59" width="40" height="20" uuid="8efcaa4d-b976-4a69-8550-19f71ecfc3dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="122" width="316" height="1" uuid="2f5d7adf-084c-4279-a6c1-d293ccd91131"/>
+			</line>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="60" width="50" height="19" uuid="59dea8c4-c452-46a1-a692-5d67d8dea807"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lwp_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="319" y="60" width="28" height="18" uuid="c79f0599-b2e0-4cb0-8b57-1ccbe0d95a8d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="123" width="51" height="18" uuid="8c64a107-7e05-4d95-b97f-bc15ef5a6824"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_leave}.intValue()+$V{Vother_leave}.intValue()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="318" y="122" width="28" height="19" uuid="42c2faac-29ff-4569-bd64-294d769fa83d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="123" width="160" height="18" uuid="ec9c3e75-d5df-4286-89de-67e328a6f2e7"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[মোট ভোগকৃত ছুটি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="198" y="122" width="40" height="20" uuid="e4b05d20-053d-4a3e-ab0e-3b0d4b678a4a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="103" width="37" height="16" uuid="4b35b844-46ae-42d9-ba1e-659e5de1a00b"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="450" y="102" width="65" height="18" uuid="e6dc0fce-994c-42ca-95e6-6b85c0ca8da4"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="515" y="101" width="28" height="19" uuid="417528f7-8d06-49b4-a17a-62e82932b9a6"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<line>
+				<reportElement x="403" y="118" width="140" height="1" uuid="ced9ddcc-6242-4735-a1fe-be77dbd05d4d"/>
+			</line>
+			<textField pattern="###0;###0-" isBlankWhenNull="true">
+				<reportElement x="450" y="120" width="65" height="20" uuid="31ffe941-d2b4-4b3e-84dc-60c92a6c3b5c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{after_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="515" y="121" width="28" height="19" uuid="25b488d6-f7cd-433b-a242-199114a976df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="153" width="208" height="20" uuid="d0480385-234b-465a-ac1d-c30cc1755ad5"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পাওনা অর্জিত ছুটি 11 দিনে 1 দিন হিসাবে ]]></text>
+			</staticText>
+			<textField pattern="#,##0.###;(#,##0.###-)" isBlankWhenNull="true">
+				<reportElement x="31" y="173" width="49" height="20" uuid="b33fe603-3b90-4d44-8ff0-c0c3a81e8270"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{after_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="173" width="21" height="20" uuid="5a5a0a6f-d835-4134-841d-56f53853bec2"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[÷]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="173" width="23" height="20" uuid="799944b3-2ef0-409e-a323-4d5d15119463"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0-)" isBlankWhenNull="true">
+				<reportElement x="155" y="173" width="55" height="20" uuid="5ba18d11-72cb-4ee8-b8e5-0fa01c12b4ef"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_earn_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="173" width="28" height="19" uuid="b855e1b4-49e4-4976-ad41-e18a8cb5d7d5"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="153" width="255" height="20" uuid="73f90ff3-92ed-42da-aa6b-2f11e544b258"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পাওনা অর্ধ -অর্জিত ছুটি ১২  দিনে ১ দিন হিসাবে ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="173" width="30" height="20" uuid="3f0db4c5-937f-4b35-933c-3c3d4221bf01"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[11]]></text>
+			</staticText>
+			<textField pattern="#,##0.###;(#,##0.###-)" isBlankWhenNull="true">
+				<reportElement x="288" y="173" width="49" height="20" uuid="ad0cc140-4ace-4bfe-bde9-513fdd409100"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{after_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="339" y="172" width="21" height="20" uuid="fc2164b4-eac3-427f-a6f8-5d379aede7c7"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[÷]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="441" y="172" width="23" height="20" uuid="f584cb0b-c574-415c-8001-9a9897ea96b0"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0-)" isBlankWhenNull="true">
+				<reportElement x="464" y="172" width="58" height="20" uuid="7a8ea60b-82f6-4994-8110-29c7ed9351ea"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_half_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="522" y="172" width="22" height="20" uuid="0e726710-77b7-4de6-aaf4-356f0c84f890"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="363" y="172" width="30" height="20" uuid="740b1a0f-c078-44d3-bba3-b818720890db"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[12]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="193" width="100" height="20" uuid="227a3627-4f5a-49c0-bd83-b3ad5876faf8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ভোগকৃত অর্জিত ছুটি    ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="193" width="50" height="20" uuid="d5598362-08d2-4604-915e-db43c9119c1e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{earned_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="120" y="195" width="37" height="16" uuid="2797abe5-208f-4564-aa18-93e16bb12197"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="193" width="190" height="20" uuid="186d4332-99d9-4fde-829c-8649fc89ed1c"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ভোগকৃত অর্ধ-অর্জিত ছুটি:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="408" y="213" width="33" height="20" uuid="4d3cbe7e-6dd8-4fe5-9bf0-c3c10cf40cda"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ml_leave}*2]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="194" width="28" height="19" uuid="ac97c979-9503-4393-b84a-13a7245f00d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="521" y="213" width="23" height="20" uuid="1b29a11e-067c-4af7-8e75-c1cbf18f2a7f"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<line>
+				<reportElement x="30" y="261" width="250" height="1" uuid="2029a6de-3884-4119-a86c-fd56cc449e8b"/>
+			</line>
+			<line>
+				<reportElement x="307" y="262" width="236" height="1" uuid="abfdc5d0-daab-4f64-9215-8dd44dc70c1f"/>
+			</line>
+			<staticText>
+				<reportElement x="30" y="267" width="110" height="17" uuid="a01e36b2-805d-4bf6-b389-af038cceb64e"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নীট পাওনা অর্জিত ছুটি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="142" y="266" width="23" height="18" uuid="d6b30573-0893-4b8e-962e-7a683f454abc"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="318" y="268" width="130" height="18" uuid="ccefcdd1-b0af-4374-80eb-a43b8af25c8a"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নীট পাওনা অর্ধ -অর্জিত ছুটি  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="448" y="267" width="23" height="20" uuid="c27b89f0-e84b-43b5-9bcc-69815af5bb6f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="213" width="49" height="20" uuid="b6f799af-b8f1-4279-8aac-12acbfe69ade">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পূর্ণ বেতনে ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="338" y="213" width="50" height="17" uuid="c59049d7-f108-471c-bc2c-488d6f43ebde"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$F{ml_leave}+"×"+2+")"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="385" y="213" width="23" height="17" uuid="aa9f2303-ffa4-41d7-88db-8ee508c9fd32"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="474" y="213" width="47" height="20" uuid="64048dc7-c193-47c5-b7f8-b0f7c60ac024"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ml_leave}*2]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="441" y="215" width="30" height="16" uuid="c04cefc8-ad32-4177-a931-4096cf1e0067"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0-)" isBlankWhenNull="true">
+				<reportElement x="470" y="266" width="57" height="20" uuid="ce9fb231-b7ee-4578-99c4-649f9eb824c0"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{net_half_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="526" y="267" width="20" height="19" uuid="748e8a9f-28ec-4a50-9b6c-5974e11a84f4"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<textField pattern="#,##0;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="165" y="266" width="45" height="18" uuid="cccf12ab-870e-4b7b-82b2-85fa3568b576"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{net_earn_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="210" y="266" width="28" height="19" uuid="83c81bf5-bad4-4876-bc21-840982ca0623"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="233" width="51" height="20" uuid="5e8e0701-e655-466e-996a-5a85789d4e54"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[অর্ধ-বেতনে ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="233" width="23" height="20" uuid="91960bee-c02d-488e-8194-23059654612c"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="339" y="233" width="49" height="20" uuid="16783cc6-4f86-40ea-b48b-8bb21bc20aa3"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$F{ml_leave_h}+"×"+1+")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="408" y="236" width="33" height="17" uuid="10ecf30b-356c-4ce0-9afd-ec879a7d949d"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ml_leave_h}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="444" y="235" width="26" height="16" uuid="3502657c-09dd-488d-a3a4-2271544cf0c2"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="474" y="233" width="47" height="20" uuid="02d07ed4-5084-436d-9d91-3f149ccbfa11"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ml_leave_h}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="521" y="233" width="23" height="20" uuid="d809da81-1f65-49c8-9102-e5cd951874f1"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="79" width="100" height="19" uuid="9a58eb1a-928c-4f5d-a1d6-d73cb6378fbf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[মাতৃত্বকালীন ছুটি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="79" width="40" height="20" uuid="487cfad2-0496-49ec-9073-3d02f3d98654"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="99" width="40" height="20" uuid="384e5309-6d69-47ab-ab8b-6a178fbeb584"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[=]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="98" width="100" height="19" uuid="d8d5edf4-ecff-4ec6-b659-7e470f17d058"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[আহত জনিত ছুটি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="319" y="79" width="28" height="19" uuid="eccb83a1-451b-4b55-9f42-32b06dee1a7a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="79" width="50" height="20" uuid="d10ab9c7-91da-4738-a390-880aa206d2cc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mr_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="318" y="99" width="29" height="19" uuid="681653c3-8ef8-4b2a-bc03-bc93e84c8b82"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দিন]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="268" y="99" width="50" height="19" uuid="15f5adb9-4de1-484e-b632-8455cea83009"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inj_leave}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="408" y="374" width="145" height="58" uuid="c51010b9-d946-411b-b3c8-aacc8339cadd"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{authority}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="287" width="250" height="24" uuid="612ab2e6-88a2-4657-b1d1-3539d19bd79d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বা, "+$F{bang_earn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="307" y="287" width="239" height="24" uuid="3fa55e1f-c23b-42c4-942f-cb3d3b95818a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বা, "+$F{bang_half_leave}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="403" y="121" width="45" height="19" uuid="33a7351e-5f5c-4ba4-9e48-48c759e7c1d9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[মোট]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

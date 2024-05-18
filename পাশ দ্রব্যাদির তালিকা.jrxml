@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="পরিদর্শনাধীন_দ্রব্যের_তালিকা_আইএসআই_এবং_আইএএন্ডই_এর_সামারি" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="003dcb1f-7309-4c34-9489-9208f17de4cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_IBCS"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+ TO_CHAR(imsrm.MI_SLIP_DATE, 'DD/MM/YYYY') AS MI_SLIP_DATE,
+ imsrd.item_name,
+ mim.ITEM_SPECIFICATION,
+ imsrm.supply_order_number,
+ TO_CHAR(imsrm.supply_order_date, 'DD/MM/YYYY') AS supply_order_date,
+ imsrd.uom,
+ imsrd.receive_qty,
+ imsrd.unit_price,
+ imsrd.total_price,
+ imsrm.supplier_name,
+ imsrm.mi_slip_no,
+ imsrd.accept_qty,
+ imsrd.reject_qty
+
+from INV_MI_SLIP_REGISTER_DETAILS imsrd
+left join INV_MI_SLIP_REGISTER_MASTER imsrm on imsrd.master_id = imsrm.id 
+left join MC_ITEM_MASTER mim on imsrd.FOLIO_NO_ID = mim.id
+
+where 
+(DATE(imsrm.MI_SLIP_DATE) between coalesce(  $P{P_FROM_DATE}  , DATE(imsrm.MI_SLIP_DATE)) and coalesce(  $P{P_TO_DATE}  , DATE(imsrm.MI_SLIP_DATE)))]]>
+	</queryString>
+	<field name="mi_slip_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mi_slip_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="mi_slip_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_master"/>
+	</field>
+	<field name="item_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<field name="item_specification" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item_specification"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_specification"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mc_item_master"/>
+	</field>
+	<field name="supply_order_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="supply_order_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="supply_order_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_master"/>
+	</field>
+	<field name="supply_order_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="supply_order_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="supply_order_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_master"/>
+	</field>
+	<field name="uom" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="uom"/>
+		<property name="com.jaspersoft.studio.field.label" value="uom"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<field name="receive_qty" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="receive_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="receive_qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<field name="unit_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="unit_price"/>
+		<property name="com.jaspersoft.studio.field.label" value="unit_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<field name="total_price" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_price"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_price"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<field name="supplier_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="supplier_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="supplier_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_master"/>
+	</field>
+	<field name="mi_slip_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mi_slip_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="mi_slip_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_master"/>
+	</field>
+	<field name="accept_qty" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="accept_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="accept_qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<field name="reject_qty" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="reject_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="reject_qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_mi_slip_register_details"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="10" width="800" height="30" uuid="e4d538d3-cbf2-42a2-98e2-db321c208298"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পাশ দ্রব্যাদির তালিকা ( " + ( $P{P_FROM_DATE} != null ? $F{mi_slip_date}: "" ) + " হতে "+ ( $P{P_TO_DATE} != null ? $F{mi_slip_date}: "" )  + " তারিখ পর্যন্ত)"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="30" uuid="4e6d1b97-ecb4-47f5-ac5a-b7aeabf843c1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="38d4fd20-ab34-4688-a8e9-86c5bc97be65"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গ্রহণের তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="82" height="30" uuid="f6bf8e75-a805-4ed9-9334-4db7070c993f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bb433bac-2d13-4bf0-90b7-7a708a5bb811"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[দ্রবের নাম ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="122" y="0" width="61" height="30" uuid="659ad91e-459f-46ae-83cc-8fd800b9a452">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="705f49a4-9510-4ecf-a489-acfcfe8a2359"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ সঃ আঃ নং ও তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="0" width="30" height="30" uuid="8318bcb3-7994-4959-8171-38da15523a32">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fed6e671-4ebd-4a25-b8c9-0fc3e71fa792"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[একক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="213" y="0" width="53" height="30" uuid="df833e55-a2c2-4c69-affb-26c36486f572">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2a145e49-4b50-42f2-9745-633402857d32"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গ্রহণের পরিমাণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="266" y="0" width="59" height="30" uuid="a3334a67-d602-49ae-b0bb-d2625a409799">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b755b767-6516-45bd-b652-4606b1d5603d"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[দর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="325" y="0" width="65" height="30" uuid="4967ff40-a49b-4bbf-b2b7-b6ebfee77333">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a4ee532-2a3d-4046-85ce-91d13f5cbaa8"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট মূল্য]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="85" height="30" uuid="f5dd5576-1b3e-4239-9c0b-c737d43e2e2a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc05ebe2-7d09-4a7a-a758-968d19dea33a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সরবরাহকারী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="515" y="0" width="85" height="30" uuid="e7f8c331-3d0f-4f48-b946-2f9cea32e018">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2751570-7ef9-4b2e-b817-a8cf6754f22c"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[এমআইস্লিপ নং ও তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="475" y="0" width="40" height="30" uuid="39fe676e-62b9-4a9c-a084-a917561c997e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc05ebe2-7d09-4a7a-a758-968d19dea33a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মজুদের স্থান]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="0" width="70" height="30" uuid="a047b5ba-7481-4e0c-a44c-91846821dd95">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc05ebe2-7d09-4a7a-a758-968d19dea33a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পাশ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="670" y="0" width="70" height="30" uuid="af04daa7-ac45-45a5-bf0a-16d564090816">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc05ebe2-7d09-4a7a-a758-968d19dea33a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রত্যাখ্যাত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="740" y="0" width="61" height="30" uuid="c38437e4-89f6-48de-a963-d7c194b735fe">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc05ebe2-7d09-4a7a-a758-968d19dea33a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পাশের তারিখ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField pattern="dd-MM-yy" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="40" height="40" isPrintWhenDetailOverflows="true" uuid="83881c8f-f6ba-4524-bdf1-f95e55a894e8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="38d4fd20-ab34-4688-a8e9-86c5bc97be65"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mi_slip_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="82" height="40" isPrintWhenDetailOverflows="true" uuid="27c84c30-4809-4808-b2fb-8872e72f4892">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bb433bac-2d13-4bf0-90b7-7a708a5bb811"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{item_specification}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="122" y="0" width="61" height="19" isPrintWhenDetailOverflows="true" uuid="f8cd252e-b148-4547-9c3f-9fe2630810eb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="705f49a4-9510-4ecf-a489-acfcfe8a2359"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supply_order_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="183" y="0" width="30" height="40" isPrintWhenDetailOverflows="true" uuid="48d6aa4b-1152-485b-9ce0-3c5d22b1049b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2a145e49-4b50-42f2-9745-633402857d32"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{uom}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.#####;(#,##0.#####-)" isBlankWhenNull="true">
+				<reportElement x="213" y="0" width="53" height="40" isPrintWhenDetailOverflows="true" uuid="d51c56dc-4647-4c33-8eac-8321d1993fe9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b755b767-6516-45bd-b652-4606b1d5603d"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{receive_qty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#00.00#;(#00.00#-)" isBlankWhenNull="true">
+				<reportElement x="266" y="0" width="59" height="40" isPrintWhenDetailOverflows="true" uuid="7e27f853-6903-4109-b10e-bd01015bcf99">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a4ee532-2a3d-4046-85ce-91d13f5cbaa8"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unit_price}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#00.00#;(#00.00#-)" isBlankWhenNull="true">
+				<reportElement x="325" y="0" width="65" height="40" isPrintWhenDetailOverflows="true" uuid="3e1cab33-e4b6-4662-9363-f867e451b5d8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dc05ebe2-7d09-4a7a-a758-968d19dea33a"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_price}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="390" y="0" width="85" height="40" isPrintWhenDetailOverflows="true" uuid="93b3eac3-6811-45fb-8dc0-85181e252e07">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2751570-7ef9-4b2e-b817-a8cf6754f22c"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supplier_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="515" y="0" width="85" height="18" isPrintWhenDetailOverflows="true" uuid="939f57b1-54cb-4eb9-a764-7ee564b59d1b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5ca82c1c-93c7-4801-99db-78ce38a3dc3a"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mi_slip_no}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yy" isBlankWhenNull="true">
+				<reportElement x="122" y="19" width="61" height="21" isPrintWhenDetailOverflows="true" uuid="44d50204-9544-4521-afe7-7f09623a79d8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fed6e671-4ebd-4a25-b8c9-0fc3e71fa792"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{supply_order_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="515" y="18" width="85" height="22" isPrintWhenDetailOverflows="true" uuid="0770d31c-9148-47cb-8614-44de40cd0165">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="38d4fd20-ab34-4688-a8e9-86c5bc97be65"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mi_slip_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="475" y="0" width="40" height="40" isPrintWhenDetailOverflows="true" uuid="15c7c557-513c-474a-91b7-bf2c96c166c4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2751570-7ef9-4b2e-b817-a8cf6754f22c"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)" isBlankWhenNull="true">
+				<reportElement x="600" y="0" width="70" height="40" isPrintWhenDetailOverflows="true" uuid="ac0cc066-6526-49c5-9fb8-92b338a91e7c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2751570-7ef9-4b2e-b817-a8cf6754f22c"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{accept_qty}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0.###-)" isBlankWhenNull="true">
+				<reportElement x="670" y="0" width="70" height="40" isPrintWhenDetailOverflows="true" uuid="23bbd925-fd3f-44b2-852f-6b7a05fd2347">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2751570-7ef9-4b2e-b817-a8cf6754f22c"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reject_qty}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="740" y="0" width="61" height="40" isPrintWhenDetailOverflows="true" uuid="e48c8564-57db-4eee-91b1-551b1449a34c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e2751570-7ef9-4b2e-b817-a8cf6754f22c"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

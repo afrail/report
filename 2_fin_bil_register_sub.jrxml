@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_fin_bil_register_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="94a0fc77-9aea-467a-9847-e577d19afa50">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[ZmluX3JlZ2lzdGVyX2Jvb2tfbWFzdGVyICw1NjEsMTk1LDI0YjUwNzZjLTE5ZmUtNGQyNy05ZmY3
+LWNlZmZhYTlmZjEwYztmaW5fcmVnaXN0ZXJfZW50cnkgLDI4NSwxNSxiOTlkODJlMS00NjllLTQ4
+MWMtYWEwZC0yZjRlNWU4OWQ0Zjc7ZmluX3JlZ2lzdGVyX2Jvb2tfZGV0YWlscyAsMTUsMTc3LGUx
+YmFlNDBkLWNhMzEtNDE4Yi04OTY3LWRkOGMyMDY1OTUwYjs=]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_PRO"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_FIN_REGISTER" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT string_agg(distinct get_fin_com_lookup_bn_name( frbd.bill_type_id),',') BILL_NAME
+FROM fin_register_entry a,
+	fin_register_book_master b,
+	fin_register_book_details frbd
+WHERE 
+	 1 = 1 
+	 AND a.register_book_master_id = b.id 
+	 AND frbd.master_id = b.id 
+	 AND a.register_date BETWEEN $P{P_FROM_DATE} AND $P{P_TO_DATE} 
+	 AND b.id = $P{P_FIN_REGISTER}
+	 group by a.register_book_master_id,frbd.master_id]]>
+	</queryString>
+	<field name="bill_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bill_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_name"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="51" y="0" width="410" height="30" uuid="e515e450-a3f7-4b38-8644-fe6ad96a5b2c"/>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="50" height="30" uuid="6ff3a152-bb37-47a5-be27-c28e0c440ae5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[বিলের নামঃ]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

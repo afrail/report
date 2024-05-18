@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pension_on_progress" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1de181b-fc67-46f5-95c5-ef9cca55117d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="463"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="523"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_REMARKS" class="java.lang.String"/>
+	<parameter name="pension_on_progress_sub1" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+(select count(*)total   from hrm_employee_personal_information hepi ,
+hrm_employee_official_information heoi 
+where 1=1
+and hepi.id=heoi.employee_id
+and heoi.is_civil=true
+and heoi.employee_type_id=36
+AND DATE(hepi.lpr_date) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE})prl_count,
+(SELECT count(*)total
+FROM FIN_PENSION_APPLICATION_INFORMATION FPAI ,FIN_PENSION_AMOUNT FPA 
+WHERE 1=1
+AND FPAI.ID=FPA.PENSION_APPLICATION_INFORMATION_ID 
+AND DATE(REGISTRATION_DATE) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE} 
+and form_type_id=1
+AND FPAI.IS_CONFIRM =1)pension_case_complete,
+(SELECT count(*)total
+FROM FIN_PENSION_APPLICATION_INFORMATION FPAI ,FIN_PENSION_AMOUNT FPA 
+WHERE 1=1
+AND FPAI.ID=FPA.PENSION_APPLICATION_INFORMATION_ID 
+AND DATE(REGISTRATION_DATE) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE}
+and form_type_id=1
+AND FPAI.IS_CONFIRM =2)pension_case_runing,
+(SELECT count(*)total
+FROM FIN_PENSION_APPLICATION_INFORMATION FPAI ,FIN_PENSION_AMOUNT FPA 
+WHERE 1=1
+AND FPAI.ID=FPA.PENSION_APPLICATION_INFORMATION_ID 
+AND DATE(REGISTRATION_DATE) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE}
+and form_type_id=1
+AND FPAI.IS_CONFIRM =3
+) pension_case_Pending]]>
+	</queryString>
+	<field name="prl_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="prl_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="prl_count"/>
+	</field>
+	<field name="pension_case_complete" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pension_case_complete"/>
+		<property name="com.jaspersoft.studio.field.label" value="pension_case_complete"/>
+	</field>
+	<field name="pension_case_runing" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pension_case_runing"/>
+		<property name="com.jaspersoft.studio.field.label" value="pension_case_runing"/>
+	</field>
+	<field name="pension_case_pending" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pension_case_pending"/>
+		<property name="com.jaspersoft.studio.field.label" value="pension_case_pending"/>
+	</field>
+	<variable name="prl_count1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{prl_count}]]></variableExpression>
+	</variable>
+	<variable name="pension_case_complete1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{pension_case_complete}]]></variableExpression>
+	</variable>
+	<variable name="pension_case_runing1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{pension_case_runing}]]></variableExpression>
+	</variable>
+	<variable name="pension_case_pending1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{pension_case_pending}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="111" splitType="Stretch">
+			<textField>
+				<reportElement x="-3" y="60" width="560" height="30" uuid="8d9f4e78-1b08-4ed5-b30a-5bba6f0dc81e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{P_TO_DATE}==null || $P{P_FROM_DATE}.equals("") || $P{P_TO_DATE}==null || $P{P_TO_DATE}.equals("") ? "সম্পূর্ন তথ্য" :
+(
+""
+ +
+new java.text.SimpleDateFormat("yyyy").format($P{P_FROM_DATE})
++" থেকে "+
+new java.text.SimpleDateFormat("yyyy").format($P{P_TO_DATE})
++" সাল পর্যন্ত পেনশন কার্যক্রমের হিসাব বিবরণী "
+)
+)]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="232" y="0" width="100" height="30" uuid="a040e76f-09e2-4bc5-838d-dd1dfe952f77"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বিওএফ/পেনশন শাখা]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="456" y="7" width="100" height="30" uuid="cdff69e7-bef9-40d1-ae3c-1b68a16df6f6"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["তারিখ: "+
+new java.text.SimpleDateFormat("dd-MMM-yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<summary>
+		<band height="284" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="47" width="90" height="83" uuid="fd82097d-3a13-49d2-ab51-3c6e9d53e84b"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{prl_count1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="47" width="80" height="83" uuid="d7e5bb7e-92fe-422c-a5a0-c24202bc24de"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pension_case_complete1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="47" width="120" height="83" uuid="3b79aa7f-8c17-4bcb-ac04-94fbb45ceca6"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pension_case_runing1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="47" width="120" height="83" uuid="21553df7-7de2-4d0e-ae43-e167c2bef50d"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prl_count}-($F{pension_case_complete}+$F{pension_case_runing})]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="500" y="47" width="60" height="83" uuid="cc28aa5c-2c26-4bef-8650-6952accc903e"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_REMARKS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="90" height="30" uuid="5caab297-b424-46a7-a582-7f4c2ae7129e"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পিআরএল সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="90" height="17" uuid="5ff5674e-2e5e-453c-975e-d4bcca4cecf3"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(১)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="80" height="30" uuid="5965774a-3de6-4e1a-8e1c-7c362ea1630b"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পেনশন কেইস নিষ্পত্তির সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="30" width="80" height="17" uuid="767a3190-1693-4126-86c9-ba293a96c6a7"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(২)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="120" height="30" uuid="c543ac78-d997-4ae8-9c48-38adfdab451b"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পেনশন কেইস প্রক্রিয়াধীন সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="30" width="120" height="17" uuid="c3b4576f-5a3f-4887-b7f9-2ef30a09cc90"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(৩)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="0" width="120" height="30" uuid="b2b4aab3-5445-43f2-9ac0-c77e5fb67ad2"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অবশিষ্ট সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="30" width="120" height="17" uuid="23548fcc-0aed-4945-8a7f-03cb7365bc3a"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(৪)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="90" height="30" uuid="ab9f8ded-768b-4ebd-9c8b-339798629c91"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অনিষ্পন্ন পেনশন কেইস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="30" width="90" height="17" uuid="07ca7c45-ae0e-4547-ad0a-96fd8bfe7065"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(৫)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="0" width="60" height="30" uuid="e323b724-22d7-4295-8d9a-29ecf2a34d27"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মন্তব্য]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="30" width="60" height="17" uuid="17793e1f-5138-4378-99b3-489753a12699"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(৬)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="47" width="90" height="83" uuid="8a6c4abd-9139-4073-ba51-124005abc733"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pension_case_pending}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="151" width="560" height="30" uuid="55dcd806-4ee3-41f5-b11b-40c7bf785b4b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{P_TO_DATE}==null || $P{P_FROM_DATE}.equals("") || $P{P_TO_DATE}==null || $P{P_TO_DATE}.equals("") ? "সম্পূর্ন তথ্য" :
+(
+""
+ +
+new java.text.SimpleDateFormat("yyyy").format($P{P_FROM_DATE})
++" থেকে "+
+new java.text.SimpleDateFormat("yyyy").format($P{P_TO_DATE})
++" সাল পর্যন্ত পারিবারিক পেনশন কার্যক্রমের হিসাব বিবরণী "
+)
+)]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-12" y="188" width="541" height="96" uuid="5602d806-ee38-4b77-9a36-67f52ad4a12d"/>
+				<subreportParameter name="P_FROM_DATE">
+					<subreportParameterExpression><![CDATA[$P{P_FROM_DATE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_TO_DATE">
+					<subreportParameterExpression><![CDATA[$P{P_TO_DATE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_REMARKS">
+					<subreportParameterExpression><![CDATA[$P{P_REMARKS}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pension_on_progress_sub1}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

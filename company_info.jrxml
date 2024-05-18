@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="training_center_application" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ed02870a-6b79-4e0e-b1fe-61f3390a65cd">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM public.company_information
+ORDER BY id ASC]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="active" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="active"/>
+		<property name="com.jaspersoft.studio.field.label" value="active"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="entry_app_user_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="entry_app_user_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="entry_app_user_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="entry_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="entry_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="entry_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="entry_user" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="entry_user"/>
+		<property name="com.jaspersoft.studio.field.label" value="entry_user"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="update_app_user_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="update_app_user_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="update_app_user_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="update_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="update_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="update_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="update_user" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="update_user"/>
+		<property name="com.jaspersoft.studio.field.label" value="update_user"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="bangla_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="company_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="company_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="company_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="logo_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="logo_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="logo_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="logo_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="logo_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="logo_url"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="company_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="100" splitType="Stretch">
+			<textField>
+				<reportElement x="380" y="0" width="170" height="20" uuid="b51f4cbc-47e2-4b3a-8fec-6bdf546b905e"/>
+				<textElement>
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="20" width="170" height="20" uuid="db3c7531-88ea-4b3a-b601-2481d6754cf1"/>
+				<textElement>
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="40" width="170" height="20" uuid="851ee3a1-56da-481e-8984-0a444d2f3b05"/>
+				<textElement>
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[ওয়েব:  www.bof.gov.bd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="60" width="170" height="20" uuid="24f047b4-1022-4e98-90b6-8456f938d887"/>
+				<textElement>
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[ই-মেইল : info@bof.gov.bd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="80" width="170" height="20" uuid="5bbc1572-66cc-44c2-be3e-36896a87575f"/>
+				<textElement>
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[ফোন : ]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

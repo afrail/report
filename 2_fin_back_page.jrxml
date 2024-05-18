@@ -1,0 +1,797 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_fin_back_page" pageWidth="612" pageHeight="1008" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0f8c425d-ba42-439b-b1b5-d985253431ea">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-erp-local"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="Empty Dataset1" uuid="586cb06f-cdb6-4ac2-ba12-e85b7af690ca"/>
+	<subDataset name="Dataset1" uuid="fe9af3a3-bf9b-43f1-bea5-5e090b6d1578">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="870" splitType="Stretch">
+			<staticText>
+				<reportElement x="210" y="0" width="131" height="20" uuid="0fcd15f3-20ce-48d8-84f5-e46a6406a9c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নির্দেশাবলী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="570" height="120" uuid="ea98f758-1eff-4fd3-8ddf-8fd8825bd803"/>
+				<textElement textAlignment="Justified">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[	১। সকল পরিবর্তন অবশ্যই সত্যায়িত হইতে হইবে। (মূল রসিদ একইভাবে উল্লেখ করিতে হইবে এবং সকল নির্ধারিত প্রত্যয়নপত্র/দলিলাদি দাবীপত্রের সমর্থনে পেশ করিতে হইবে।)
+	২। অন্যান্য ব্যয়ের অনুমোদুনের নম্বর এবং তারিখ অবশ্যই উল্লেখ করিতে হইবে এবং দাবীপত্রের সমর্থনে নির্ধারিত প্রত্যায়নপত্র অথবা দলিলাদি পেশ করিতে হইবে। সকল অর্থ প্রদানের জন্য মূল রসিদ (প্রয়োজন অনুসারে অনূদিত) সংযোজন করিতে হইবে ; কিন্তু যদি অর্থে পরিমাণ ২৫.০০ টাকা বা কম হয় এবং সামরিক প্রকৌশল কাজের জন্য ঠিকাদারদের রানিং একাউন্টে অর্থ প্রদানের রসিদ নয়, পূর্ববর্তী পাতার প্রত্যায়নপত্রই যথেষ্ট।
+	৩। আনুষঙ্গিক বিলে সমরাস্ত্র সরবরাহের কোন দ্রব্যের ক্রয় বা মেরামতের জন্য এবং স্থানীয়ভাবে ছোট-খাট সরবরাহের শ্রম এবং সরঞ্জামের বর্তমান স্থানীয় মূল্য বা ইহা যদি সংগ্রহযোগ্য না হয় পূর্ব্বর্তী পৃষ্ঠার সত্যায়নপত্রে যে হার দাবী করা হইয়াছে, তাহা নিম্নতম প্রাপ্তব্য, ইহাতে স্বাক্ষর করিতে হইবে বা স্থায়ী আদেশে উল্লেখ করিতে হইবে। স্থানীয় ক্রয় বিলও অবশ্যই প্রত্যায়ন করিবে যে, হিসাবযোগ্য যে কোন দ্রব্য ইকুইপমেন্ট লেজারে লওয়া হইয়াছে। 
+	৪। নূতন প্রবেশীদের রেল ভাড়ার জন্য দবীপত্রে তাহাদের নাম এবং তালিকাভুক্তির তারিখের বিবরণ দিতে হইবে।
+	৫। কোন লােক ফারলাে ছুটিতে গেলে তাহার রেলভাড়া দাবীপত্রের সমর্থনে সর্বদিক দিয়া সুষ্টুভাবে সম্পূর্ণ করিয়া বি.এস.এফ.টি. -১৭২০ দাখিল করিতে হইবে।
+	৬। নিম্নে বর্ণিত বিভিন্ন ব্যয় এবং একই প্রকৃতির যে কোন ব্যয় যাহার জন্য কোন নির্দিষ্ট ফর্ম নাই, এই ফর্মে এগিয়ে আনিতে হইবে।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="143" width="185" height="20" uuid="416efe93-b08e-4cb5-bf23-94e894a49ed7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ব্যয়ের প্রকৃতি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="143" width="200" height="20" uuid="705295e0-94dc-469e-8b9c-3b0d1bc7324d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ব্যয়ের প্রকৃতি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="143" width="185" height="20" uuid="d54b0f89-7fcb-4a8f-b24f-7d8244820096">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রয়োজনীয় ভাউচার এবং তথ্যসমূহ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="163" width="185" height="467" uuid="c4b87425-bfab-46f3-83da-2b3c072696dd">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[একজন নিযুক্ত অফিসারের ভাতা এবং সামরিক আদালতের একজন দোভাষীর ভাতা ইত্যাদি। (ক), (খ), (গ)
+
+ডি. জে. এডভোকেট জেনারেল হিসাবে একজন ভারপ্রাপ্ত অফিসারের ভাতা (ক), (খ)
+
+খালি কার্তুজ বাক্স সংগ্রহের জন্য ভাতা (ঝ)
+
+সেনা সিগন্যাল সরঞ্জাম গ্যারিশন ইন্ট্রাকশন কেন্দ্রের জন্য পুস্তক ক্রয়। (ঘ) পুস্তক (হাসপাতাল), বাঁধাই খরচ।
+
+ক্ষেপণক্ষেত্র হইতে উদ্ধাকৃত পিতল, তামা যাহা গুদামে ফেরত লওয়া হইয়াছে। (ঝ) স্বয়ংক্রিয় পিস্তল (ঞ)
+
+সেনানিবাস হাসপাতাল খালি ব্যারাকের চৌকিদারদের জন্য সাহায্যের মঞ্জুরী বেতন, ক্ষতিপূরণ। (ঘ)
+
+কোরের কিছু ক্ষতির জন্য ক্ষতিপূরণ। (ঘ) পলাতক (সৈনিকের বাংলাদেশ) পলায়ন পূর্বকালের দৈনিক খাদ্যের খরচ। সংস্থাপন গরম আবহাওয়া। (খ)
+
+সমরাস্ত্র সরঞ্জাম, পরিখ, রাস্তা, সেতু নির্মাণকারী সেনা এবং বিস্ফোরক স্থাপনকারী সেনা। বার্ষিক মেরামত ও পুনরীকরণ।  (জ)
+
+সরঞ্জাম রেজিমেন্ট কর্তৃক চিহ্নিতকরণের ব্য।  (ট)
+
+ভাষা পরিষদের সভাপতির জন্য দর্শনী।
+
+ভাল ব্যবহার ও দীর্ঘ চাকুরীর জন্য এককালীন দান।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="163" width="200" height="467" uuid="dab9f401-88c6-4099-8608-fdabe9db7cec">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[হাসপাতাল (বৃটিশ এবং বাংলাদেশ সৈন্যদল)।
+
+হাসপাতাল সরবরাহ এবং সরঞ্জাম এবং মাদকদ্রব্যের স্থানীয় ক্রয় খরচ। (ছ)
+
+হাসপাতাল (বাংলাদেশ সৈন্যদল), খাদ্যসামগ্রী এবং সরবরাহের ব্যয়। (ছ)
+
+হাসপাতাল (বাংলাদেশ সৈন্যদল), বিছানাপত্র ধৌতকরণের ব্যয়।
+
+সীসা (পুরাতন), গুদামে ফেরত দেওয়া হইয়াছে। (ঝ)
+
+ডুবোজাহাজ প্রতিরক্ষার জন্য সরঞ্জাম। (ব)
+
+ছদ্মবেশ ধারণ ভাতা। (চ)
+
+সমরাস্ত্র লাইন গীয়ার রেজিমেন্ট কর্তৃক ক্রয়। (ন)
+
+সমরাস্ত্র সরঞ্জাম, অর্থ প্রদানের মাধ্যমে প্রাপ্ত এবং পরবর্তীকালে ভান্ডারে ফেরত দেওয়ার মূল্য ফেরত (ঝ) (ঠ)
+
+সমরাস্ত্র সরঞ্জাম রেজিমেন্ট কর্তৃক মেরামতের ব্যয়।
+
+অবসর ভাতা, ইহার বিক্রয়মূল্য যুদ্ধে অধিকৃত দ্রব্যের কারখানা।
+
+আর এইচ-এর সমরাস্ত্র গাড়ি বা গোলন্দাজ বাহিনী এবং হেভী ব্যাটারী মুদ্রণ পুরষ্কার। (ক)
+
+রেজিমেন্ট কর্তৃক বালির বস্তা প্রস্তুত। (খ)
+
+যে স্টেশনে স্টেশন স্টাফ অফিসারের অনুমোদন না সেই স্টেশনে ভারপ্রাপ্ত এস. এস. ও কর্তৃক স্টেশনারী খরচ বাংলাদেশী শ্রেণীর স্টেশনারী।
+
+বিছিন্ন বৃটিশ সৈন্যদলের স্টেশনারী।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="163" width="185" height="467" uuid="9439254a-7ced-4b39-84fa-9cd736f078c2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0"/>
+					<bottomPen lineWidth="2.0"/>
+				</box>
+				<textElement textAlignment="Justified">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[(ক) নিযুক্তির আদেশনামার নম্বর এবং তারিখ বিলে উল্লেখ করিতে হইবে।
+
+(খ) কর্মে নিয়োজিত প্রকৃত সময় এবং বহিঃ স্টেশনে পৌঁছানো সেই স্টেশন থেকে ফেরত আসার সময় ওতারিখ বিলে উল্লেখ করিতে হইবে।
+
+(গ) সংশ্লিষ্ট অফিসার আদালতের সভ্য ছিলেন না, এই
+মর্মে প্রত্যায়নপত্র।
+(ঘ) যোগ্য অর্থ সম্বন্ধীয় কর্তৃপক্ষের মঞ্জুর।
+
+(ঙ) পুরস্কার মঞ্জুরীর সেনা আদেশনামা বা বাংলাদেশ সেনা-আদেশনামার নম্বর এবং তারিখ উল্লেখ করিতে হইবে এবং প্রাপকের টিকেট বাবদ দারীপত্রের সমর্থনে দিতে হইবে।
+
+(চ) যে সব সৈনিকবৃন্দ বার্ষিক ছদ্মবেশ ধারণ শিক্ষাকাল সমাপ্ত করিয়াছেন তাহাদের সংখ্যার বিবরণ দিতে হইবে।
+
+(ছ) বিল এ. ডি. ডি. জ এম. এস. দ্বারা প্রতিস্বাক্ষরিত হইতে হইবে। 
+
+(জ) হিসাবাধীন দ্রব্যসমূহ ইকুইপমেন্ট লেজারে লিপিবদ্ধ করা হইয়াছে বা হইবে এই মর্মে প্রত্যায়নপত্র।
+
+(ঝ) সমরাস্ত্র অফিসারের মূল রসিদ।
+
+(ঞ) এই মর্মে প্রত্যায়নপত্র যে অস্ত্রাদি শেষ স্বয়ংক্রিয় করার পর দুই বৎসর অতিবাহিত হইয়াছে ।
+
+(ট) অর্পণ ভাউচারের নং ও তারিখ যাহাতে দ্রব্যসমূহ প্রাপ্ত হইয়াছে বিলে লিপিবদ্ধ করিতে হইবে।
+
+(ঠ) মূল্য নির্ধারণ বিবরণীর নম্বর এবং তারিখ মাহাতে মূল্য ব্যয় সরকারি খাতে জমা হইয়াছে; বিলে উল্লেখ করিতে হইবে।
+
+(ড) সমরাস্ত্র অফিসারের মঞ্জুরীকৃত আনুমানিক হিসাব।
+
+(ঢ) মাসের হিসাব যাহার মধ্যে একই ধরনের সর্বশেষ ব্যয় করা হইয়াছিল, লিপিবদ্ধ করিতে হইবে এবং দাবীপত্রের বি. এ. এফ. এন. ১২৭১-এর মাধ্যমে বিশদ বিবরণ দ্বারা সমর্থন করিতে হইবে।
+
+(ণ) প্রথম বিলে স্টেশন আদেশনামার নং এবং তারিখ যাহার দ্বারা ব্যয় অনুমোদনের ক্ষমতা দেওয়া হইয়াছে, তাহা অবশ্যই উল্লেখ করিতে হইবে।
+
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="635" width="356" height="30" uuid="350db9a4-7d95-4b04-a9ca-5a8d5f136331"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(সামরিক হিসাব বিভাগের ব্যবহারের জন্য)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="657" width="356" height="30" uuid="92d6f895-da09-4cc7-8e12-05504057f05f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রাপ্তি এবং ব্যয়ের শ্রেণীবিন্যাস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="690" width="110" height="20" uuid="105b4aa9-8fba-4b0f-b9e9-16261feac27f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[মাস.......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="690" width="125" height="20" uuid="b01cceb4-ec67-4493-b198-0cc0fc4ed402">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[এ.জি. এন.................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="690" width="120" height="20" uuid="89f5d5ca-1b25-48f9-b398-aa25f628570d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[শাখা.......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="690" width="143" height="20" uuid="910862b8-2e85-4fb4-8c5f-af48c873a556">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[ভাউচার শ্রেণী.......................................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="500" y="690" width="80" height="20" uuid="b0c8791a-0527-4b9e-837d-ec8150aff752">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[ভাউচার নং..............]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="720" width="85" height="50" uuid="edbeba21-4042-49ab-b4ee-4521b309a98e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[শ্রেণীবিন্যাস কোড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="720" width="200" height="20" uuid="3058aaa6-a992-4acf-84c9-99eb8a71d3cf">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[জমা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="720" width="100" height="50" uuid="cd0d4bc0-41c4-4018-b4ea-1f1c3c6a0fdf">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[শ্রেণীবিন্যাস কোড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="720" width="185" height="20" uuid="b6d3c0e5-1f0f-4b6c-b9ec-275e5ebdef82">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[ব্যয়]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="752" width="50" height="18" uuid="eceb506e-76eb-4131-8c03-b0eb03337d6e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="740" width="100" height="15" uuid="809c6237-4d05-4da1-b3e7-d59268b7b6e9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[(+)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="740" width="100" height="15" uuid="6bdb1421-af87-4a12-923e-68530cee57ee">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[(+)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="740" width="100" height="15" uuid="3884ddbf-6238-4601-8ba5-8b499438a9b5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="740" width="85" height="15" uuid="fb1b935a-b1b2-44cb-85c2-55d394ffa8fb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[(-)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="135" y="752" width="50" height="18" uuid="67b3b7a0-580a-45a7-86e7-e21b37a69b24">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পয়সা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="235" y="752" width="50" height="18" uuid="1c5c70cb-e3c5-44d7-9922-619846839414">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পয়সা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="752" width="50" height="18" uuid="c8304827-fa40-4fbc-81e6-964634167d82">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="752" width="50" height="18" uuid="c52799f0-0642-48d8-b03a-8a5b5850d39e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পয়সা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="752" width="50" height="18" uuid="b1485116-80f1-499a-a2f9-59d16b5bf337">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="752" width="40" height="18" uuid="eaafccb0-095e-425a-95ed-48432a6b4905">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পয়সা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="752" width="45" height="18" uuid="4ffc2945-e87b-4f04-bfd8-f9ec61561dbb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="770" width="85" height="20" uuid="513d8416-fdad-402f-94d4-e9fa710a8656"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="770" width="100" height="20" uuid="d0966063-396a-4c6e-8b1c-2f8526051d8a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="770" width="100" height="20" uuid="7eea8213-4c6c-4cb1-9dc8-e14f494ce3e5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="770" width="100" height="20" uuid="60e821e9-333a-4969-a0c0-f5e15148675e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="770" width="100" height="20" uuid="97b1578e-81e3-42da-8414-181617e4fd48"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="770" width="85" height="20" uuid="18289c31-a883-4720-9460-904235aba0d4"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="790" width="100" height="20" uuid="5338ec95-375c-40f1-a25b-f7eb65bd278d"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="790" width="85" height="20" uuid="8bf4db55-c0fa-44dc-b218-c57b996ee68c"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="790" width="85" height="20" uuid="81107202-bc8c-4794-9554-07bb47e0a5f7"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="790" width="100" height="20" uuid="598241a9-62b6-473a-aaf3-90cc9d70f6c1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="790" width="100" height="20" uuid="be19ce3c-3d74-49b4-9d3a-1bdc7b6bdb58"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="790" width="100" height="20" uuid="1861c413-78ac-4801-b3b4-a76673d896fb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="830" width="100" height="20" uuid="49d4ccd2-4f17-4cb4-a815-13f38ad98244"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="830" width="100" height="20" uuid="83e7cf50-f3ec-4dbc-bacb-52386ff26689"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="810" width="100" height="20" uuid="6b006f8f-3cb6-4465-ad33-946bbc8280f9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="810" width="85" height="20" uuid="f6ce5047-d873-43f9-82e8-06de21d99f69"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="830" width="85" height="20" uuid="80d3cbb8-111e-4aee-99d5-7dc8016029ec"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="810" width="85" height="20" uuid="dd856e19-ef5d-4d3a-bc73-932262ff4923"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="830" width="85" height="20" uuid="167d4ded-cc51-41ad-9a93-385e98bf8a43"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="830" width="100" height="20" uuid="8e57939c-3d21-4930-a25c-47697964e38e"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="810" width="100" height="20" uuid="171d882e-a99b-42ab-abc4-898dbdae5f48"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="810" width="100" height="20" uuid="015f9b1f-ec75-4dca-b6e8-ca2122cbb7ea"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="810" width="100" height="20" uuid="7c5b4b67-0607-456d-9c01-5dec29c54212"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="830" width="100" height="20" uuid="1eb1a218-bdad-4726-af54-fda233cedee1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="850" width="100" height="20" uuid="ab0db133-ba9e-4019-9cd0-b00ad4f25baf"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="385" y="850" width="100" height="20" uuid="50de43a4-a468-4eef-a5d1-8c37629a77e1"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="185" y="850" width="100" height="20" uuid="53a7af3f-2301-4471-a9cc-1500ec727128"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="850" width="85" height="20" uuid="d2fdf5c2-e7e3-4e9b-b331-862f89ce1833"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="285" y="850" width="100" height="20" uuid="a1f55fb1-bb56-452e-a8e3-441bf0b729c9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="850" width="85" height="20" uuid="49f50a69-3fba-4745-be98-48a1ae5b81d9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="2.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[ ]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

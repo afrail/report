@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_fin_sub_pension_second_page" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="9cf4da65-792f-4b0b-aa25-9b7b3ab9afdb">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_SERVER"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="190"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="803"/>
+	<parameter name="P_PENSION_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	date(personal.lpr_date) lprdate,
+	date(personal.retirement_date) retirementdate,
+	'কমান্ড্যান্ট' comandent,
+	' বাংলাদেশ সমরাস্ত্র কারখানা (বিওএফ)' bd,
+	'গাজীপুর সেনানিবাস, গাজীপুর ' place,
+	'(' || fmly.sl_number || ')' serial,
+	fmly.dependant_name dependantname,
+	date(fmly.date_of_birth) dob,
+	get_com_lookup_bn_name(fmly. relation_id) relation ,
+	fmly. percentage || '%' percentage,
+	get_com_lookup_bn_name(fmly.marital_status_id) marital,
+	fmly.is_disable
+from
+	fin_pension_application_information personal
+join fin_pension_family_information fmly on
+	personal.id = fmly.pension_application_information_id
+where
+	1 = 1
+	and personal.id = $P{P_PENSION_ID}
+order by
+	fmly.sl_number asc
+]]>
+	</queryString>
+	<field name="lprdate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="lprdate"/>
+		<property name="com.jaspersoft.studio.field.label" value="lprdate"/>
+	</field>
+	<field name="retirementdate" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="retirementdate"/>
+		<property name="com.jaspersoft.studio.field.label" value="retirementdate"/>
+	</field>
+	<field name="comandent" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="comandent"/>
+		<property name="com.jaspersoft.studio.field.label" value="comandent"/>
+	</field>
+	<field name="bd" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bd"/>
+		<property name="com.jaspersoft.studio.field.label" value="bd"/>
+	</field>
+	<field name="place" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="place"/>
+		<property name="com.jaspersoft.studio.field.label" value="place"/>
+	</field>
+	<field name="serial" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="serial"/>
+		<property name="com.jaspersoft.studio.field.label" value="serial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_pension_family_information"/>
+	</field>
+	<field name="dependantname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dependantname"/>
+		<property name="com.jaspersoft.studio.field.label" value="dependantname"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_pension_family_information"/>
+	</field>
+	<field name="dob" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="dob"/>
+		<property name="com.jaspersoft.studio.field.label" value="dob"/>
+	</field>
+	<field name="relation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="relation"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation"/>
+	</field>
+	<field name="percentage" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="percentage"/>
+		<property name="com.jaspersoft.studio.field.label" value="percentage"/>
+	</field>
+	<field name="marital" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marital"/>
+		<property name="com.jaspersoft.studio.field.label" value="marital"/>
+	</field>
+	<field name="is_disable" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="is_disable"/>
+		<property name="com.jaspersoft.studio.field.label" value="is_disable"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_pension_family_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="348">
+			<staticText>
+				<reportElement x="0" y="309" width="536" height="32" uuid="fd07cea3-b63d-40fd-8d5d-415e595815d4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[৩। ------- নং ক্রমিকে উল্লিখিত ব্যক্তি আমার প্রতিবন্ধী সন্তান। তার প্রতিবন্ধিতার সমর্থনে সমাজ সেবা অধিদপ্তরের নিবন্ধন ও পরিচয়পত্র এবং কর্মক্ষমতাহীনতা ও উপার্জনে অক্ষমতা সংক্রান্ত মেডিকেল বোর্ডের সনদপত্র সংযোজন করা হইল(শুধুমাত্র প্রযোজ্য ক্ষেত্রে)। ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="75" width="29" height="20" uuid="b7a7776b-1c50-4691-a941-49f24d2c26cc"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[বরাবর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="196" width="70" height="20" uuid="c237d700-bf4d-41ec-9ec4-950c647b2091"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[মহোদয়,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="175" width="400" height="18" uuid="0d6b7488-3dac-408e-a407-4c2d707e270a"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[বিষয়ঃ পেনশন পরিশোধের আবেদন।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="217" width="555" height="33" uuid="0ef687b6-55d4-43cd-966e-e3a00f5f2ad2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[বিনীত নিবেদন এই যে, আমি সরকারী চাকরি হইতে --------------------- তারিখে অবসর উত্তর ছূটিতে গমন করিব / করিয়াছি এবং ---------------------- তারিখে চূড়ান্ত অবসরগ্রহন করিব/করিয়াছি। সেই কারনে বিধি মোতাবেক আমাকে প্রাপ্য ভাতা ও আনুতোষিক প্রদানের জন্য অনুরোধ করিতেছি।]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="436" y="212" width="70" height="12" uuid="7d4c7462-ca48-4ac5-855e-99cfe1e88f5e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retirementdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="5" width="554" height="25" uuid="c15a5a5d-b8d9-4c33-a930-688f84364d45"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রথম অংশ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="79" width="369" height="12" uuid="9edf41fb-ef0c-4d2f-a18a-e93dbf3c18f8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{comandent}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="176" y="212" width="64" height="12" uuid="c2d8cf00-83bd-408f-a91b-1d4a2e1caff5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lprdate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="420" y="5" width="135" height="140" uuid="4cb9fe76-b444-41b6-92b7-fcce2d30926f"/>
+				<box padding="20">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পাসপোর্ট সাইজের সত্যায়িত ছবি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="268" width="555" height="24" uuid="cbb50046-3172-4bc4-8cd1-dff058910a54">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[২। আমার অবর্তমানে নিম্নে বর্ণিত আমার বৈধ উত্তরাধিকারীগনকে মনোনীত হারে এই পারিবারিক পেনশন প্রদানের জন্য আমি অনুরোধ করিতেছি।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="33" width="555" height="18" uuid="55608130-0388-4cfd-8fd5-d3553a49593c"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[(আবেদনকারী নিজে পূরণ ও স্বাক্ষর করিবেন)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="100" width="368" height="12" uuid="6712703f-9248-45e5-9461-48805f691a04">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bd}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="120" width="368" height="12" uuid="193a73ce-7314-43ed-82ac-4e90f10a91b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="0.5" lineStyle="Dotted"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="36">
+			<staticText>
+				<reportElement x="451" y="0" width="106" height="18" uuid="9689cf05-c747-4065-ab6e-1ab611db8712">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[উত্তরাধীকারির স্বাক্ষর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="0" width="50" height="18" uuid="87fbad42-3eee-4709-a19a-93ae578fce3b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মনোনীত হার %]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="18" width="92" height="18" uuid="cde73f02-cb5e-444b-988d-a5c3a8ed49c8"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৫]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="18" width="54" height="18" uuid="8c0f3b4f-2556-4046-86d4-bc814653266a"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৩]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="0" width="79" height="18" uuid="a70ee8fc-bd09-4ac3-852b-1ebff5b3405f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রতিবন্ধি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="18" width="50" height="18" uuid="5612d471-48a2-4769-b1e4-a7b142b72f5b"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৪]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="0" width="125" height="18" uuid="668c6e32-448c-4701-b779-a6bd8e9cbdf6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নাম ও জন্ম তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="51" y="18" width="125" height="18" uuid="4d88c7c6-7575-4155-b91c-0d7a444da3e9"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[২]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="176" y="0" width="54" height="18" uuid="3b588f69-882e-4a07-9464-6c779e940b79">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সম্পর্ক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="451" y="18" width="106" height="18" uuid="ee6e71f1-fcd4-4556-8621-58e1bd9addb6"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৭]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="18" width="50" height="18" uuid="fd5f8161-1900-46c3-b4e3-8e827879b0c5"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[১]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="92" height="18" uuid="2a48b33a-c360-4f20-a46a-38c013a389a0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বৈবাহিক অবস্থা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="50" height="18" uuid="cfbe9b39-a0da-4ea2-b7fc-3e908f0d2665">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="18" width="79" height="18" uuid="a98adda9-0e76-408a-acbd-fdb76ca091c2"/>
+				<box padding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৬]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="50" height="30" uuid="fe9e42d7-fae7-4a7a-a22f-b850a208360c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8808f917-590c-4575-8baf-5f32af283efd"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(" + $V{REPORT_COUNT} + ")"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="51" y="0" width="125" height="15" uuid="eba45989-20fd-4f41-b5dc-000a5a33edfc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2eee5a8-b381-47cd-8bb1-d84475c26bc9"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependantname}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="372" y="0" width="79" height="30" uuid="36dae7fe-c586-4f15-830b-5b827028f102">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cd5a11e8-d75b-4cb1-8a92-63abf1a1aed7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{is_disable}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="92" height="30" uuid="61f2ad18-71e2-4f7b-bdc6-7b0a55aa8877">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9a8f9c47-e854-4902-9d27-020bd2f8c611"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marital}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="0" width="50" height="30" uuid="e262ecb4-8f7c-4298-97c1-011b03a68da3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ed5fda10-caf2-4f08-a44b-fa00e56b6889"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{percentage}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="176" y="0" width="54" height="30" uuid="da941e1b-b433-4f6b-8ca5-f6180f99e963">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c6625c3-fedf-45fd-bf1b-6d7dd82ebf18"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relation}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="51" y="15" width="125" height="15" uuid="cb980224-2352-4db9-95df-d9e7d7d811b9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2eee5a8-b381-47cd-8bb1-d84475c26bc9"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dob}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="79" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="1" y="11" width="536" height="28" uuid="d94afad0-b2d1-4c10-aa73-ab427de9114a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[৪। আমি এই চাকরির কোন অংশ বিশেষের জন্য পূর্বে কোন অবসর ভাতা বা আনুতোযিক গ্রহন করি নাই এবং ভবিষ্যতে এই আবেদনপত্র সম্পরকে গৃহীত সিদ্ধান্ত উল্লেখ না করিয়া কোন আবেদন করিব না।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="51" width="536" height="28" uuid="a13219b2-2a3f-4447-b964-aaa4111a283f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[৪। আমি এই চাকরির কোন অংশ বিশেষের জন্য পূর্বে কোন অবসর ভাতা বা আনুতোযিক গ্রহন করি নাই এবং ভবিষ্যতে এই আবেদনপত্র সম্পরকে গৃহীত সিদ্ধান্ত উল্লেখ না করিয়া কোন আবেদন করিব না।]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

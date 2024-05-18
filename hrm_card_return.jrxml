@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_card_return" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09543c22-a2ab-4f49-ae70-019aa025ccbb">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT CARD_TYPE.NAME AS CARD_TYPE_NAME,
+    CARD_ENTRY.CARD_TYPE_ID,
+	CARD_ENTRY.EMPLOYEE_ID AS EMP_ID, 
+	GET_EMP_CODE(CARD_ENTRY.EMPLOYEE_ID)AS EMP_CODE,
+	GET_EMP_NAME( CARD_ENTRY.EMPLOYEE_ID) AS EMP_NAME,
+	GET_COM_LOOKUP_NAME(CARD_ENTRY.DESIGNATION_ID) DESIG_NAME,
+	GET_COM_LOOKUP_NAME(CARD_ENTRY.BRANCH_ID) AS BRANCH_NAME,
+	GET_COM_LOOKUP_NAME(CARD_ENTRY.WING_ID) AS WING_NAME,
+	CARD_ENTRY.CARD_NO AS CARD_NUMBER,
+	DATE(CARD_ENTRY.RECEIVE_DATE) AS RETURN_DATE
+FROM ACC_EMPLOYEE_ID_CARD_ENTRY CARD_ENTRY,
+ACC_CARD_TYPE CARD_TYPE   
+WHERE CARD_TYPE.ID=CARD_ENTRY.CARD_TYPE_ID 
+AND (DATE(CARD_ENTRY.RECEIVE_DATE) BETWEEN COALESCE($P{P_FROM_DATE},DATE(CARD_ENTRY.RECEIVE_DATE))
+AND COALESCE($P{P_TO_DATE},DATE(CARD_ENTRY.RECEIVE_DATE)))
+ORDER BY CARD_TYPE_NAME,DESIG_NAME,EMP_CODE,EMP_NAME,ISSUE_DATE ASC]]>
+	</queryString>
+	<field name="card_type_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="card_type_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="card_type_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_card_type"/>
+	</field>
+	<field name="card_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="card_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="card_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="emp_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="emp_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_code"/>
+	</field>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<field name="desig_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="desig_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="desig_name"/>
+	</field>
+	<field name="branch_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_name"/>
+	</field>
+	<field name="wing_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="wing_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="wing_name"/>
+	</field>
+	<field name="card_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="card_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="card_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="return_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="return_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="return_date"/>
+	</field>
+	<group name="return_date">
+		<groupExpression><![CDATA[$F{return_date}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="552" height="40" uuid="363ac066-5ab9-4455-a55c-7f5479f1e6b0"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="195" y="0" width="170" height="30" uuid="48659519-38f1-4619-b228-8c48396431d7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Employee Card Return]]></text>
+			</staticText>
+			<textField pattern="d-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="38" width="553" height="23" uuid="bbd3995c-b2ea-4f31-996e-0b3d29bc0c9b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="false" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{P_FROM_DATE} == $P{P_TO_DATE}) ? "As On "+new SimpleDateFormat("dd-MMM-yyyy").format($P{P_FROM_DATE}) : " Date From: "+new SimpleDateFormat("dd-MMM-yyyy").format($P{P_FROM_DATE}) +  "  Date To: "  +new SimpleDateFormat("dd-MMM-yyyy").format($P{P_TO_DATE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="33" height="30" uuid="73426e98-8139-408e-bc60-d862bcec00ed"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Ser]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="33" y="0" width="57" height="30" uuid="15669cde-5613-4f44-80bd-41a839d513d0"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Emp.Code]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="110" height="30" uuid="066cd382-c268-4916-b58c-063b2ef19264"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Emp.Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="80" height="30" uuid="37d99c5c-92dc-4060-ba3c-222ae2ab0351"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="80" height="30" uuid="1b8fb0e6-f7d1-4081-96c0-8f679429da92"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Emp Branch]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="0" width="70" height="30" uuid="8354f0ad-528d-4a78-8b5e-747e92feb3f6"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Emp.Wing]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="50" height="30" uuid="4ae8d089-d6b0-487f-9240-abbd394052f4"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Card No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="0" width="73" height="30" uuid="6481ae4a-8a63-488e-a849-e2c96b5ed0cb"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[Return Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="33" y="0" width="57" height="20" uuid="694b4542-6d3f-4919-815b-85cda6e679d4"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{emp_code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="33" height="20" uuid="d88cbdf5-2019-44d3-91b8-8c3670aaf0dd"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="90" y="0" width="110" height="20" uuid="de030382-ff53-4cc3-906e-140d2d8627db"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="200" y="0" width="80" height="20" uuid="363928fd-d248-4e1c-9377-2bc6f23abe95"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{desig_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="280" y="0" width="80" height="20" uuid="471c4201-690c-406e-90a2-cc0e6f33224f"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{branch_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="360" y="0" width="70" height="20" uuid="2b2ad0a1-21e5-42f5-a30a-b86b3547d109"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{wing_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="430" y="0" width="50" height="20" uuid="ab02e0c4-e284-45fd-9251-286ee318ca0a"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{card_number}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd-MM-yyyy  " isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="480" y="0" width="73" height="20" uuid="e9f51563-a1eb-4750-bfa6-a503c15818b1"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{return_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_leave_register_type_wise" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8705a98d-10b5-40d0-b17d-5636a110a672">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="228"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="761"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_LEAVE_TYPE" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select hela.leave_balance , heli.leave_location , heli.from_date ,heli.to_date , heli.leave_reason ,
+ heli.total_days , heli.country_id , get_emp_name(heli.employee_id) employee_name ,
+get_leave_type_name(heli.leave_type_id) leave_name , heli.company , heli.leave_type_id ,
+GET_COM_LOOKUP_NAME(DESIGNATION_ID) ||' , '|| hepi.EMPLOYEE_NAME_BANGLA name_and_des, get_com_lookup_name(heoi.wing_id ) wing
+	, get_com_lookup_name(heoi.branch_id ) branch , hepi.code code
+from hrm_employee_leave_application hela, 
+hrm_employee_leave_information heli , 
+hrm_employee_personal_information hepi ,
+hrm_employee_official_information heoi 
+where 1 = 1 
+and hela.employee_leave_information_id = heli.id 
+and heli.employee_id  = hepi.id 
+and hepi.id = heoi .employee_id
+and heli.leave_type_id  = coalesce ( $P{P_LEAVE_TYPE}  , heli.leave_type_id)
+and heli.from_date between  $P{P_FROM_DATE}   and  $P{P_TO_DATE}]]>
+	</queryString>
+	<field name="leave_balance" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="leave_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_balance"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_application"/>
+	</field>
+	<field name="leave_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="from_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="to_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="leave_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="total_days" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="country_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="country_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="country_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+	</field>
+	<field name="leave_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_name"/>
+	</field>
+	<field name="company" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="company"/>
+		<property name="com.jaspersoft.studio.field.label" value="company"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="leave_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="leave_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="name_and_des" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name_and_des"/>
+		<property name="com.jaspersoft.studio.field.label" value="name_and_des"/>
+	</field>
+	<field name="wing" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="wing"/>
+		<property name="com.jaspersoft.studio.field.label" value="wing"/>
+	</field>
+	<field name="branch" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<variable name="reason_type" class="java.lang.String">
+		<variableExpression><![CDATA[$P{P_LEAVE_TYPE}   == null ? "সকল ছুটি" : $F{leave_name} + " ছুটি"]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{P_LEAVE_TYPE}   == null ? "সকল ছুটি" : $F{leave_name} + " ছুটি"]]></initialValueExpression>
+	</variable>
+	<variable name="pre_title" class="java.lang.String">
+		<variableExpression><![CDATA["নিম্ন লিখিত ব্যক্তিগনের নামের পার্শে বর্ণিত ছুটির মঞ্জুরি জ্ঞাপন করা হলঃ "]]></variableExpression>
+		<initialValueExpression><![CDATA["নিম্ন লিখিত ব্যক্তিগনের নামের পার্শে বর্ণিত ছুটির মঞ্জুরি জ্ঞাপন করা হলঃ "]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="19" splitType="Stretch">
+			<subreport>
+				<reportElement x="2" y="6" width="552" height="13" uuid="c5a4f505-9dae-4d9a-b73c-839a0b325d12"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="140">
+			<staticText>
+				<reportElement x="81" y="0" width="400" height="40" uuid="0c6ab9c3-db31-485c-98de-a8afaf4ccfc9"/>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="14" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[সীমিত
+দৈনিক আদেশনামা ২য় খণ্ড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="40" width="40" height="20" uuid="11522b2a-ab9b-4aff-bf05-314bbf421b9a"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ইউনিটঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="60" width="40" height="20" uuid="dd56cfa5-847b-473b-92f3-dfd7998e99f9"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নম্বরঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="80" width="139" height="20" uuid="dd0fa30b-d8ca-4657-9258-ef240728109a"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[পূর্বে প্রকাশিত দৈনিক আদেশনামা ২য় খণ্ড নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="60" width="40" height="19" uuid="3e1df191-d392-4a13-bf45-263045ba730f"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="40" width="40" height="20" uuid="95d4b1d3-ec27-40c6-aa30-808964d6dbd5"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[স্থানঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="261" y="79" width="40" height="19" uuid="4355a8e9-e68e-4f79-a67b-58cdc3953a9a"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="301" y="40" width="90" height="20" uuid="28033316-89da-44de-bb64-bcfe322a6607"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[গাজিপুর সেনানিবাস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="301" y="60" width="90" height="19" uuid="ec68e11d-a998-4f6c-a945-f6014603f2cb"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="100" width="280" height="20" uuid="db33dffe-927c-4e67-a8dd-8f2f740564c7"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{reason_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="120" width="280" height="20" uuid="138ce119-ce30-4d69-b535-49ff4320a13c"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pre_title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="280" y="0" width="64" height="19" uuid="a4c3f2d8-0722-4dd5-bc4e-13ac020266af">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a228ffce-aa56-4a06-8e89-66d588d47c32"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[হতে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="0" width="58" height="19" uuid="93209766-de93-4890-8015-21c85317e02c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2434c837-561f-42dd-ab06-d8b315fdb188"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[পর্যন্ত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="0" width="58" height="19" uuid="b1c36d37-7ce2-40c8-8b9b-f53fb0dd7e12">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82dcd25d-a8ec-4cd4-ad96-988ea2440c15"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[মোট দিন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="95" height="19" uuid="f44ca260-b7ef-41b4-8f63-7a589cc44fc9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="afc01a28-3b11-4a9b-802c-0b97c9a8e0ef"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ছুটির প্রকৃতি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="0" width="50" height="19" uuid="fb4d687b-4027-4031-ac49-209944c9fa81">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="895607ce-3fc2-4da4-a0d7-9f159f91718a"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[কোড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="29" height="19" uuid="34eaa9cc-5884-4152-812d-d6d7fcdcde4b"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="140" height="19" uuid="b45fc918-cafe-4ebc-a8ab-c9f8d6ccfc16">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f2ef569b-4bb2-45f6-8ee8-317ed6b9b8ce"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[পদবি এবং নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="0" width="61" height="19" uuid="0e52de87-e920-4b59-8bcf-c4d01d88329e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f61671b9-bee5-47dd-869b-1ac27ed9eb7a"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[শাখা]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="280" y="0" width="64" height="19" uuid="f6362c1d-2871-4635-8f11-da193692e94e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a228ffce-aa56-4a06-8e89-66d588d47c32"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{from_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="344" y="0" width="58" height="19" uuid="950a576a-2318-4869-94e3-218204593705">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2434c837-561f-42dd-ab06-d8b315fdb188"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="402" y="0" width="58" height="19" uuid="8a560308-f64e-4c99-a697-7c34bb297249">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="82dcd25d-a8ec-4cd4-ad96-988ea2440c15"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_days}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="460" y="0" width="95" height="19" uuid="332a3b28-8625-4d18-964c-04c680f19152">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="afc01a28-3b11-4a9b-802c-0b97c9a8e0ef"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{leave_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="90" y="0" width="50" height="19" uuid="7c8c417a-17a4-4d62-976d-3e152d21d34f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="895607ce-3fc2-4da4-a0d7-9f159f91718a"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" >
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="29" height="19" uuid="56eff035-31ac-4c03-9b19-62e02c09c2db"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="140" y="0" width="140" height="19" uuid="436b4739-0e18-47c2-952f-1f051fd67fe1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f2ef569b-4bb2-45f6-8ee8-317ed6b9b8ce"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="5" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name_and_des}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="29" y="0" width="61" height="19" uuid="ddcb4428-a704-4903-8c51-64c80e35be7d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f61671b9-bee5-47dd-869b-1ac27ed9eb7a"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wing}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

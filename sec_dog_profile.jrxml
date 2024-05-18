@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sec_dog_profile" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1d695f98-62b5-4e47-a2df-05b96bfd05e4">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_DOG_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select a.dog_number, a.name, a.color, a.breed, get_com_lookup_name(a.sex),
+a.height, a.marking_head, a.marking_tattooing, a.marking_body,a.marking_neck, a.marking_tail, a.marking_limbs,
+a.marking_any_other, a.pedigree_dam_s, a.pedigree_dam_d,a.pedigree_dam,
+a.pedigree_sire, a.pedigree_sire_s, a.pedigree_sire_d
+from sec_dog_profile a
+where 1=1
+and id= $P{P_DOG_ID}]]>
+	</queryString>
+	<field name="dog_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dog_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="dog_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="color" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="color"/>
+		<property name="com.jaspersoft.studio.field.label" value="color"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="breed" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="breed"/>
+		<property name="com.jaspersoft.studio.field.label" value="breed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="get_com_lookup_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="get_com_lookup_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="get_com_lookup_name"/>
+	</field>
+	<field name="height" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="height"/>
+		<property name="com.jaspersoft.studio.field.label" value="height"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_head" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_head"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_head"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_tattooing" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_tattooing"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_tattooing"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_body" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_body"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_body"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_neck" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_neck"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_neck"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_tail" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_tail"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_tail"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_limbs" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_limbs"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_limbs"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="marking_any_other" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="marking_any_other"/>
+		<property name="com.jaspersoft.studio.field.label" value="marking_any_other"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="pedigree_dam_s" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pedigree_dam_s"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedigree_dam_s"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="pedigree_dam_d" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pedigree_dam_d"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedigree_dam_d"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="pedigree_dam" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pedigree_dam"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedigree_dam"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="pedigree_sire" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pedigree_sire"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedigree_sire"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="pedigree_sire_s" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pedigree_sire_s"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedigree_sire_s"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<field name="pedigree_sire_d" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="pedigree_sire_d"/>
+		<property name="com.jaspersoft.studio.field.label" value="pedigree_sire_d"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_dog_profile"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="560" height="40" uuid="85fa042b-f2b6-443c-9b1d-73052b812aab"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="40">
+			<staticText>
+				<reportElement x="240" y="0" width="100" height="20" uuid="b62f9b70-0a11-4a35-80b0-57bda04a7cde"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[RESTRICTED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="20" width="180" height="20" uuid="a8e9d6af-9ce4-4900-b493-059353d8aacd"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[DOG HISTORY BOOK]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="410" splitType="Stretch">
+			<staticText>
+				<reportElement x="70" y="0" width="150" height="20" uuid="07c4446d-f898-4acc-a6db-7f892475a1a2"/>
+				<textElement>
+					<font fontName="Arial" size="13" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[BASIC INFORMATION ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="20" width="50" height="30" uuid="8dd120e6-5d9d-4105-97ed-6e81c85efd9f"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[No           :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="50" width="50" height="30" uuid="1e1b46e0-e47b-4dad-af5f-dbf1cd8baff7"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Colour     :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="80" width="50" height="30" uuid="cd22cd04-53df-4098-8678-13f8497ee2f4"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Sex         :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="20" width="160" height="30" uuid="ebfbcc42-49fd-4819-872d-e137cb40b205"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dog_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="50" width="160" height="30" uuid="e5de8978-7f78-4d00-b42d-c0b231ecc798"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{color}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="80" width="160" height="30" uuid="9abca961-1ab9-4cc7-92d5-352b646b93e3"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{get_com_lookup_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="20" width="50" height="30" uuid="e18e42b6-4de0-4998-b8b4-87323c30e019"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Name     :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="50" width="50" height="30" uuid="6dd0fa4d-17a6-4590-9410-47bea5ee5273"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Bread     :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="80" width="50" height="30" uuid="7f947a95-9a4d-44da-9ded-6ebd3c816f60"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Sex         :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="20" width="150" height="30" uuid="c78e9231-6ef9-44c7-94fb-41016829c30d"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="50" width="150" height="30" uuid="fa5b7078-e6a7-4281-afc8-35717639c3d1"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{breed}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="80" width="150" height="30" uuid="c6b9666d-4f6b-46b4-bbfc-ccf296107418"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{height}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="120" width="150" height="20" uuid="2e01d905-bcb8-471c-af69-11e4af7485a4"/>
+				<textElement>
+					<font fontName="Arial" size="13" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[MARKINGS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="140" width="50" height="30" uuid="f760c959-991b-4eb1-a488-1e723e67f4f6"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Head       :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="170" width="50" height="30" uuid="05e87e14-c9b1-40f6-85e8-89e5954f35aa"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Body       :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="200" width="50" height="30" uuid="8c17756e-f0ea-4787-af2a-f8c2773f92b1"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tails        :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="140" width="160" height="30" uuid="311fc5bc-b2d4-4116-b9ee-f63820bfbc4b"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_head}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="170" width="160" height="30" uuid="f81b6a0b-19d2-4d22-9c97-0747febd5a36"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_body}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="200" width="160" height="30" uuid="a3f47118-7993-4838-bf37-c196e409b334"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_tail}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="140" width="50" height="30" uuid="e14a4982-333e-492e-abd7-0988915c26c9"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tattooing:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="170" width="50" height="30" uuid="ca62ae22-fe09-4f3e-9b56-0227483b6d46"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Neck       :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="200" width="50" height="30" uuid="8bac5554-66f3-413a-af0b-7b466a5ec042"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Limbs      :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="140" width="150" height="30" uuid="5fbbfaa2-bf0f-42ac-84cd-d840daaf96b6"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_tattooing}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="170" width="150" height="30" uuid="0a35a581-6072-497a-b246-aefa65d430ef"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_neck}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="200" width="150" height="30" uuid="8b89f3c6-367a-4c46-80ca-18b19ca9cfaf"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_limbs}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="230" width="50" height="30" uuid="7a9a5841-5f93-4e27-94d4-a614ab15d129"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Any other:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="230" width="160" height="30" uuid="74bf6504-2688-4a93-b478-01e04fe75db4"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{marking_any_other}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="260" width="150" height="20" uuid="cf2e5302-4999-47a2-bad3-9af77dd94acc"/>
+				<textElement>
+					<font fontName="Arial" size="13" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[PEDIGREE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="300" width="50" height="30" uuid="5ec7ecd4-8157-4706-aebb-d67169e9d48a"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sire  :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="300" width="130" height="30" uuid="52836322-7b4d-4fbb-92a5-25e33ae01fcc"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedigree_sire}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="280" width="50" height="30" uuid="f56889d6-8c6f-4a81-b7be-7e957863e4a7"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S   :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="310" width="50" height="30" uuid="889e1d99-2891-4282-b8f1-77de97655845"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[D   :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="280" width="150" height="30" uuid="71af1ebc-0409-49ff-b54d-66af7976a408"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedigree_sire_s}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="310" width="150" height="30" uuid="3c756098-7a4c-40cf-b447-d88339b76d33"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedigree_sire_d}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="360" width="130" height="30" uuid="e077aef5-eaec-4eee-b321-fc5508412e19"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedigree_dam}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="360" width="50" height="30" uuid="504ef07d-5409-4cd3-a8b2-478e2be1ed1a"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dam :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="350" width="50" height="30" uuid="99bf32ec-d78c-4683-aecc-d8934230ee2f"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[S   :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="380" width="50" height="30" uuid="b26afe51-62d7-4328-b4e2-979e6da8957f"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[D   :]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="350" width="150" height="30" uuid="b322d964-00b7-4b32-9777-fd6cb490b373"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedigree_sire_s}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="380" width="150" height="30" uuid="ba604efd-5c0e-43a6-88e0-521b5fe90666"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{pedigree_dam_d}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="255" y="280" width="25" height="60" uuid="48353900-f241-424c-9fb3-8e3fea4ca360"/>
+				<textElement textAlignment="Center">
+					<font size="32"/>
+				</textElement>
+				<text><![CDATA[{]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="350" width="25" height="60" uuid="63c4864d-d565-45cf-8420-21453793a923"/>
+				<textElement textAlignment="Center">
+					<font size="32"/>
+				</textElement>
+				<text><![CDATA[{]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modc_out_pass_certificate" pageWidth="595" pageHeight="250" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3664fde4-9236-44ab-b3a9-550d97f1d484">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_OUT_PASS_CERTIFICATE_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select  get_mod_emp_bn_name (modc_emp_id) emp_name,
+(select get_com_lookup_bn_name(designation_id) from acc_modc_employee_profile where a.modc_emp_id=id) emp_deg ,
+(select modc_employee_id  from acc_modc_employee_profile where a.modc_emp_id=id) emp_no ,
+a.out_pass_date ,a.from_time ,a.to_time ,
+a.destination_place 
+from acc_modc_out_pass_register a
+where 1=1
+and a.id = $P{P_OUT_PASS_CERTIFICATE_ID}]]>
+	</queryString>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<field name="emp_deg" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_deg"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_deg"/>
+	</field>
+	<field name="emp_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_no"/>
+	</field>
+	<field name="out_pass_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="out_pass_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="out_pass_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_out_pass_register"/>
+	</field>
+	<field name="from_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="from_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_out_pass_register"/>
+	</field>
+	<field name="to_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="to_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_out_pass_register"/>
+	</field>
+	<field name="destination_place" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="destination_place"/>
+		<property name="com.jaspersoft.studio.field.label" value="destination_place"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_out_pass_register"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="37" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="170" y="0" width="218" height="30" uuid="4deb2ba8-3db5-402b-a31b-d76af0a602ea"/>
+				<box>
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="12" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বাহিরের যাওয়ার অনুমতি পত্র"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<summary>
+		<band height="138" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="6" width="150" height="15" uuid="f5fe947c-3ba4-476e-97e8-0cf9b78e6ca1"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["প্রত্যায়ণ করা যাইতেছে যে, নম্বর"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="140" y="4" width="90" height="15" uuid="3e477b90-d5ab-494a-90da-ed609ab75de9"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="229" y="6" width="40" height="15" uuid="3874fc86-3d29-4ec4-923a-4dffb309f6c5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পদবী"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="259" y="4" width="90" height="15" uuid="2b361b4a-3fdd-455a-8c4e-b52ae26ee60a"/>
+				<box leftPadding="4">
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_deg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="351" y="6" width="41" height="15" uuid="fe6ab4b3-c399-4b62-bfe9-8748268e7f63"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["নাম"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="371" y="4" width="180" height="15" uuid="6382b4b3-c513-43dc-b7ca-2d414f11cf6b"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="25" width="240" height="15" uuid="58f178d0-b49c-4161-8d63-03850f3ec251"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["এমওডিসি বিওএফ কোম্পানী, গাজীপুর সেনানিবাস'কে"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="234" y="23" width="130" height="15" uuid="206770da-79fd-44c3-98ea-964b70bacdb6"/>
+				<box leftPadding="4">
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{destination_place}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="364" y="25" width="46" height="15" uuid="da172771-031b-42b5-a68e-24fac4e2690f"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["তারিখে"]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="400" y="23" width="100" height="15" uuid="c510bf3c-799d-4f09-a0bf-8f3cfe1d3cb9"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{out_pass_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="500" y="25" width="50" height="15" uuid="f08ad193-caad-497a-8336-572ff3f17bdf"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ঘটিকা"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="44" width="40" height="15" uuid="1e3e64f3-4097-4737-94f0-937b40b7a123"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["হইতে"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="29" y="42" width="60" height="15" uuid="0816b904-c240-47d1-b61f-feb1d56e313b"/>
+				<box leftPadding="4">
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{from_time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="89" y="44" width="61" height="15" uuid="d79ce562-61f1-48dd-b79c-08c45505819e"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ঘটিকা পর্যন্ত"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="147" y="42" width="60" height="15" uuid="93cd41d2-f281-4638-aa91-aa9a4e626d8d"/>
+				<box leftPadding="4">
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="207" y="44" width="293" height="15" uuid="75120837-c282-464b-9890-9e3bd7bfedc3"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["যাওয়ার অনুমতি প্রদান করা হইল (নিষিদ্ধ এলাকা ব্যতিত)।"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="80" width="293" height="15" uuid="e8485c75-907b-4223-8fcd-ac7ba5f8ed96"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["স্টেশন  : গাজীপুর সেনানিবাস "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="99" width="50" height="15" uuid="0a261343-c4e7-4f58-9e70-f03477f7c097"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA["তারিখ  : "]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="38" y="97" width="80" height="13" uuid="707f3cac-49de-4543-944a-7a5155ca1076"/>
+				<box leftPadding="4">
+					<bottomPen lineWidth="1.0" lineStyle="Dotted"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

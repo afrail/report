@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="daily_movement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="42e0b5df-e0de-446e-b8a7-626caa96f551">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="live bof "/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="224"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="765"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select distinct
+a.code , a.EMPLOYEE_NAME_BANGLA
+	||','||GET_COM_LOOKUP_NAME(DESIGNATION_ID)
+	||','||GET_COM_LOOKUP_NAME(SHOP_ID) SHOP_NAME,
+	to_char((date(b.movement_date) ),'YYYY-MM-DD') as movement_date,
+	b.movement_time ,
+	to_char((date(b.return_date) ),'YYYY-MM-DD') as return_date,
+	b.return_time ,
+	b.total_time || ' ঘন্টা' as total_time,
+	b.movement_location , a.id,
+	b.auth_of_movement	
+	from HRM_EMPLOYEE_PERSONAL_INFORMATION a,
+	hrm_employee_movement_information b,
+	hrm_employee_official_information c 
+WHERE 1=1 
+	AND a.ID=B.EMPLOYEE_ID
+	and a.id=c.employee_id 
+	and b.movement_date between $P{P_FROM_DATE} and  $P{P_TO_DATE}
+	and a.id = coalesce (  $P{P_EMPLOYEE_ID} , a.id)
+	order  by a.id]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="shop_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="shop_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="shop_name"/>
+	</field>
+	<field name="movement_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="movement_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="return_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="return_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="return_date"/>
+	</field>
+	<field name="return_time" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="return_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="return_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="total_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="total_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_time"/>
+	</field>
+	<field name="movement_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="auth_of_movement" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_of_movement"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_of_movement"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<variable name="Variable_1" class="java.lang.Integer" resetType="Group" resetGroup="employee_code" incrementType="Group" incrementGroup="employee_code" calculation="Count">
+		<variableExpression><![CDATA[$F{id}]]></variableExpression>
+	</variable>
+	<group name="employee_code">
+		<groupExpression><![CDATA[$F{code}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField isBlankWhenNull="true">
+					<reportElement x="42" y="0" width="72" height="20" printWhenGroupChanges="employee_code" uuid="178c49f9-45b9-460c-b974-0b3552dd9aa4">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2b4c88f5-d6b5-4272-9b2f-7a230b2df80c"/>
+					</reportElement>
+					<box leftPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SolaimanLipi" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="112" y="0" width="158" height="20" printWhenGroupChanges="employee_code" uuid="686081ec-9abc-4c6e-a78b-4d0251027641">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a3182478-ab60-4c2b-8271-171220486f34"/>
+					</reportElement>
+					<box leftPadding="2">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font fontName="SolaimanLipi" size="10"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{shop_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="14" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="557" height="14" uuid="782c4e53-1349-40e7-9240-8c4e46790a14"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="120" splitType="Stretch">
+			<staticText>
+				<reportElement x="12" y="80" width="98" height="40" uuid="9929c185-b10a-46ca-b776-f5a7292d7d29"/>
+				<box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নম্বরঃ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="110" y="80" width="152" height="40" uuid="3045d11a-4e9b-463c-8f35-3228ce87542c"/>
+				<box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[স্থানঃ গাজিপুর সেনানিবাস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="80" width="40" height="40" uuid="420b482f-1991-4cbb-86be-f406dc91b8ed"/>
+				<box topPadding="2" leftPadding="4" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="80" width="140" height="20" uuid="10406b41-c178-485d-ab4d-3e7ea52408cc"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="100" width="140" height="20" uuid="333d1ee8-8f3d-4ec4-bc9e-f2fd3bca8062"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="442" y="80" width="82" height="40" uuid="66825b75-949c-45ce-804c-c4df1996f070"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="0" width="80" height="20" uuid="2c3fb6d6-3ebd-44ef-b297-6a3778e7c0a3"/>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="14"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="218" y="20" width="100" height="20" uuid="8a2deda8-ad21-40bd-8cc7-84175f62c807"/>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="14"/>
+				</textElement>
+				<text><![CDATA[দৈনন্দিন যাতায়াত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="557" height="20" uuid="e2846d86-bd5d-463c-9d0b-0a6c1dd58cd7"/>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[মেজর জেনারেল শেখ পাশা হাবিব উদ্দিন, এসজিপি, বিএএমএস, এএফডব্লিউসি, পিএসসি,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="557" height="20" uuid="9cd962ea-609d-4836-a864-f647ab62cfa8"/>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[কমান্ড্যান্ট, বাংলাদেশ সমরাস্ত্র কারখানা কর্তৃক নির্দেশিত]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="492" y="0" width="65" height="30" uuid="b2ae2731-f45e-43f6-926a-c87ebf8e1e3f"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="422" y="0" width="70" height="30" uuid="15cd6b7f-ce46-4a7d-9dc3-367f5251e9e7"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="99" splitType="Stretch">
+			<staticText>
+				<reportElement x="42" y="47" width="71" height="32" uuid="8a7770f9-45ce-40e2-8a69-baf0e859d2b6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fc91a34-f4c4-466d-838e-123d454993e9"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[ব্যক্তিগত কোড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="113" y="47" width="159" height="32" uuid="897981d5-61df-439e-ba7d-d1e16e4c90a9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f6df6804-5243-4eb2-8776-4b5cf691271c"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[ব্যঃ নম্বর, শাখা, পদবী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="47" width="70" height="32" uuid="bab79c42-c708-4998-812e-5e31a7ada490">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="75877584-a301-43de-8abe-af79221aa557"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[যাতায়াতের তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="47" width="60" height="32" uuid="714eac89-c7dd-43a6-a8e9-41f7e9b8c62b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="834c2f00-948a-4db7-b625-3b88949b5294"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[ব্যয়িত সময় (দিন/ঘন্টা)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="47" width="122" height="32" uuid="027855c9-4952-4281-a052-1d07c9f4e20c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3164574b-2237-4c0e-a509-9b6abce8d048"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[গন্তব্য স্থান]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="47" width="30" height="32" uuid="ebbd5228-ffc5-420a-9508-5a4b38e60665"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="22" width="514" height="19" uuid="67740b32-1b9e-4539-a014-45fa2130af80"/>
+				<textElement>
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<text><![CDATA[১। নিম্নবর্ণিত কর্মকর্তা/কর্মচারীগন তাদের নামের পার্শে উল্লিখিত বর্ণনা মোতাবেক বিওএফ, গাজিপুর সেনানিবাস হতে সাময়িক কাজে যাতায়াত করেছেনঃ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="79" width="340" height="20" uuid="730c9578-0914-4d6d-ae62-990ace02c2ea"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক। সরকারি যানবাহনের যাতায়াতঃ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="3" width="230" height="19" uuid="33df11d8-2ff8-4c1c-a6a4-66cf2e391d6c"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সাময়িক কাজে ব্যবহৃত -  কর্মকর্তা/কর্মচারী]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField pattern="MMM d, yyyy" isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="70" height="20" printWhenGroupChanges="employee_code" uuid="154a02f9-7c87-4966-b29e-01fb90a8fc56">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="75877584-a301-43de-8abe-af79221aa557"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SolaimanLipi" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movement_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="342" y="0" width="60" height="20" printWhenGroupChanges="employee_code" uuid="e7607683-607c-42a1-9ff0-7364c0809113">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="834c2f00-948a-4db7-b625-3b88949b5294"/>
+				</reportElement>
+				<box leftPadding="2" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="402" y="0" width="122" height="20" printWhenGroupChanges="employee_code" uuid="1bbdd074-195c-44ea-970e-bee411d7576e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3164574b-2237-4c0e-a509-9b6abce8d048"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{movement_location}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

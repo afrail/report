@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_fin_extra_work_bill_fx-2" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="503" leftMargin="72" rightMargin="20" topMargin="50" bottomMargin="20" uuid="75d0f137-f033-435c-bb6c-722031fef2cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="240"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="747"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-live-server"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="681"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="305"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	leave.id,
+	'নম্বর-' || emp.modc_employee_id || '...পদবীঃ ' || get_com_lookup_bn_name(leave.designation_id)|| '...নামঃ ' || emp.bangla_name || '...ইউনিটঃ এমওডিসি বিওএফ কোম্পানী গাজীপুর সেনানিবাস, গাজীপুর। তাকে ' || to_char(date(leave.from_date), 'dd/mm/yyyy')|| '...তারিখ হতে ' || to_char(date(leave.to_date), 'dd/mm/yyyy')|| '...পর্যন্ত। মোট দিন ' || total_days || '...দিনের বাৎসরিক/চিত্তবিনোদন/সাময়িক ছুটি মনজুর করা হলোঃ' "emp_id",
+	emp.bangla_name ,
+	get_com_lookup_bn_name(leave.designation_id) designation_name,
+	total_days,
+	get_sec_com_lookup_name(leave.leave_type_id) "leave_type",
+	date(leave.from_date) "from_date",
+	date(leave.to_date) "to_date",
+	leave.leave_reason,
+	leave.leave_location,
+	leave.remarks ,
+	'পিতার নামঃ  '|| coalesce (emp.father_bangla_name, '...................................') ||'  গ্রামঃ  ' || coalesce (emp.village_house,'...................................') || '  ডাকঘরঃ  '|| coalesce (emp.post_office, '...................................') || '  থানাঃ  ' || coalesce (get_com_lookup_bn_name(emp.upazila_id), '...................................') || '  জেলাঃ  '|| coalesce (get_sec_com_lookup_bn_name (emp.district_id),'...................................') || '  গন্তব্যস্থানঃ  ' || coalesce (leave.leave_location, '...................................') bb
+from
+	acc_modc_leave_register leave
+left outer join acc_modc_employee_profile emp on
+	emp.id = leave.modc_emp_id
+where
+	1 = 1
+	and date(from_date) between  $P{P_FROM_DATE}  and  $P{P_TO_DATE} ]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="emp_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="designation_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_name"/>
+	</field>
+	<field name="total_days" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="leave_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_type"/>
+	</field>
+	<field name="from_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+	</field>
+	<field name="to_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+	</field>
+	<field name="leave_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="leave_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="bb" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bb"/>
+		<property name="com.jaspersoft.studio.field.label" value="bb"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="90">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="40" width="500" height="26" uuid="caf4bc67-8ccf-45aa-ac3b-aa4328791923">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ece21750-e41f-4e0e-ae63-01070bed9428"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_id}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="4" width="500" height="20" uuid="d4a69c58-ad14-40c8-8a62-8e5345ab8f99">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ছুটির সনদ পত্র"]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="88">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="4" width="500" height="20" uuid="2eba60b1-937e-48be-8404-a42b38e2e00d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ছুটি থাকাকালীন ঠিকানা নিম্নরূপ"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="35" width="500" height="26" uuid="59ae8bbd-a6a3-42ca-ad22-a6fe20970ecf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ece21750-e41f-4e0e-ae63-01070bed9428"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bb}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="51">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="500" height="30" uuid="1024ab81-901c-45ee-9c73-8d9945de6389">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["স্থানঃ গাজীপুর সেনানিবাস" + "\n" +"তারিখঃ........../........../.......... ইং"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement x="130" y="0" width="100" height="16" uuid="f49660da-c536-400d-9b3c-6c7a4502a049">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পৃষ্ঠাঃ " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="230" y="0" width="100" height="16" uuid="f1a1718f-2c68-4730-bfa7-4f91510a062b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="0" width="500" height="1" uuid="c7bfaa63-1038-4155-a6ef-80d3e574874e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<graphicElement>
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="17" splitType="Stretch"/>
+	</summary>
+</jasperReport>

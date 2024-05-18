@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="dwr_inventory_ledger" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a3b5a2d8-e002-4af8-a3c1-919a5713dbee">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof live"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_DRAWING_INV_ITEM" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select SL, TR_DATE,reference_no,item_id,item_name, SUm(received_quantity) received_quantity,SUm(issue_quantity) issue_quantity,
+SUm(received_quantity)- SUm(issue_quantity) balance from(
+select 1 SL,  null  TR_DATE, 'Opening Balance' reference_no,item_id ,dcld."name" item_name,
+sum(received_quantity) received_quantity ,0 issue_quantity
+from drawing_inventory_consumer_receive_master dicrm , drawing_inventory_consumer_receive_details dicrd, 
+drw_common_lookup_details dcld 
+where dicrm.id=dicrd.master_id
+and dcld.master_id=13
+and date(dicrm.received_date) < $P{P_FROM_DATE} 
+and dcld.id=dicrd.item_id
+and dicrd.item_id=coalesce ( $P{P_DRAWING_INV_ITEM} , dicrd.item_id)
+group by item_id,dcld."name" 
+union all 
+select 1 SL,date(dicrm.received_date) TR_DATE, dicrm.reference_no,item_id,dcld."name" item_name, received_quantity,0 issue_quantity
+from drawing_inventory_consumer_receive_master dicrm , drawing_inventory_consumer_receive_details dicrd, 
+drw_common_lookup_details dcld 
+where dicrm.id=dicrd.master_id
+and dcld.master_id=13
+and date(dicrm.received_date) between  $P{P_FROM_DATE}  and  $P{P_TO_DATE} 
+and dcld.id=dicrd.item_id
+and dicrd.item_id=coalesce ( $P{P_DRAWING_INV_ITEM} , dicrd.item_id)
+union all
+select 2 SL,  null  TR_DATE, 'Opening Balance' reference_no,item_id,dcld."name" item_name,
+0 received_quantity, sum(issue_quantity) issue_quantity
+from drawing_inventory_consumer_issue_master dicim , drawing_inventory_consumer_issue_details dicid,
+drw_common_lookup_details dcld 
+where dicim.id=dicid.master_id 
+and date(dicim.issue_date) < $P{P_FROM_DATE} 
+and dcld.id=dicid.item_id
+and dcld.master_id=13
+and dicid.item_id=coalesce ( $P{P_DRAWING_INV_ITEM} , dicid.item_id)
+group by item_id,dcld."name"
+union all 
+select 2 SL,  date(dicim.issue_date) TR_DATE, dicim.reference_no,item_id,dcld."name" item_name, 0 received_quantity, issue_quantity
+from drawing_inventory_consumer_issue_master dicim , drawing_inventory_consumer_issue_details dicid,
+drw_common_lookup_details dcld 
+where dicim.id=dicid.master_id 
+and dcld.master_id=13
+and date(dicim.issue_date) between  $P{P_FROM_DATE}   and  $P{P_TO_DATE}
+and dicid.item_id=coalesce ( $P{P_DRAWING_INV_ITEM} , dicid.item_id)
+and dcld.id=dicid.item_id) a
+where 1=1
+group by TR_DATE,reference_no,item_id,item_name,SL
+order by item_id,SL asc]]>
+	</queryString>
+	<field name="sl" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="sl"/>
+		<property name="com.jaspersoft.studio.field.label" value="sl"/>
+	</field>
+	<field name="tr_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="tr_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="tr_date"/>
+	</field>
+	<field name="reference_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reference_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="reference_no"/>
+	</field>
+	<field name="item_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="item_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_id"/>
+	</field>
+	<field name="item_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="item_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_name"/>
+	</field>
+	<field name="received_quantity" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="received_quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="received_quantity"/>
+	</field>
+	<field name="issue_quantity" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="issue_quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_quantity"/>
+	</field>
+	<field name="balance" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="balance"/>
+	</field>
+	<variable name="Item_balance" class="java.math.BigDecimal" resetType="Group" resetGroup="Item_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{balance}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{balance}]]></initialValueExpression>
+	</variable>
+	<group name="Item_group">
+		<groupExpression><![CDATA[$F{item_name}]]></groupExpression>
+		<groupHeader>
+			<band height="19">
+				<staticText>
+					<reportElement x="0" y="0" width="131" height="19" uuid="706d72b3-3b49-4e1a-9342-f7d128d44d21"/>
+					<box leftPadding="2">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Item Name:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="131" y="0" width="419" height="19" uuid="799b871a-7016-4db2-965d-76f0ccb2b82a"/>
+					<box leftPadding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{item_name}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<subreport>
+				<reportElement x="-10" y="0" width="570" height="14" uuid="bf60af91-ece3-4df5-b858-91d2e9de7a25"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="6" width="280" height="30" uuid="8efcde11-447e-43e7-a56d-a55a272db7dd"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Inventory Item Ledger]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="131" height="20" uuid="011574d6-b14b-4c4e-abba-b8bbac400d69">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24bf0b47-ec91-4ba1-9ff7-7aa20498f6f9"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Reference No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="0" width="69" height="20" uuid="97b730ea-535d-4c6c-9c57-442e398c8331">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb8c9aa1-6d78-4972-a1a0-e2b6123e2ef7"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="80" height="20" uuid="1e8ed6f2-9ba9-492d-a408-1ee36f97ba2c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d174a766-8b79-4066-9188-96ea347061b0"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Received Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="88" height="20" uuid="6df8bee1-bdad-4d58-b410-4e332d5eb5b7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="feb3b1e6-14a8-4fab-bc39-1654b993475b"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Issue Qty]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="0" width="79" height="20" uuid="c02e6205-cf6c-40a1-a9f3-bb3df3c2d7e6"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Balance]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="103" height="20" uuid="545e31f4-9ebd-45ab-87aa-7883d7775ba8"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Comments]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="131" height="20" uuid="f4def502-d612-471c-b7e0-6ada65ee552c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24bf0b47-ec91-4ba1-9ff7-7aa20498f6f9"/>
+				</reportElement>
+				<box leftPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{reference_no}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="131" y="0" width="69" height="20" uuid="c0fffcee-03b4-4cb7-8f45-9081fda5f798">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cb8c9aa1-6d78-4972-a1a0-e2b6123e2ef7"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tr_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="80" height="20" uuid="12141b53-07dc-4e43-aee6-93841c9844b7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d174a766-8b79-4066-9188-96ea347061b0"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{received_quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="0" width="88" height="20" uuid="fc6fea4c-6c8a-4704-aad3-ad1cc8771080">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="feb3b1e6-14a8-4fab-bc39-1654b993475b"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{issue_quantity}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="368" y="0" width="80" height="20" uuid="77d4be39-faf8-4b82-b775-a84e231b8cdd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{Item_balance}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="448" y="0" width="102" height="20" uuid="035965c8-5a69-4316-96f0-a7eebfdccdc9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="240" y="10" width="100" height="30" uuid="63516ae7-f6d8-43f4-b248-65f1ad000f42"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="340" y="10" width="100" height="30" uuid="b7d3a055-e2e1-4920-939f-7f872a75887e"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

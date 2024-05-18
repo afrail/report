@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="finSalaryStatementMain" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0c712a8d-3c2b-4f2d-ae7d-3948243e8837">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="fe5477ae-9d79-4c05-8e03-9fc3cf19ee3b">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+		<parameter name="P_HRM_TYPE" class="java.lang.Integer"/>
+		<parameter name="P_MONTH" class="java.lang.Integer"/>
+		<parameter name="P_FINANCIAL_YEAR" class="java.lang.String"/>
+		<parameter name="P_BILLING_OFFICE" class="java.lang.Integer"/>
+		<parameter name="finSalaryStatementMainSub" class="java.lang.String" isForPrompting="false"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT X.NAME_BANGLA,COALESCE(SUM(X.SAL_VALUE),0.00)
+FROM(
+SELECT A.ACCOUNT_CODE||','||C.NAME_BANGLA AS NAME_BANGLA, SUM(A.VALUE) SAL_VALUE
+FROM FIN_ACCOUNT_WISE_SAL_EMP A, PARAM_MONTH B, HRM_EMPLOYEE_PERSONAL_INFORMATION HEPI ,
+BUDGET_ECONOMIC_CODE C
+WHERE 1=1
+AND CAST(A.MONTH AS INTEGER)=B.ID
+AND C.ECONOMIC_CODE=A.ACCOUNT_CODE
+AND HEPI.ID=A.EMPLOYEE_PERSONAL_INFORMATION_ID
+AND HEPI.HRM_TYPE= $P{P_HRM_TYPE} 
+AND CAST(A.MONTH AS INTEGER)=CAST($P{P_MONTH} AS INTEGER)
+AND A.FIN_YEAR =$P{P_FINANCIAL_YEAR} 
+ AND A.OFFICE_ID=COALESCE($P{P_BILLING_OFFICE} ,A.OFFICE_ID)
+ GROUP BY C.NAME_BANGLA,B.MONTH_NAME_BANGLA,A.FIN_YEAR,A.ACCOUNT_CODE)X
+GROUP BY X.NAME_BANGLA,X.SAL_VALUE
+ORDER BY NAME_BANGLA  ASC]]>
+		</queryString>
+		<field name="name_bangla" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="name_bangla"/>
+			<property name="com.jaspersoft.studio.field.label" value="name_bangla"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+		</field>
+		<field name="coalesce" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="coalesce"/>
+			<property name="com.jaspersoft.studio.field.label" value="coalesce"/>
+		</field>
+		<variable name="Variable_1" class="java.lang.Integer" calculation="Sum">
+			<variableExpression><![CDATA[$F{coalesce}]]></variableExpression>
+		</variable>
+		<group name="name_bangla">
+			<groupExpression><![CDATA[$F{name_bangla}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="P_HRM_TYPE" class="java.lang.Integer"/>
+	<parameter name="P_MONTH" class="java.lang.Integer"/>
+	<parameter name="P_FINANCIAL_YEAR" class="java.lang.String"/>
+	<parameter name="P_BILLING_OFFICE" class="java.lang.Integer"/>
+	<parameter name="finSalaryStatementMainSub" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT HEPI.CODE, HEPI.EMPLOYEE_NAME_BANGLA,DESIGNATION_ID,
+GET_COM_LOOKUP_BN_NAME(DESIGNATION_ID) DESIGNTION_NAME,A.YEAR,
+B.MONTH_NAME_BANGLA,A.FIN_YEAR ,
+ACCOUNT_CODE||','||C.NAME_BANGLA AS NAME_BANGLA, SUM(A.VALUE) SAL_VALUE
+FROM FIN_ACCOUNT_WISE_SAL_EMP A,PARAM_MONTH B,HRM_EMPLOYEE_PERSONAL_INFORMATION HEPI,
+BUDGET_ECONOMIC_CODE C
+WHERE 1=1
+AND CAST(A.MONTH AS INTEGER)=B.ID
+AND C.ECONOMIC_CODE=A.ACCOUNT_CODE
+AND HEPI.ID=A.EMPLOYEE_PERSONAL_INFORMATION_ID
+ AND HEPI.HRM_TYPE=$P{P_HRM_TYPE} 
+ AND CAST(A.MONTH AS INTEGER)=$P{P_MONTH}
+ AND A.FIN_YEAR =$P{P_FINANCIAL_YEAR} 
+ AND A.OFFICE_ID=COALESCE($P{P_BILLING_OFFICE} ,A.OFFICE_ID)
+ GROUP BY HEPI.CODE, HEPI.EMPLOYEE_NAME_BANGLA,
+DESIGNATION_ID,
+ACCOUNT_CODE,C.NAME_BANGLA,B.MONTH_NAME_BANGLA,A.FIN_YEAR ,A.YEAR,HEPI.id
+ORDER BY get_des_serial(DESIGNATION_ID), get_emp_serial(HEPI.id) ASC]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="designation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_account_wise_sal_emp"/>
+	</field>
+	<field name="designtion_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designtion_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designtion_name"/>
+	</field>
+	<field name="year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="year"/>
+		<property name="com.jaspersoft.studio.field.label" value="year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_account_wise_sal_emp"/>
+	</field>
+	<field name="month_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="month_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="month_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="param_month"/>
+	</field>
+	<field name="fin_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fin_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="fin_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_account_wise_sal_emp"/>
+	</field>
+	<field name="name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="sal_value" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="sal_value"/>
+		<property name="com.jaspersoft.studio.field.label" value="sal_value"/>
+	</field>
+	<variable name="Variable_1" class="java.lang.Integer" incrementType="Group" incrementGroup="designation_id" calculation="Sum">
+		<variableExpression><![CDATA[$F{sal_value}]]></variableExpression>
+	</variable>
+	<group name="code">
+		<groupExpression><![CDATA[$F{code}]]></groupExpression>
+	</group>
+	<group name="employee_name_bangla">
+		<groupExpression><![CDATA[$F{employee_name_bangla}]]></groupExpression>
+	</group>
+	<group name="designation_id">
+		<groupExpression><![CDATA[$F{designation_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="760" y="0" width="40" height="16" uuid="dcb903b0-a639-48f3-bc7f-a6920ef1722f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="0" width="69" height="16" uuid="95b5bb07-aca8-4ba8-bd8d-683df0a9fd3b"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="70" splitType="Stretch">
+			<componentElement>
+				<reportElement positionType="Float" x="1" y="40" width="959" height="30" isPrintWhenDetailOverflows="true" printWhenGroupChanges="designation_id" uuid="1c2f2e3b-cbcc-43b1-b329-d6efe6c92a49">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="Dataset1" uuid="35c07592-887a-4180-abe8-0f4ac772988f">
+						<datasetParameter name="P_HRM_TYPE">
+							<datasetParameterExpression><![CDATA[$P{P_HRM_TYPE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="P_BILLING_OFFICE">
+							<datasetParameterExpression><![CDATA[$P{P_BILLING_OFFICE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="P_FINANCIAL_YEAR">
+							<datasetParameterExpression><![CDATA[$P{P_FINANCIAL_YEAR}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="P_MONTH">
+							<datasetParameterExpression><![CDATA[$P{P_MONTH}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="100" uuid="cfb43525-7a05-48eb-a887-d726ef58aad1">
+						<jr:detailCell style="Table_TD" height="16">
+							<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="16" isPrintWhenDetailOverflows="true" uuid="47932512-edce-4bed-a995-7a1f44d1e90e"/>
+								<box leftPadding="3" rightPadding="3">
+									<pen lineWidth="0.25"/>
+									<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{name_bangla}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="d8060639-663e-4eaa-83c5-9a59dce1bedf">
+						<jr:detailCell style="Table_TD" height="16">
+							<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="100" height="16" isPrintWhenDetailOverflows="true" uuid="25312757-f1f2-4bb7-b7b5-2cbdd7fa15aa"/>
+								<box leftPadding="3" rightPadding="3">
+									<pen lineWidth="0.25"/>
+									<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{coalesce}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<subreport>
+				<reportElement x="-20" y="0" width="1008" height="30" uuid="c8a9efbc-ca83-49f0-be10-2b00a925808b"/>
+				<subreportParameter name="P_HRM_TYPE">
+					<subreportParameterExpression><![CDATA[$P{P_HRM_TYPE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_MONTH">
+					<subreportParameterExpression><![CDATA[$P{P_MONTH}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_FINANCIAL_YEAR">
+					<subreportParameterExpression><![CDATA[$P{P_FINANCIAL_YEAR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_BILLING_OFFICE">
+					<subreportParameterExpression><![CDATA[$P{P_BILLING_OFFICE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{finSalaryStatementMainSub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

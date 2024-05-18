@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2fin_pensionform2.2" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f7e4e801-bf1e-4b3b-8223-5879f97ae348">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="107"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="886"/>
+	<parameter name="pension2.2_sub1" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pension2.2_sub2" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="pension2.2_sub3" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2_fin_sub_pension_six_page" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2_fin_sub_pension_seven_page" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2_fin_sub_pension_eight_page" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_PENSION_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	(a.employee_register_name ||' - '|| a.nid || chr(10) || 'পিতা/স্বামী - ' || a.father_name) emp_name,
+	'ব্যক্তিগত নম্বর-' || code || ', বিওএফ, গাজীপুর সেনানিবাস' lastoffice,
+	(get_com_lookup_bn_name(a.last_designation_id) ||', '|| get_com_lookup_bn_name(a.last_office_id)) lastdeg
+from
+	fin_pension_application_information a
+where
+	1 = 1
+	and a.id = $P{P_PENSION_ID}]]>
+	</queryString>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<field name="lastoffice" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lastoffice"/>
+		<property name="com.jaspersoft.studio.field.label" value="lastoffice"/>
+	</field>
+	<field name="lastdeg" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lastdeg"/>
+		<property name="com.jaspersoft.studio.field.label" value="lastdeg"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="501" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="113" width="375" height="18" uuid="a0611867-5e6b-4380-b059-154e6b4cd247">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lastdeg}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="113" width="82" height="18" uuid="15393f5f-1373-480b-8fad-c4916948322c"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[শেষ পদবি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="131" width="8" height="18" uuid="52ab81be-d7ac-4126-a9b9-b1439ff6ba41"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="113" width="8" height="18" uuid="72606773-df4b-4042-81ea-f6e6103170bb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="5" width="70" height="19" uuid="73479feb-a4a6-48c7-9e87-7a04f7097b27"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[সংযোজনী-৫]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="81" width="370" height="36" uuid="d92d3824-4c3f-4e08-9b45-a53a3a4869e6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="100" y="131" width="375" height="18" uuid="9a40078b-74de-469f-96e8-b9ec3156fb1c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lastoffice}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="100" y="106" width="455" height="10" uuid="07624955-b4fb-4528-a505-e7d3cf7355e8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="86" width="82" height="18" uuid="b11b598d-b59a-40ea-83fc-73d3a0770610"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="15" width="200" height="30" uuid="cccb3075-eddc-4a08-b66c-d05c3dd12f49"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পারিবারিক পেনশন ফরম ২.২]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="131" width="82" height="18" uuid="6dfec8d4-12b9-424a-a9df-0bc025521589"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[শেষ অফিস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="86" width="8" height="18" uuid="9576bad1-a9b8-495c-b123-b68dd1832e75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="162" width="150" height="18" uuid="6e5d4c02-7511-42a9-a814-f73feb9b233f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[এর মৃত্যুতে পারিবারিক পেনশন সংক্রান্ত।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="216" width="595" height="18" uuid="0cc9f0b3-0e39-495f-8c15-78a90594d812"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নির্দেশাবলি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="142" width="455" height="10" uuid="5e4f997f-ecef-48fd-9c98-ac401fdde2b2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="124" width="455" height="10" uuid="aac6bbd7-b261-4ff0-a0b2-019fb5590cce">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="67" y="244" width="450" height="30" uuid="6e7d1070-7251-4db9-94b8-890f1c84859e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[আবেদনকারী বৈধ উত্তরাধিকার সনদপত্রসহ ফরমের প্রথম অংশ পূরণ করিয়া ৩(তিন) কপি মৃত কর্মচারীর শেষ অফিস প্রধানের নিকট দাখিল করিবেন। মনোনীত উত্তরাধিকারগণ একক অভিভাবকত্বে একটি আবেদনপত্র দাখিল করিবেন।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="66" y="293" width="450" height="37" uuid="15add2e1-8095-4f41-ae53-eb60d2ed9c7f"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[অফিস প্রধান ফরমের দ্বিতীয় অংশ পূরণ করিয়া না-দাবী প্রত্যয়নপত্র ও মন্তব্য/সুপারিশসহ ২ (দুই) কপি ফরম পেনশন মঞ্জুরকারী কর্তৃপক্ষের নিকট পেশ করিবেন।]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="65" y="343" width="450" height="40" uuid="0ef8e503-6f4f-4065-986c-f28bdaf4e897"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মঞ্জুরকারী কর্তৃপক্ষ না-দাবী প্রত্যয়নপত্রসহ সকল দলিলপত্র যাচাই করিয়া ফরমের তৃতীয় অংশ পূরণ করিবেন। তিনি অবসর ভাতা ও আনুতোষিক মঞ্জুরির আদেশ দিবেন এবং পেনশন পরিশোধ আদেশ জারির জন্য মঞ্জুরি আদেশসহ ১ (এক) কপি ফরম সংশ্লিষ্ট হিসাবরক্ষণ অফিসে প্রেরণ করিবেন।"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="65" y="399" width="450" height="40" uuid="6465af7e-d640-4e01-a958-2d65594e1069"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[হিসাবরক্ষণ অফিস প্রত্যাশিতশেষ বেতনপত্র, না-দাবী প্রত্যয়নপত্র ও মঞ্জুরি আদেশসহ পরবর্তী প্রয়োজনীয় অন্যান্য সকল হিসাব চূড়ান্ত নিরীক্ষান্তে ফরমের চতুর্থ অংশ পূরণ করিবে এবং পেনশন পরিশোধ আদেশ (পিপিও) জারি করিবে।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="456" width="450" height="40" uuid="7f2d9133-947d-4362-9545-58f60094c1c4"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[সঠিক তথ্যের অভাবে পেনশন নিষ্পত্তি যাহাতে বিলম্বিত না হয় সে জন্য ফরমের যে কোন স্থানের অপ্রয়োজনীয় অংশ কালি দিয়া কাটিয়া দিতে হইবে এবং যথাস্থানে প্রয়োজনীয় সঠিক তথ্য লিখিতে/সংযোজন করিতে হইবে।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="45" y="244" width="22" height="30" uuid="97e05fe6-3080-44ff-aaa7-adf6cf4ed5e1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[১।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="44" y="293" width="22" height="37" uuid="962a1707-dda9-4e8e-ae10-50c6570f2585">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[২।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="343" width="22" height="40" uuid="16f4e58b-ed35-4283-a5ca-39e955539792">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[৩।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="399" width="22" height="40" uuid="4b50b624-e613-4ec5-815f-3e83d383b9bc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[4।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="456" width="22" height="40" uuid="4edd742c-0dc4-4672-bae4-88f2328ad977">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="1.0" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[৫।]]></text>
+			</staticText>
+			<line>
+				<reportElement x="42" y="500" width="483" height="1" uuid="5af0587b-423a-4c86-a77f-e3b5c7e14a34"/>
+			</line>
+			<line>
+				<reportElement x="42" y="234" width="483" height="1" uuid="e40a90bd-1468-4310-8844-2c722ab369b3"/>
+			</line>
+			<line>
+				<reportElement x="42" y="235" width="1" height="265" uuid="6b2790ad-37a3-4fbf-8b53-b4f41bd3e021"/>
+			</line>
+			<line>
+				<reportElement x="524" y="235" width="1" height="265" uuid="744c2aba-9212-4a38-a136-830a99740f8a"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="51">
+			<subreport>
+				<reportElement x="-20" y="6" width="595" height="29" uuid="a890b86e-b86f-4654-b9cd-9228e04e781f"/>
+				<subreportParameter name="P_PENSION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PENSION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pension2.2_sub1}]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement isPrintRepeatedValues="false" x="0" y="40" width="166" height="1" uuid="92a52e2c-b815-477e-9d73-2148f51d90ca"/>
+			</break>
+		</band>
+		<band height="44">
+			<subreport>
+				<reportElement x="-20" y="3" width="595" height="27" uuid="85634341-5b98-4a06-afe4-3bd4358b3621"/>
+				<subreportParameter name="P_PENSION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PENSION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pension2.2_sub2}]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="39" width="180" height="1" uuid="db8bece4-bd89-4982-8859-855f481005f0"/>
+			</break>
+		</band>
+		<band height="36">
+			<break>
+				<reportElement x="0" y="35" width="180" height="1" uuid="6c713fe0-b072-42ee-b214-c61406f68797"/>
+			</break>
+			<subreport>
+				<reportElement x="-20" y="5" width="595" height="25" uuid="aac2ad1b-e315-4158-940c-f835ff3fe1a5"/>
+				<subreportParameter name="P_PENSION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PENSION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{pension2.2_sub3}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="41">
+			<break>
+				<reportElement x="0" y="40" width="178" height="1" uuid="9bb976fd-130e-4ce5-a27d-8e70c3960c1b"/>
+			</break>
+			<subreport>
+				<reportElement x="-22" y="4" width="597" height="26" uuid="4c71d0f8-fa9f-44c5-bced-e4bf81d38358"/>
+				<subreportParameter name="P_PENSION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PENSION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2_fin_sub_pension_six_page}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<summary>
+		<band height="66">
+			<break>
+				<reportElement x="0" y="30" width="287" height="1" uuid="1237d83f-bde1-4a38-867f-37d41ff30f33"/>
+			</break>
+			<subreport>
+				<reportElement x="-22" y="4" width="597" height="20" uuid="292299a0-c3bc-4e17-8007-a9347e64d876"/>
+				<subreportParameter name="P_PENSION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PENSION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2_fin_sub_pension_seven_page}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="-20" y="36" width="595" height="30" uuid="f1d12d75-1f56-41e8-8e3e-e0493f333f9e"/>
+				<subreportParameter name="P_PENSION_ID">
+					<subreportParameterExpression><![CDATA[$P{P_PENSION_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2_fin_sub_pension_eight_page}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

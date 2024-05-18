@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_classwise_employee_list" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="89088749-2e9d-4cfc-9e9f-494cc05b6fdc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<queryString language="SQL">
+		<![CDATA[with army as ( 
+ select count(*) army_emp, 0 total_emp, 'প্রথম শ্রেণীর কর্মকর্তা'  employee_class , 1 sql_n,
+get_com_lookup_bn_name(heg.employee_class) class_name,
+hepi.hrm_type 
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class=93
+and heoi.is_civil=false
+group by heg.employee_class,hepi.hrm_type
+union all 
+select 0 army_emp, count(*) total_emp, 'প্রথম শ্রেণীর কর্মকর্তা ' employee_class , 1 sql_n,
+get_com_lookup_bn_name(heg.employee_class) class_name,
+hepi.hrm_type 
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class=93
+and heoi.is_civil=true 
+group by heg.employee_class,hepi.hrm_type),
+civil_1 as(
+select count(*) total_emp,'২য় শ্রেণীর কর্মকর্তা'  employee_class , 1 sql_n,
+get_com_lookup_bn_name(heg.employee_class) class_name,
+hepi.hrm_type 
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class=93
+and heoi.is_civil=true 
+group by heg.employee_class,hepi.hrm_type),
+second_cl as (
+select count(*) total_emp,  '২য় শ্রেণীর কর্মকর্তা'  employee_class ,1 sql_n,
+get_com_lookup_bn_name(heg.employee_class) class_name,
+hepi.hrm_type 
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class=94
+and hepi.hrm_type=1
+and heoi.is_civil=true 
+group by heg.employee_class,hepi.hrm_type),
+second_st as (
+select count(*) total_emp, heg.employee_class ,
+get_com_lookup_bn_name(heg.employee_class) class_name,
+hepi.hrm_type 
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class=94
+and hepi.hrm_type=2
+and heoi.is_civil=true 
+group by heg.employee_class,hepi.hrm_type),
+thr_sta as (
+select count(*) total_emp,'তৃতীয় শ্রেণী/চতুর্থ শ্রেণী'  employee_class ,1 sql_n
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class in(139,140)
+and hepi.hrm_type=2
+and heoi.is_civil=true),
+trid_w as (
+select count(*) total_emp,'তৃতীয় শ্রেণী/চতুর্থ শ্রেণী কারিগর'  employee_class ,1 sql_n
+from hrm_employee_personal_information hepi, hrm_employee_official_information heoi,
+hrm_employee_grade heg 
+where hepi.id=heoi.employee_id 
+and heoi.grade_id=heg.id
+and heg.employee_class in(139,140)
+and hepi.hrm_type=3
+and heoi.is_civil=true)
+select army.employee_class, army.army_emp, army.total_emp from army
+union all 
+select second_cl.employee_class, 0, second_cl. total_emp from second_cl
+union all
+select thr_sta.employee_class, 0, total_emp from thr_sta
+union all 
+select trid_w.employee_class, 0 , total_emp from trid_w]]>
+	</queryString>
+	<field name="employee_class" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_class"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_class"/>
+	</field>
+	<field name="army_emp" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="army_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="army_emp"/>
+	</field>
+	<field name="total_emp" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_emp"/>
+	</field>
+	<variable name="total_meletari" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{army_emp}]]></variableExpression>
+	</variable>
+	<variable name="total_civil" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_emp}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="420" height="30" uuid="b0bcf326-a5b9-4959-8399-0f53b04c1d15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[বাংলাদেশ সমরাস্ত্র কারখানা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="420" height="20" uuid="d3769995-83ff-48c2-a194-413e4257080e"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট জনবল]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="0" width="190" height="18" uuid="4cc633f2-1f55-424f-b8c6-6fda3a17ddd7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[জনবলের বিবরণ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="100" height="18" uuid="0075a45f-b434-48a6-bf92-8d012891be2c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[সামরিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="100" height="18" uuid="18519a56-bd02-462b-936e-30431a71ad32"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[বেসামরিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="18" uuid="3294d365-ec2f-4935-98de-028c3cdc8c0a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="0" width="190" height="20" uuid="fd066930-e072-4080-a565-0a9c149691ac"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_class}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="0" width="100" height="20" uuid="5a180ca4-1dad-46e5-af9b-02267f28d4ac"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{army_emp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="100" height="20" uuid="39d80272-7110-4d74-b68a-98676dbebdc0"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_emp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="30" height="20" uuid="4d8908d4-e4ec-4c2e-a10c-3eb8e1096592"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="18" splitType="Stretch">
+			<textField>
+				<reportElement x="220" y="0" width="100" height="18" uuid="dad0773c-8b11-4c35-ac67-f44f91494f12"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_meletari}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="220" height="18" uuid="bfc08ba8-cf50-4b99-b893-9ca896f26893"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[মোট]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="320" y="0" width="100" height="18" uuid="0b75da73-fb28-41c4-a138-431681f0dd1b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total_civil}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

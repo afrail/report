@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrmOffcer_family_info_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aa20711a-53c1-453f-a914-85a767aecaff">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select get_com_lookup_name(relation) relation, dependent_name member_name, 
+date_of_birth birth_day, get_com_lookup_name(blood_group)blood_group,education_qualification,occupation
+,case when is_nominee = true then 'yes' end nominee, null remarks
+from hrm_employee_family_information fi
+where 1=1
+and fi.employee_id = $P{P_EMPLOYEE_ID}]]>
+	</queryString>
+	<field name="relation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="relation"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="member_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="member_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="member_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="birth_day" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="birth_day"/>
+		<property name="com.jaspersoft.studio.field.label" value="birth_day"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="education_qualification" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="education_qualification"/>
+		<property name="com.jaspersoft.studio.field.label" value="education_qualification"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="occupation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="occupation"/>
+		<property name="com.jaspersoft.studio.field.label" value="occupation"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="nominee" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nominee"/>
+		<property name="com.jaspersoft.studio.field.label" value="nominee"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_family_information"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="30" width="70" height="30" uuid="bb966e9d-a92d-432c-9fa7-18bce9ca5318">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7279e98a-ae25-4e71-bf59-3b28534aa60a"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="30" width="80" height="30" uuid="e4791fa1-cd0b-42e4-9257-0b389743bb5c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="13889365-fce4-4256-ae38-d9c5a93499cb"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Member Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="30" width="70" height="30" uuid="fe1685d6-5863-45c6-9aa3-8e2f35f7129d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7441a45a-5621-4b3e-8e38-17b90e44afc4"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Birthday]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="30" width="60" height="30" uuid="57cde29f-a2da-4131-8fb6-47c1fe72f36b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a122c2a4-fd95-46a5-a7fd-501e127f4247"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Blood Group]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="30" width="80" height="30" uuid="d11022bf-fa19-41c9-899e-69483dfc45bd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80558fa0-6586-4b93-844e-d3b962c39e1d"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Educational Qualification]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="30" width="70" height="30" uuid="5fb46449-eaea-4d38-9d67-b7e3dfaf6230">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9eece636-0357-4775-9d51-bcbda28f08fd"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ocupation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="30" width="50" height="30" uuid="e18f171d-1252-4654-8535-b957b2d9fd53">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="02f48f66-bbe6-4cfb-9ea6-61e0222c040b"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nominee]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="30" width="60" height="30" uuid="3bcf67ed-14ad-4a53-9d91-f0e7d0ff2604">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8ee36b6-a6d9-4b1b-aef8-09693c52120f"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remarks]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="120" height="20" uuid="ec534c94-862d-4e93-ab68-f0d597952d6b"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Family Information ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="70" height="34" uuid="01502411-9d1d-4ebb-8d99-d9b8f15d42ff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7279e98a-ae25-4e71-bf59-3b28534aa60a"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{relation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="70" y="0" width="80" height="34" uuid="e5ab9099-547e-4f81-a4ad-4202b4c753e1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="13889365-fce4-4256-ae38-d9c5a93499cb"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{member_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="150" y="0" width="70" height="34" uuid="f3d3b674-7f01-4233-bf5a-4352f74e3fa9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7441a45a-5621-4b3e-8e38-17b90e44afc4"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{birth_day}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="220" y="0" width="60" height="34" uuid="51870a18-b114-4a98-ba74-3a76cac8c3b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a122c2a4-fd95-46a5-a7fd-501e127f4247"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{blood_group}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="280" y="0" width="80" height="34" uuid="43a03585-21db-4442-b291-4d9bcc3fdd9b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="80558fa0-6586-4b93-844e-d3b962c39e1d"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{education_qualification}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="360" y="0" width="70" height="34" uuid="34cb46e7-3383-4cc2-bc7f-48783f528072">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9eece636-0357-4775-9d51-bcbda28f08fd"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{occupation}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="480" y="0" width="60" height="34" uuid="d3a2048e-d757-43f3-a648-c5543ae59bde">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f8ee36b6-a6d9-4b1b-aef8-09693c52120f"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="1#,# %" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="430" y="0" width="50" height="34" uuid="590003db-4ff0-41b8-9837-f7470355b7ff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="02f48f66-bbe6-4cfb-9ea6-61e0222c040b"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nominee}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

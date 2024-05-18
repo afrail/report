@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReceivedVoucherReport" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="acf309a7-d0d3-45bb-9e9a-28a09da5c973">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[aW52X2l0ZW1fcmVjZWl2ZV9tYXN0ZXIgLDE1LDE1LDQ3NDA1MDY4LTdlNjItNGU5Mi05YmVmLTZk
+NTA4N2NmZDU2ZTs=]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_IBCS"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="699"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="290"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_IR_MS_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT iirm.id
+FROM inv_item_receive_master iirm
+WHERE 
+	 iirm.id = $P{P_IR_MS_ID} 
+ORDER BY iirm.id DESC]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_item_receive_master"/>
+	</field>
+	<variable name="SUM" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<detail>
+		<band height="487">
+			<staticText>
+				<reportElement x="9" y="252" width="550" height="100" isPrintWhenDetailOverflows="true" uuid="b37e885e-02e1-43e2-bacb-045d97689644"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[        টোকঃ (ক) বিক্লপ লিপিবদ্ধকরণ অপ্রয়োজন, (খ) ইউনিট, ডিপার্টমেন্ট, বি.এ.ও.সি. প্রতিষ্ঠান। বি.এ.ও.সি. ইউনিট, কারখানা ইত্যাদি, (গ) চাহিদা প্রেরণকারী কর্মকর্তার নিকট যদি পূর্ব হইতেই অধিকার সঞ্চয় আইন মজুদ থাকে তবে শুধুমাত্র অধ্যায় ও অনুচ্ছেদ উল্লেখ করিলেই চলিবে। অন্যথায় মূল আইন অথবা ইহার সত্যায়িত কপি সংযুক্ত করিতে হইবে। (ঘ) কোন ইউনিট, ডিপার্টমেন্ট কর্তৃক দ্রব্যাদি গৃহীত/ফেরত প্রদানকালে শুধু কলাম ৩ হইতে ৯ পর্যন্ত পূরণ করিতে হইবে। ডিপোতে ফেরত দানকালে কলাম ৭,৮ এবং ৯ বি এ ও সি পুরনার্থে ফাকা রাখিতে হইবে। প্রয়োজন অনুসারে কলাম ১০, ১১ এবং ১২ গ্রহণকারী ব্যক্তিকে হিসাবরক্ষক কথায় ও অংকে পূরণ করিবেন। (ঙ) মেডিক্যাল ষ্টোরস ডিপার্টমেন্ট এই স্থানে দ্রবের বিশদ বিবরণ লিপিবদ্ধ করিবেন জেমনঃ- ‘এল’ স্থানীয়ভাবে কৃত দ্রব্য। ‘এম’ মেডিক্যাল ষ্টোরস কর্তৃক প্রস্তুতকৃত দ্রব্য। (চ) অর্ডন্যান্স ষ্টোরস -এর ক্ষেত্রে বিভিন্ন ভকাবুলারী। জন্য ভিন্ন ভিন্ন পৃষ্ঠা ব্যবহার করিতে হইবে। (ছ) নির্দিষ্ট হিসাবের উল্লেখ থাকিতে হইবে। (জ) অন্য ডিপার্টমেন্টে সরবরাহকৃত দ্রব্য অথবা সবার ক্ষেত্রে প্রতিস্বাক্ষরকারী কর্মকর্তা কর্তৃক পূরণ করিতে হইবে। (ঝ) শুধু মাত্র বি.এ.ও.সি. প্রতিষ্ঠানের জন্য প্রয়োজন। এই ক্ষেত্রে (ট) অংশে কোন কিছু পূরণ করিতে হইবে না। ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="382" width="550" height="30" isPrintWhenDetailOverflows="true" uuid="69107adb-dffa-41d5-8830-1f46996bdc69"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[১। দায়ের খাত (প্রধান, গৌণ, বিস্তারিত খাত) প্রাথমিক এবং মাধ্যমিক ইউনিট ……………………………………………………………………]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="412" width="550" height="30" isPrintWhenDetailOverflows="true" uuid="5eae86f4-448e-4e7f-ba87-71e93bfdfb30"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[২। দায় সংঘটনের সময়………………………………………………  মাস………………………… বৎসর……………………]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="442" width="550" height="30" isPrintWhenDetailOverflows="true" uuid="becff54e-95bc-4c6d-8991-bb465ec857f9"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৩। সংঘটিত বিধানকারী হিসাব কর্মকর্তা কর্তৃক পূরণ করিতে হইবে ……………………………………………………………………………]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="212" width="550" height="30" isPrintWhenDetailOverflows="true" uuid="052d67f5-181e-408a-a58b-fe76a17e6588"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[দ্রব্য ডিপার্টমেন্টে দ্রব্যাদি সরবরাহের ক্ষেত্রে প্রতিস্বাক্ষরকারী অফিসার কর্তৃক নিম্নে বর্ণিত (ছ)- এর বিবরণ পূরণ করিতে হইবে।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="2" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="632d3dcf-d20c-4bc1-bf37-9412593a861f"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[(ছ) প্রত্যয়ন করা যাইতেছে যে, আমার নিকট হইতে দ্রব্যগুলি হস্তান্তর 
+করা হইয়াছে/হইবে ।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="2" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="b49557ee-7ef8-4be2-a2c3-6c2e08a19f18"/>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[প্রত্যয়ন করা যাইতেছে যে, (ঙ)গ্রহণ করা হইয়াছে/হইবে এবং তাহার রেকর্ডভুক্ত হইয়াছে/ হইবে।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="32" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="92e9e116-ad3b-40ef-8d11-18977f576d27"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[…………………………………………………...]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="62" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="ead0a35c-0663-47bb-a96c-830547b8fe78"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[………………………………………………দস্তখত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="92" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="17f350e8-4ff8-4850-ba71-782868d6c9ee"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[…………………………………………………পদ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="122" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="1ab56c94-2f52-4975-94eb-fdb7c565d48d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[………………………………………………ষ্টেশন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="152" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="ca260323-9a84-4bab-a444-51d9ce089fd1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[………………………………………………তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="182" width="240" height="30" isPrintWhenDetailOverflows="true" uuid="241a9023-cd76-4bfc-828e-15a06fc56677"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[...…………………………………………………]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="32" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="dd34233c-8c96-485a-90e9-1c868a50c9fc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[……………………………………………………………]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="62" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="d75bdd77-cf13-4b87-a744-9150f4325913"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[………………………………………………………..দস্তখত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="92" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="824a7875-42c3-41a9-8073-f09e6e747883"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[…………………………………………………………..পদ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="122" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="11a9a1b7-81d6-427e-b17e-d066683a1d5d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[………………………………………………………....ষ্টেশন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="152" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="d19d98f8-9f55-4fa2-be69-7892098e4684"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[………………………………………………………..তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="182" width="280" height="30" isPrintWhenDetailOverflows="true" uuid="f83c4a03-e872-4928-ae6d-c015337da3c8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[……………………………………………………………]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

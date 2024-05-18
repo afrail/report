@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ndcCertificate" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6cbc1b62-983e-427b-be74-440d0ff99188">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Comments" uuid="d3139869-0923-4fde-ac86-370694f4dafe">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+		<parameter name="FIN_NDC_MASTER_ID" class="java.lang.Integer"/>
+		<queryString language="SQL">
+			<![CDATA[SELECT EMPLOYEE_ID,COMMENTS
+FROM FIN_NDC_MASTER
+where FIN_NDC_MASTER.ID = $P{FIN_NDC_MASTER_ID}]]>
+		</queryString>
+		<field name="employee_id" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+			<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="fin_ndc_master"/>
+		</field>
+		<field name="comments" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="comments"/>
+			<property name="com.jaspersoft.studio.field.label" value="comments"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="fin_ndc_master"/>
+		</field>
+	</subDataset>
+	<parameter name="FIN_NDC_MASTER_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT A.EMPLOYEE_ID,GET_EMP_BN_NAME(A.EMPLOYEE_ID)||','||'ব্যক্তিগত নম্বর-'||A.EMPLOYEE_ID||' পদবী-'||GET_EMPLOYEE_DESIG_BN(A.EMPLOYEE_ID)EMP_DETAILS,
+B.SERIAL_NO||':' ser_no, B.SECTOR, B.AMOUNT
+FROM FIN_NDC_MASTER A,FIN_NDC_DETAILS B
+WHERE A.ID=B.MASTER_ID 
+AND A.ID= $P{FIN_NDC_MASTER_ID} 
+ORDER BY B.ID ASC]]>
+	</queryString>
+	<field name="employee_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_ndc_master"/>
+	</field>
+	<field name="emp_details" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_details"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_details"/>
+	</field>
+	<field name="ser_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ser_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ser_no"/>
+	</field>
+	<field name="sector" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sector"/>
+		<property name="com.jaspersoft.studio.field.label" value="sector"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_ndc_details"/>
+	</field>
+	<field name="amount" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_ndc_details"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="137" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="0" width="522" height="30" uuid="d30c94c7-2fcd-466f-92c3-702829389664"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font fontName="NikoshBAN" size="14" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["না-দাবী প্রত্যয়ন পত্র"]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="40" y="59" width="490" height="50" uuid="72f3855c-7c37-41be-83b8-8fbcfdf4ea36"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement markup="styled">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["১৷"+" "+"এই মর্মে প্রত্যয়ন করা যাইতেছে যে, জনাব/বেগম-"+"<style isUnderline='true'>"+($F{emp_details}!=null?$F{emp_details}:"")+"</style>"+" "+"এর নিকট সরকারের পাওনা আছে/নাই ৷"
++"\n"+"\n"+"2৷  অবসর গ্রহণের অব্যবহিত পূর্ব তারিখ পর্যন্ত তাহার নিকট সরকারের নিম্নরূপ পাওনা আছে (প্রযোজ্য ক্ষেত্রে):-"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="116" width="50" height="15" uuid="9ebeb2e3-3f39-4c54-8dd0-5837f78ecfe4"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font fontName="NikoshBAN" size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ক্রমিক নং"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="110" y="116" width="110" height="15" uuid="ebd5e362-93f4-431e-a8c4-aebd75b60e81"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font fontName="NikoshBAN" size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["খাত "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="116" width="160" height="15" uuid="01f2ce5b-a785-4a2a-915e-78bea24d1887"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font fontName="NikoshBAN" size="12" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পাওনা টাকার পরিমাণ "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="0" width="20" height="20" uuid="d5085ee2-9127-471e-a62d-5dcf851abcc5"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ser_no}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="110" y="2" width="130" height="20" uuid="8028ed21-996b-4f8c-877d-24eef012ac81"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sector}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="350" y="2" width="192" height="20" uuid="d607250f-fb07-4ff6-bd03-a8bfa2a7575a"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="121">
+			<componentElement>
+				<reportElement stretchType="RelativeToBandHeight" x="40" y="10" width="502" height="20" isPrintWhenDetailOverflows="true" uuid="213873c6-2168-474e-92a5-635d6b862e35">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="Comments" uuid="2ffdf35e-b4fb-4a4a-b89b-83a5b28a0dc6">
+						<datasetParameter name="FIN_NDC_MASTER_ID">
+							<datasetParameterExpression><![CDATA[$P{FIN_NDC_MASTER_ID}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="550" uuid="7204e141-686c-4859-941f-f3ac7a428513">
+						<jr:detailCell height="30">
+							<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="550" height="30" uuid="6a035430-e7b5-44fb-8eb8-0eb55b05b9b1"/>
+								<textElement>
+									<font fontName="NikoshBAN" size="12"/>
+								</textElement>
+								<textFieldExpression><![CDATA["3৷"+" "+($F{comments}!=null?$F{comments}:"")]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<textField>
+				<reportElement x="40" y="100" width="100" height="15" uuid="6c564684-94f1-49f7-b1fb-8882475427f6"/>
+				<textElement textAlignment="Left" markup="styled">
+					<font fontName="NikoshBAN" size="11" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["প্রতিস্বাক্ষর"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="330" y="80" width="220" height="41" uuid="446bceba-2c77-49f6-9692-d9faa9ef945c"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মন্ত্রণালয়/বিভাগ/অধিদপ্তৱ/পরিদপ্তর/দপ্তর প্রধানের"
++"\n"+"তারিখসহ স্বাক্ষর সীলমোহর(নামযুক্ত)"]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

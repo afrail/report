@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="noc_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ca745780-898c-4cbf-bd6f-ce7130497872">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Item_Category"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select c.dependent_name_bangla ,get_com_lookup_bn_name(c.relation)  relation , relation relation_ID, date_of_birth ,case when length(nid)>2  then nid else birth_registration_id end nid 
+from hrm_employee_family_information c
+where relation=41
+and employee_id =15
+union all
+select c.dependent_name_bangla ,get_com_lookup_bn_name(c.relation)  relation , relation relation_ID,date_of_birth ,case when length(nid)>2  then nid else birth_registration_id end nid 
+from hrm_employee_family_information c
+where 1=1
+and relation in(43,42)
+and DATE_PART('year', AGE(current_date, date_of_birth))<15
+and employee_id = $P{P_EMPLOYEE_ID} ]]>
+	</queryString>
+	<field name="dependent_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dependent_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="dependent_name_bangla"/>
+	</field>
+	<field name="relation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="relation"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation"/>
+	</field>
+	<field name="relation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="relation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation_id"/>
+	</field>
+	<field name="date_of_birth" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.label" value="date_of_birth"/>
+	</field>
+	<field name="nid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nid"/>
+		<property name="com.jaspersoft.studio.field.label" value="nid"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="40" uuid="36d13631-c207-4e7b-8c2e-85006bdc97c3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52b9dae1-94e1-4358-9a2f-e46802a4e515"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="100" height="40" uuid="f4b5d013-74b1-4adb-bae3-9d8bb46538f1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1e001b53-37d7-412f-b7b6-7a1a32a3efa3"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[সম্পর্ক
+(টিক দিন)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="40" uuid="e5b8bbf5-f3a4-461c-b385-0dd54c5501b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e3f18de3-f01b-43dc-889f-da5f49e87c50"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[জন্মতারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="100" height="40" uuid="9786bdbc-a61f-461e-9a03-8e023e63b53a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0cb51aad-3773-4b46-85ac-1db46e267b43"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[জাতীয় পরিচয়পত্র/জন্ম নিবন্ধন সনদ নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="0" width="53" height="40" uuid="cd066e06-2293-4c08-9218-023e4a22afee"/>
+				<box topPadding="4">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="100" y="0" width="100" height="30" uuid="948bda24-6bba-4e72-9d09-3a1cd392b30d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52b9dae1-94e1-4358-9a2f-e46802a4e515"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependent_name_bangla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="200" y="0" width="100" height="30" uuid="36eb6734-a654-4c3d-b0d3-225f72013296">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1e001b53-37d7-412f-b7b6-7a1a32a3efa3"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="0" width="100" height="30" uuid="e8a26161-2d07-478b-b374-b11522d071b4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e3f18de3-f01b-43dc-889f-da5f49e87c50"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_birth}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="400" y="0" width="100" height="30" uuid="2a46a638-af45-43b0-b883-85328c71170b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0cb51aad-3773-4b46-85ac-1db46e267b43"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nid}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="47" y="0" width="53" height="30" uuid="69f70cca-e2c4-4a4d-a6ba-ee8366ed57f1"/>
+				<box topPadding="4" leftPadding="4" bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" isBold="false" pdfFontName="SolaimanLipi" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="269" y="7" width="10" height="10" uuid="c77bb713-e552-47d3-9101-48d6c7b0303c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+			</frame>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2fin_local_tada_sub1" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e01f3b6f-e31d-45fc-8af2-4a4a01bbc152">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="tada_bill_master_id" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select a.id,
+  case when b.local_bill_type = 1 then b.details||' সড়কপথে '||b.others||' কি.মি প্রতি কি.মি ' 
+ ||b.rate|| ' হিসেবে '||b.quantity||' টি ('||b.rate||'*'||b.quantity||'*'||b.others||') টাকা '
+ when b.local_bill_type = 2 then b.details||' রেল পথে রেল ভাড়া '||b.rate||'
+ টাকা হিসেবে '||b.quantity ||' টি ('||b.rate||'*'||b.quantity||'*'||b.others||') টাকা'
+ when b.local_bill_type = 3 THEN ' বিমান ভাড়া : '
+ when b.local_bill_type = 4 then b.details||' '||b.others||' কি.মি দূরত্বের সড়কপথে '||b.quantity||' কেজি মালামালের পরিবহন ব্যয় বাবদ বিল ('
+ ||b.rate||'*'||b.quantity||'*'||b.others||'/100) টাকা '
+  when b.local_bill_type = 5 then b.details||' '||b.others||'কি. মি  সাধারণমালামালের রেল পথে পরিবহন ব্যয় '||b.rate||' হারে '||b.quantity||' কেজি মালামালের পরিবহন ব্যয় বাবদ বিল ('
+ ||b.rate||'*'||b.quantity||') টাকা '
+ when b.local_bill_type = 6 then b.details||' '||b.others||'কি. মি  ইলেক্ট্রনিকমালামালের রেল পথে পরিবহন ব্যয় হারে'||b.rate||' হারে '||b.quantity||' কেজি মালামালের পরিবহন ব্যয় বাবদ বিল ('
+ ||b.rate||'*'||b.quantity||') টাকা '
+  when b.local_bill_type = 7 then b.details ||'পাকিং চার্জ'
+ else b.details end bill_type,b.total_amount total, a.amount amount
+from 
+FIN_TADA_BILL_MASTER a
+LEFT JOIN fin_local_tada_bill_details b ON  b.tada_bill_master_id = a.id
+where 1=1
+and a.id = $P{tada_bill_master_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<field name="bill_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bill_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_type"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_local_tada_bill_details"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="492" y="0" width="70" height="19" uuid="95b7b7f2-8862-4287-82d8-1184ccc59873">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be6584b0-ff5d-4fbb-814a-9bd49e257b09"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField  isStretchWithOverflow="true">
+				<reportElement x="10" y="0" width="482" height="19" uuid="ec24ab3e-f0e4-493f-9cd3-65aca10d2b5f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="10" height="19" uuid="22d69e3e-a2e0-49de-a698-b356f920d028"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}+"|"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report_footer_landscape" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0c70e1ce-fe5e-4170-a48d-c205de62abb2">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<queryString>
+		<![CDATA[select  'Powered by : IBCS-PRIMAX Software Bangladesh Ltd.' as dev_company]]>
+	</queryString>
+	<field name="dev_company" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dev_company"/>
+		<property name="com.jaspersoft.studio.field.label" value="dev_company"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageFooter>
+		<band height="50">
+			<textField pattern="M/d/yy h:mm a">
+				<reportElement x="710" y="19" width="94" height="20" uuid="6794ed17-9d6f-4d66-aa7c-01de509df478"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="642" y="19" width="80" height="20" uuid="7f105507-4ec6-474c-94b4-0ba82fa1ae50"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[Report Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="13" width="398" height="22" uuid="157ffacc-9dc5-4a5e-b96d-5948b915a705"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dev_company}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="10" width="804" height="30" uuid="e2df2a65-e978-4fe8-be3d-8d95696e9dda"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>

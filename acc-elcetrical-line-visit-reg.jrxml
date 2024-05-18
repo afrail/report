@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acc-elcetrical-line-visit-reg" columnCount="2" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="401" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4c6476c0-024d-4c4c-b2b3-6caa2767717f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-erp-ibcs"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	visit_date,
+	personal_no,
+	rank,
+	visitor_name,
+	visit_time,
+	visitor_remarks
+from
+	ACC_MODC_VISIT_REGISTER
+where
+	1 = 1
+	and register_type = 1
+	and date(visit_date) 
+	between coalesce( $P{P_FROM_DATE} , visit_date)
+	 and coalesce( $P{P_TO_DATE} , visit_date)
+]]>
+	</queryString>
+	<field name="visit_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="visit_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="visit_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_visit_register"/>
+	</field>
+	<field name="personal_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="personal_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="personal_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_visit_register"/>
+	</field>
+	<field name="rank" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_visit_register"/>
+	</field>
+	<field name="visitor_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="visitor_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="visitor_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_visit_register"/>
+	</field>
+	<field name="visit_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="visit_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="visit_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_visit_register"/>
+	</field>
+	<field name="visitor_remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="visitor_remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="visitor_remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_visit_register"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="27" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="800" height="27" uuid="77ea6913-cbbc-4c97-9110-aee659ad7b06">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Nirmala UI" size="16" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বৈদ্যুতিক লাইন ভিজিট রেজিস্টার "]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="240" y="0" width="60" height="41" uuid="27436aa3-6386-4757-8f86-27bf1633062a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3226afd1-8319-4174-98a2-f2c1f8df2694"/>
+				</reportElement>
+				<box topPadding="4" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SDOEM-I]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="80" height="41" uuid="ed66120d-e02d-437b-8743-62ffad1f7e44">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3b606af2-0d8a-4b15-8d0f-688147c8af31"/>
+				</reportElement>
+				<box topPadding="4" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ব্যবস্তাপক নিরাপত্তা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="41" uuid="d03ed9b9-5284-40ba-854a-16defc244b69">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3226afd1-8319-4174-98a2-f2c1f8df2694"/>
+				</reportElement>
+				<box topPadding="4" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="140" height="41" uuid="f4026c86-32a7-4372-9911-850f3e3b44ce">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f6be6f6a-5c57-4ee3-a233-cf862d171c16"/>
+				</reportElement>
+				<box topPadding="4" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[এম ই এস কর্তৃক পরিদর্শন মন্তব্য ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="60" height="41" uuid="78bc5a0c-2d51-4ea4-a80b-f6b566bb0ded">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3226afd1-8319-4174-98a2-f2c1f8df2694"/>
+				</reportElement>
+				<box topPadding="4" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[তারিখ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="60" height="30" uuid="5a8fbf20-d741-4d22-9fba-027287eacd41">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0fd69d2f-3643-47b9-81d4-812a21b926a5"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{visit_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="100" y="0" width="140" height="30" uuid="8c8e0f4a-997c-4174-a9a5-b99645b327ac">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9e4d6f99-6379-4552-83d1-25567853b324"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{visitor_remarks}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="240" y="0" width="60" height="30" uuid="a6d8e2c9-8cbe-473d-9801-22517dad41ed"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="0" width="80" height="30" uuid="91171ac5-f919-4df6-8321-8f1f455e1dc5"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="30" uuid="b07803aa-352a-4b46-92ca-668b3b56b762"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

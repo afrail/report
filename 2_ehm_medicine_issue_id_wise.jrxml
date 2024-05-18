@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_Medicine_Issue_Statement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="35a60440-b0d9-44dc-a9c7-2548de77c228">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_MEDICINE_RECEIVE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select medicine_master_id, medicine_name,unit_name,receive_qty delivery_qty,received_number delivery_no,
+to_char(received_date,'dd-MM-yyyy') delivary_date,medicine_group_id,case when store_type='1' then 'Main Store'
+when store_type='2' then 'Sub Store' when store_type='3' then 'Emergency Store'
+else 'All Store' end Store_type,issue_to,received_type, lot_no
+from ehm_medicine_issue_to_store
+where 1=1 
+and id= $P{P_MEDICINE_RECEIVE_ID}
+order by received_type,medicine_group_id,medicine_master_id asc]]>
+	</queryString>
+	<field name="medicine_master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="medicine_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="unit_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="unit_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="unit_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="delivery_qty" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="delivery_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="delivery_qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="delivery_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="delivery_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="delivery_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="delivary_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="delivary_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="delivary_date"/>
+	</field>
+	<field name="medicine_group_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_group_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_group_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="store_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="store_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="store_type"/>
+	</field>
+	<field name="issue_to" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="issue_to"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_to"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="received_type" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="received_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="received_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<field name="lot_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lot_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="lot_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_issue_to_store"/>
+	</field>
+	<group name="Issue_to">
+		<groupExpression><![CDATA[$F{issue_to}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="3" y="0" width="550" height="20" uuid="8609852b-7cd3-41f4-a315-07a3f46f53b1"/>
+					<textElement>
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{issue_to}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="76" splitType="Stretch">
+			<staticText>
+				<reportElement x="3" y="1" width="542" height="18" uuid="25cfb61b-7744-4bbe-873a-6fac4f47c8d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANGLADESH ORDNANCE FACTORIES]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="19" width="542" height="18" uuid="c7c4dbe9-bbb4-45d1-98fc-4f98d636c57f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Gazipur Cantoment, Gazipur-1703, Bangladesh]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="58" width="400" height="18" uuid="73cfbbf4-23dc-4528-88e0-8c2d04afcea7"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issue_to}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="80" y="39" width="400" height="19" uuid="03afee0c-3322-486a-bd9c-6ae51469f878"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOF Hospital]]></text>
+			</staticText>
+			<image>
+				<reportElement x="60" y="0" width="50" height="39" uuid="5844242d-bd75-4118-b17e-6857f11f1f11"/>
+				<imageExpression><![CDATA["bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="32" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="513" y="0" width="40" height="16" uuid="cffe35d8-6db3-427d-85e5-5a28cce1a477"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="444" y="0" width="69" height="16" uuid="069f849c-dec5-4847-ba43-37c937668e0e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="130" y="-2" width="290" height="18" uuid="6bbb52bc-e47d-496f-9928-e927b9550738"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medicine Issue Statement]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="0" width="27" height="16" uuid="92720f99-316a-4b09-be25-ad8aeb85ed24"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="-1" width="10" height="18" uuid="8d63269e-879d-4d81-b5de-2f8ea6653143"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyy">
+				<reportElement x="40" y="-1" width="70" height="17" uuid="8d56f880-6b49-4c6f-b8fc-9fe44db14346"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="53" y="0" width="97" height="30" uuid="e15305ee-8373-4516-94bf-3021eec03802">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="048273a7-fc3d-4d36-81ae-81ef6e2f2506"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivery Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="0" width="80" height="30" uuid="19f5e358-6101-4144-b88b-8e56d5e184aa">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dd0cf54f-1495-4165-9375-5b3b38fe90f1"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivary Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="0" width="180" height="30" uuid="a31cab0d-93c5-4cff-a490-6d7e91e19733">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7748337f-fe0e-4f29-ab3b-7312a525ace1"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medicine Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="60" height="30" uuid="05874e6f-570d-4eef-a45d-5ec2a8207834">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f9e49ea3-0178-42ae-8132-93cd95ed9a75"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Delivery Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="0" width="50" height="30" uuid="0acf5fab-41d6-4f20-89e9-20f11482fe2c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="048273a7-fc3d-4d36-81ae-81ef6e2f2506"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ser]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="513" y="0" width="40" height="30" uuid="dd4ada04-c838-4ab0-b98d-3649e1140e0b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="0" width="43" height="30" uuid="e33e98ae-48f9-40b7-a363-dd792330fdbc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f9e49ea3-0178-42ae-8132-93cd95ed9a75"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lot]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="53" y="0" width="97" height="20" uuid="38c8aece-12c0-4d08-a5b0-56907b891687">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="048273a7-fc3d-4d36-81ae-81ef6e2f2506"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery_no}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="3" y="0" width="50" height="20" uuid="cdfc19f1-9f2d-4d3b-ac1a-d7c6a8daa54a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Issue_to_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="0" width="80" height="20" uuid="bd78347f-8ed9-43cb-803a-de93b7e8c181">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="dd0cf54f-1495-4165-9375-5b3b38fe90f1"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivary_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="180" height="20" uuid="0afa44e0-0093-40aa-87d0-51bc66dedd7c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7748337f-fe0e-4f29-ab3b-7312a525ace1"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicine_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="60" height="20" uuid="ee5f846c-cfd0-4d84-8c5b-172db428b90f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f9e49ea3-0178-42ae-8132-93cd95ed9a75"/>
+				</reportElement>
+				<box rightPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{delivery_qty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="513" y="0" width="40" height="20" uuid="5cab2f9e-2759-4c1e-b31d-34f2d499ba5c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{unit_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="43" height="20" uuid="0c1080fd-ad33-4573-83e3-bdbe7e4095cf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f9e49ea3-0178-42ae-8132-93cd95ed9a75"/>
+				</reportElement>
+				<box rightPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lot_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="7" width="377" height="17" isPrintWhenDetailOverflows="true" uuid="ddc1eaae-8e3d-4915-bfc2-70e561bbff1c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="101">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="3703c25e-e376-431e-a971-31042d90d50c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[গ্রহণকারী:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="20" width="100" height="20" uuid="ae03a447-ba92-4c41-9cc8-12d4ccf90ba8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নাম:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="100" height="20" uuid="284d36e3-8851-4c57-a415-fe329970541a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পদবী:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="81" width="100" height="20" uuid="e8870149-e041-4de7-85f1-cf8a286ae292"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[স্বাক্ষর:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="80" width="197" height="20" uuid="25261b69-73e5-4cba-83ff-69f32b4c9fa9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[প্রতিস্বাক্ষর:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="41" width="100" height="20" uuid="2ab9f309-5e9c-4224-9b58-2bb6c088090c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নম্বর :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="80" width="100" height="20" uuid="3f29e62b-3ede-48b9-9e5f-97193b971306"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[স্বাক্ষর:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="60" width="100" height="20" uuid="f14820ab-b951-495a-8fe9-fc37dc8014d4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পদবী:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="40" width="100" height="20" uuid="1f893177-84c4-4939-8b64-a11e1f399895"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নম্বর :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="19" width="100" height="20" uuid="52e8b6a4-e9d0-42a7-bf04-b9a5ced04968"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নাম:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="100" height="20" uuid="52b34d33-90f4-40b6-984d-f8dc32c7c72c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[প্রদানকারী:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

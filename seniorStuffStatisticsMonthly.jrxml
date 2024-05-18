@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="seniorStuffStatisticsMonthly" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="32b778e8-8888-4abb-b243-fab9035f85af">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="net.sf.jasperreports.export.xls.auto.fit.row" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.columns" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.remove.empty.space.between.rows" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.one.page.per.sheet" value="false"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<parameter name="P_DES_SAFF_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[WITH FF AS (
+SELECT LOOKUP_DETAIL_ID,(SELECT CLD.BANGLA_NAME FROM COMMON_LOOKUP_DETAILS CLD WHERE CLD.ID=LOOKUP_DETAIL_ID)LOOKUP_NAME,DESIGNATION_ID,GET_COM_LOOKUP_BN_NAME(DESIGNATION_ID)DESIGNATION_NAME,APPROVED_POST,'0'RUNING,'0'LAC,'0'EXTRA  FROM REC_MAN_CONFIGURATION_VW RMCV), 
+FG AS (
+SELECT DESIGNATION_ID, BRANCH_ID, WING_ID, 
+(SELECT CLD.BANGLA_NAME FROM COMMON_LOOKUP_DETAILS CLD WHERE CLD.ID=BRANCH_ID)BRANCH_NAME,
+(SELECT CLD.BANGLA_NAME FROM COMMON_LOOKUP_DETAILS CLD WHERE CLD.ID=WING_ID)WING_NAME,
+GROUP_ID , SHOP_ID, LINE_ID,HEOI.EMPLOYEE_ID,
+(SELECT CODE||', '||EMPLOYEE_NAME_BANGLA  FROM HRM_EMPLOYEE_PERSONAL_INFORMATION HEPI WHERE HEOI.EMPLOYEE_ID=HEPI.ID)EMPLOYEE_NAME
+FROM  HRM_EMPLOYEE_OFFICIAL_INFORMATION HEOI 
+WHERE 1=1
+AND HEOI.INACTIVE_TYPE IS NULL
+AND HEOI.IS_CIVIL=TRUE 
+AND HEOI.EMPLOYEE_TYPE_ID=36
+AND DESIGNATION_ID= $P{P_DES_SAFF_ID} )
+SELECT * FROM FF,FG 
+WHERE FF.LOOKUP_DETAIL_ID=FG.WING_ID
+AND FF.DESIGNATION_ID=FG.DESIGNATION_ID
+ORDER BY 1 ASC]]>
+	</queryString>
+	<field name="lookup_detail_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="lookup_detail_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="lookup_detail_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_man_configuration_vw"/>
+	</field>
+	<field name="lookup_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lookup_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="lookup_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_man_configuration_vw"/>
+	</field>
+	<field name="designation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_man_configuration_vw"/>
+	</field>
+	<field name="designation_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_man_configuration_vw"/>
+	</field>
+	<field name="approved_post" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="approved_post"/>
+		<property name="com.jaspersoft.studio.field.label" value="approved_post"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_man_configuration_vw"/>
+	</field>
+	<field name="runing" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="runing"/>
+		<property name="com.jaspersoft.studio.field.label" value="runing"/>
+	</field>
+	<field name="lac" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lac"/>
+		<property name="com.jaspersoft.studio.field.label" value="lac"/>
+	</field>
+	<field name="extra" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="extra"/>
+		<property name="com.jaspersoft.studio.field.label" value="extra"/>
+	</field>
+	<field name="COLUMN_9" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="branch_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="branch_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="wing_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="wing_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="wing_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="branch_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="branch_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="branch_name"/>
+	</field>
+	<field name="wing_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="wing_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="wing_name"/>
+	</field>
+	<field name="group_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="group_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="group_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="shop_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="shop_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="shop_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="line_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="line_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="line_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="employee_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+	</field>
+	<group name="branch_id">
+		<groupExpression><![CDATA[$F{branch_id}]]></groupExpression>
+		<groupHeader>
+			<band height="28">
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="8" width="280" height="20" uuid="4d3341b9-1a24-4091-a005-3a1e186f3232"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["উইংঃ "+($F{wing_name}!=null?$F{wing_name}:"")]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="office_id">
+		<groupExpression><![CDATA[$F{lookup_detail_id}]]></groupExpression>
+		<groupHeader>
+			<band height="49">
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="4" width="280" height="20" uuid="d3f543fb-d94d-4fa5-8803-3ba434f936cb"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["অফিসঃ "+($F{lookup_name}!=null?$F{lookup_name}:"")]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="29" width="550" height="20" uuid="a3e69fb8-2777-4b23-ba55-df3c2ec6eb19"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["প্রাধিকার - "+($F{approved_post}!=null?$F{approved_post}:"")+"   "+"কর্মরত - "+($F{runing}!=null?$F{runing}:"")+"  "+"ঘাটতি - "+($F{lac}!=null?$F{lac}:"")+"   "+"অতিরিক্ত - "+($F{extra}!=null?$F{extra}:"")]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="32">
+				<staticText>
+					<reportElement x="0" y="2" width="28" height="30" uuid="17956732-5e3d-4590-bc39-a85f3e06f15b"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ক্রমিক]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="28" y="2" width="522" height="30" uuid="c9255cd4-6cf3-4e8c-b8b8-8732e85752a9"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ব্যক্তিগত নম্বর ও নাম ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="32" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="550" height="30" uuid="eb9608c3-c992-4b2f-bcad-fa2a285db2c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{designation_name}!=null?$F{designation_name}:"")+"  "+($F{branch_name}!=null?$F{branch_name}:"")+" "+" মাসিক জনশক্তি প্রতিবেদনের বিবরণ"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="28" height="20" isPrintWhenDetailOverflows="true" printWhenGroupChanges="office_id" uuid="c96c5695-9687-4347-b725-53b5041ad3ee"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{office_id_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="28" y="0" width="522" height="20" uuid="892f33e1-9382-4d47-8654-4b71748b9ef0"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="441" y="0" width="69" height="16" uuid="3bc66efe-e420-4c49-8bab-1d11a5a6e507"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পৃষ্ঠা "+$V{PAGE_NUMBER}+" এর মধ্যে"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="510" y="0" width="40" height="16" uuid="876cfa25-8e59-4788-b75c-7a86b70fd768"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

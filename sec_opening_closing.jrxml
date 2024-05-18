@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sec_opening_closing" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3dcd4075-3768-4c37-90ae-b0bed98df4d0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_SERVER"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="205"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="784"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select o.Office_Name, get_emp_name_bn_code_desig_sfq(o.employee_id) openner, 
+get_emp_name_bn_code_desig_sfq(c.employee_id) closer,o.from_date, o.to_date ,o.fm  from 
+(
+select 	get_com_lookup_bn_name(a.office_id) Office_Name,b.employee_id,--b.employee_id,b.is_opening_status, b.is_closing_status,	
+	--case is_opening_status when 'true' then get_emp_name_bn_code_desig_sfq(b.employee_id) end openner,
+	--case is_closing_status when 'true' then get_emp_name_bn_code_desig_sfq(b.employee_id) end  closer,
+	to_char(a.from_date, 'dd-MM-yyyy')  from_date, 	to_char(a.to_date, 'dd-MM-yyyy')  to_date, a.from_date fm
+from 
+	common_opening_closing_master a,
+	common_opening_closing_details b,
+	common_opening_closing_master_detail_list c,
+	hrm_employee_personal_information d,
+	hrm_employee_official_information e
+where 
+	1=1
+	and a.id = c.opening_and_closing_master_id
+	and c.detail_list_id = b.id 
+	and b.employee_id = d.id 
+	and d.id = e.employee_id  	
+	and b.is_opening_status='true' 	
+	and  (date(a.from_date), date(a.to_date)) OVERLAPS ( $P{P_FROM_DATE} ::DATE,  $P{P_TO_DATE} ::DATE)
+	--order by get_com_lookup_bn_name(a.office_id), a.from_date
+	) o,
+	(	
+	select 	get_com_lookup_bn_name(a.office_id) Office_Name,b.employee_id --b.employee_id,b.is_opening_status, b.is_closing_status,	
+	--case is_opening_status when 'true' then get_emp_name_bn_code_desig_sfq(b.employee_id) end openner,
+	--case is_closing_status when 'true' then get_emp_name_bn_code_desig_sfq(b.employee_id) end  closer,
+	--to_char(a.from_date, 'dd-MM-yyyy')  from_date, 	to_char(a.to_date, 'dd-MM-yyyy')  to_date
+from 
+	common_opening_closing_master a,
+	common_opening_closing_details b,
+	common_opening_closing_master_detail_list c,
+	hrm_employee_personal_information d,
+	hrm_employee_official_information e
+where 
+	1=1
+	and a.id = c.opening_and_closing_master_id
+	and c.detail_list_id = b.id 
+	and b.employee_id = d.id 
+	and d.id = e.employee_id  	
+	and b.is_closing_status='true' 	
+	and  (date(a.from_date), date(a.to_date)) OVERLAPS ( $P{P_FROM_DATE} ::DATE,  $P{P_TO_DATE} ::DATE)
+	--order by get_com_lookup_bn_name(a.office_id), a.from_date
+	) c where o.Office_Name=c.Office_Name	
+	order by  o.fm,o.Office_Name]]>
+	</queryString>
+	<field name="office_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="office_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="office_name"/>
+	</field>
+	<field name="openner" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="openner"/>
+		<property name="com.jaspersoft.studio.field.label" value="openner"/>
+	</field>
+	<field name="closer" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="closer"/>
+		<property name="com.jaspersoft.studio.field.label" value="closer"/>
+	</field>
+	<field name="from_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+	</field>
+	<field name="to_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+	</field>
+	<field name="fm" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fm"/>
+		<property name="com.jaspersoft.studio.field.label" value="fm"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="common_opening_closing_master"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="255" y="0" width="50" height="10" uuid="87a1ae6a-c9ac-494e-81f6-637c9d78e950">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="555" height="20" uuid="d327b598-8cb2-4c2d-9c95-9e1d985378a5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[অফিস খোলা ও বন্ধের দায়িত্ব পালন প্রসংগে]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="0" y="30" width="555" height="15" uuid="e40da854-ccb2-4ae7-9d6e-7d5362041b33">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[( (new SimpleDateFormat("dd/MM/yyyy").format($P{P_FROM_DATE}) )  + " হতে " + 
+   (new SimpleDateFormat("dd/MM/yyyy").format($P{P_TO_DATE}) ) )]]></textFieldExpression>
+			</textField>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement x="505" y="0" width="50" height="50" uuid="3fded71e-9648-4dde-b3b0-76322ae95cae"/>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10">
+			<staticText>
+				<reportElement x="229" y="0" width="100" height="10" uuid="97c3262b-45d7-40ee-bf6a-0e93d13e7dfe">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} >1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="95" height="20" uuid="0af5b079-2ed4-49c4-8796-ce690457b4a4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9208508-e2f5-4b7a-8947-2ef2d21769ae"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অফিস নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="0" width="70" height="20" uuid="42dc592e-ce58-49bf-ab4a-8f139407986c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d7c30ba-a87c-42ab-b3e0-4f262ea4e838"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[তারিখ হতে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="485" y="0" width="70" height="20" uuid="240c1366-41e3-48bb-ae1a-b01c56b9a559">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f797605d-d9f0-4c6a-8918-1f31be430c40"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[তারিখ পর্যন্ত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="0" width="160" height="20" uuid="477c0f25-ae25-408c-b8c3-52517e3a7a7f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12433b81-2166-44ce-9033-b0cc8e33efac"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[খোলার দায়িত্ব]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="0" width="160" height="20" uuid="fe4751d7-6e2f-4518-b657-34a07b89d482">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2f79042-97ae-45ba-85f1-cd0d5148d5a4"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বন্ধের দায়িত্ব]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="95" height="18" uuid="8e1a0acd-9aba-4108-bb01-e632bc3620d0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c9208508-e2f5-4b7a-8947-2ef2d21769ae"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{office_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="415" y="0" width="70" height="18" uuid="99618006-370a-4583-89b8-489811beaa5b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1d7c30ba-a87c-42ab-b3e0-4f262ea4e838"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{from_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="485" y="0" width="70" height="18" uuid="79d77e54-e345-4689-9a66-e1c0341c0782">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f797605d-d9f0-4c6a-8918-1f31be430c40"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="95" y="0" width="160" height="18" uuid="21ad9e3a-dddb-4f2c-a608-ef01779db94a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="12433b81-2166-44ce-9033-b0cc8e33efac"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{openner}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="255" y="0" width="160" height="18" uuid="2810c6b9-839e-41b0-a1be-607fd03c6510">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b2f79042-97ae-45ba-85f1-cd0d5148d5a4"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{closer}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="32" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="230" y="5" width="100" height="17" uuid="04f155d9-ddbd-44f3-b4e2-fe2c8a69bce7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["( " + $V{PAGE_NUMBER} + " )"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="230" y="22" width="100" height="10" uuid="e896d8dd-675c-4842-ab93-0d0c1b26b8d2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

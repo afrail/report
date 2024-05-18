@@ -1,0 +1,1922 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_budget_demand_report" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4ce20c61-7dad-4b5b-b906-b19c117d41cb">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-erp-local"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="report_header_common_bangla_landscape" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_FINANCIAL_YEAR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[with economiccode as (select 
+bec.id
+,bec.economic_code
+,bec.name
+,bec.name_bangla
+,parentcode.economic_code p_economic_code
+,parentcode.name p_name
+,parentcode.name_bangla p_name_bangla
+,sparentcode.economic_code s_p_economic_code
+,sparentcode.name s_p_name
+,sparentcode.name_bangla s_p_name_bangla
+,tparentcode.economic_code t_p_economic_code
+,tparentcode.name t_p_name
+,tparentcode.name_bangla t_p_name_bangla
+from budget_economic_code bec
+join budget_economic_code tparentcode on tparentcode.id = bec.third_parent_id
+join budget_economic_code sparentcode on sparentcode.id = bec.second_parent_id
+join budget_economic_code parentcode on parentcode.id = bec.parent_id
+where  bec.economic_type=4 and bec.code_type=true and bec.is_parent=false order by bec.economic_code asc),
+approvedAdpAmount as (
+select 
+economic_code_id
+,sum(coalesce(bdd.approved_army_amount ,0)) approved_army_amount
+,sum(coalesce(bdd.approved_mod_amount,0)) approved_mod_amount
+from budget_demand_details bdd 
+join budget_financail_year bfy on bfy.id = bdd.financial_year_id
+where 1=1 and bfy.financial_year=$P{P_FINANCIAL_YEAR} and bdd.budget_type_id=3 group by bdd.economic_code_id
+),
+approvedRadpAmount as (
+select 
+economic_code_id
+,sum(coalesce(bdd.bof_army_amount ,0)) bof_army_amount
+,sum(coalesce(bdd.bof_mod_amount,0)) bof_mod_amount
+from budget_demand_details bdd 
+join budget_financail_year bfy on bfy.id = bdd.financial_year_id
+where 1=1 and bfy.financial_year=$P{P_FINANCIAL_YEAR} and bdd.budget_type_id=4 group by bdd.economic_code_id
+),
+preApprovedRadpAmount as (
+select 
+economic_code_id
+,sum(coalesce(bdd.approved_army_amount ,0)) preRadpApproved_army_amount
+,sum(coalesce(bdd.approved_mod_amount,0)) preRadpApproved_mod_amount
+from budget_demand_details bdd 
+join budget_financail_year bfy on bfy.id = bdd.financial_year_id
+where 1=1 and bfy.financial_year= concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and bdd.budget_type_id=4 group by bdd.economic_code_id
+),
+preApprovedAdpAmount as (
+select 
+economic_code_id
+,sum(coalesce(bdd.approved_army_amount ,0)) preadpApproved_army_amount
+,sum(coalesce(bdd.approved_mod_amount,0)) preAdpApproved_mod_amount
+from budget_demand_details bdd 
+join budget_financail_year bfy on bfy.id = bdd.financial_year_id
+where 1=1 and bfy.financial_year= concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and bdd.budget_type_id=3 group by bdd.economic_code_id
+),
+secondlastexpansesubsidiary as (
+select sum(coalesce(fc_net_amount,0)) second_sub_amount,economic_code_id from fin_subsidiary_bill fsb 
+where 1=1 
+And TO_CHAR(fsb.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2,'-06-30')
+group by economic_code_id  
+),
+secondlastexpansetada as (
+select sum(coalesce(ftbm.amount,0)) second_tada_amount,economic_code_id from fin_tada_bill_master ftbm 
+where 1=1 And TO_CHAR(ftbm.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2,'-06-30')
+group by economic_code_id  
+),
+secondlastexpanseBudgetBill as (
+select sum(coalesce(bb.fc_bill_amount,0)) second_BudgetBill_amount,economic_code_id from budget_bill bb 
+where 1=1 And TO_CHAR(bb.bill_submit_date ,'YYYY-MM-DD')  between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2,'-06-30')
+group by economic_code_id  
+),
+firstlastexpansesubsidiary as (
+select sum(coalesce(fc_net_amount,0)) first_sub_amount,economic_code_id from fin_subsidiary_bill fsb 
+where 1=1 
+And TO_CHAR(fsb.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1,'-06-30')
+group by economic_code_id  
+),
+firstlastexpansetada as (
+select sum(coalesce(ftbm.amount,0)) first_tada_amount,economic_code_id from fin_tada_bill_master ftbm 
+where 1=1 And TO_CHAR(ftbm.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1,'-06-30')
+group by economic_code_id  
+),
+firstlastexpanseBudgetBill as (
+select sum(coalesce(bb.fc_bill_amount,0)) first_BudgetBill_amount,economic_code_id from budget_bill bb 
+where 1=1 And TO_CHAR(bb.bill_submit_date ,'YYYY-MM-DD')  between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1,'-06-30')
+group by economic_code_id  
+),
+firstsixfirstlastexpansesubsidiary as (
+select sum(coalesce(fc_net_amount,0)) first_six_sub_amount,economic_code_id from fin_subsidiary_bill fsb 
+where 1=1 And TO_CHAR(fsb.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1,'-12-31')
+group by economic_code_id
+),
+firstsixfirstlastexpansetada as (
+select sum(coalesce(ftbm.amount,0)) first_six_tada_amount,economic_code_id from fin_tada_bill_master ftbm 
+where 1=1 And TO_CHAR(ftbm.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1,'-12-31')
+group by economic_code_id  
+),
+firstsixfirstlastexpanseBudgetBill as (
+select sum(coalesce(bb.fc_bill_amount,0)) first_six_BudgetBill_amount,economic_code_id from budget_bill bb 
+where 1=1 And TO_CHAR(bb.bill_submit_date ,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1,'-12-31')
+group by economic_code_id  
+),
+secondsixsecondlastexpansesubsidiary as (
+select sum(coalesce(fc_net_amount,0)) second_six_sub_amount,economic_code_id from fin_subsidiary_bill fsb 
+where 1=1 And TO_CHAR(fsb.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2,'-12-31')
+group by economic_code_id
+),
+secondsixsecondlastexpansetada as (
+select sum(coalesce(ftbm.amount,0)) second_six_tada_amount,economic_code_id from fin_tada_bill_master ftbm 
+where 1=1 And TO_CHAR(ftbm.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2,'-12-31')
+group by economic_code_id  
+),
+secondsixsecondlastexpanseBudgetBill as (
+select sum(coalesce(bb.fc_bill_amount,0)) second_six_BudgetBill_amount,economic_code_id from budget_bill bb 
+where 1=1 And TO_CHAR(bb.bill_submit_date ,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2,'-12-31')
+group by economic_code_id  
+),
+threemonthexpansesubsidiary as (
+select sum(coalesce(fc_net_amount,0)) three_sub_amount,economic_code_id from fin_subsidiary_bill fsb 
+where 1=1 And TO_CHAR(fsb.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER,'-09-31')
+group by economic_code_id
+),
+threemonthexpansetada as (
+select sum(coalesce(ftbm.amount,0)) three_tada_amount,economic_code_id from fin_tada_bill_master ftbm 
+where 1=1 And TO_CHAR(ftbm.bill_date,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER,'-09-31')
+group by economic_code_id  
+),
+threemonthexpanseBudgetBill as (
+select sum(coalesce(bb.fc_bill_amount,0)) three_BudgetBill_amount,economic_code_id from budget_bill bb 
+where 1=1 And TO_CHAR(bb.bill_submit_date ,'YYYY-MM-DD') between concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER,'-07-01',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER) and concat('20',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER,'-09-31')
+group by economic_code_id  
+)
+select
+economiccode.id
+,concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-2,'-',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-2) third_year
+,concat(substring($P{P_FINANCIAL_YEAR},1,4)::INTEGER-1,'-',substring($P{P_FINANCIAL_YEAR},6,2)::INTEGER-1) second_year
+,$P{P_FINANCIAL_YEAR} first_year
+,name
+,name_bangla
+,economic_code
+,p_name
+,p_name_bangla
+,p_economic_code
+,s_p_name
+,s_p_name_bangla
+,s_p_economic_code
+,t_p_name
+,t_p_name_bangla
+,t_p_economic_code
+,round( CAST(float8 (preadpApproved_army_amount+preadpApproved_mod_amount)/1000 as numeric),2) preAdpApproved_amount
+,round( CAST(float8 (preRadpApproved_army_amount+preRadpApproved_mod_amount)/1000 as numeric),2) preRadpApproved_amount
+,round( CAST(float8 (approved_army_amount+approved_mod_amount)/1000 as numeric),2) adp_approved_amount
+,round( CAST(float8 (bof_army_amount+bof_mod_amount)/1000 as numeric),2) radp_amount
+,round( CAST(float8 (coalesce(second_sub_amount,0)+coalesce(second_tada_amount,0)+coalesce(second_BudgetBill_amount,0))/1000 as numeric),2) second_expance_amount
+,round( CAST(float8 (coalesce(first_sub_amount,0)+coalesce(first_tada_amount,0)+coalesce(first_BudgetBill_amount,0))/1000 as numeric),2) first_expance_amount
+,round( CAST(float8 (coalesce(second_six_sub_amount,0)+coalesce(second_six_tada_amount,0)+coalesce(second_six_BudgetBill_amount,0))/1000 as numeric),2) second_six_expance_amount
+,round( CAST(float8 (coalesce(first_six_sub_amount,0)+coalesce(first_six_tada_amount,0)+coalesce(first_six_BudgetBill_amount,0))/1000 as numeric),2) first_six_expance_amount
+,round( CAST(float8 (coalesce(three_sub_amount,0)+coalesce(three_tada_amount,0)+coalesce(three_BudgetBill_amount,0))/1000 as numeric),2) three_expance_amount
+from economiccode 
+left join approvedAdpAmount on approvedAdpAmount.economic_code_id=economiccode.id
+left join approvedRadpAmount on approvedRadpAmount.economic_code_id=economiccode.id
+left join secondlastexpansesubsidiary on secondlastexpansesubsidiary.economic_code_id=economiccode.id
+left join secondlastexpansetada on secondlastexpansetada.economic_code_id=economiccode.id
+left join secondlastexpanseBudgetBill on secondlastexpanseBudgetBill.economic_code_id=economiccode.id
+left join firstlastexpansesubsidiary on firstlastexpansesubsidiary.economic_code_id=economiccode.id
+left join firstlastexpansetada on firstlastexpansetada.economic_code_id=economiccode.id
+left join firstlastexpanseBudgetBill on firstlastexpanseBudgetBill.economic_code_id=economiccode.id
+left join preApprovedAdpAmount on preApprovedAdpAmount.economic_code_id=economiccode.id
+left join preApprovedRadpAmount on preApprovedRadpAmount.economic_code_id=economiccode.id
+left join secondsixsecondlastexpansesubsidiary on secondlastexpansesubsidiary.economic_code_id=economiccode.id
+left join secondsixsecondlastexpansetada on secondlastexpansetada.economic_code_id=economiccode.id
+left join secondsixsecondlastexpanseBudgetBill on secondlastexpanseBudgetBill.economic_code_id=economiccode.id
+left join firstsixfirstlastexpansesubsidiary on firstlastexpansesubsidiary.economic_code_id=economiccode.id
+left join firstsixfirstlastexpansetada on firstlastexpansetada.economic_code_id=economiccode.id
+left join firstsixfirstlastexpanseBudgetBill on firstlastexpanseBudgetBill.economic_code_id=economiccode.id
+left join threemonthexpansesubsidiary on firstlastexpansesubsidiary.economic_code_id=economiccode.id
+left join threemonthexpansetada on firstlastexpansetada.economic_code_id=economiccode.id
+left join threemonthexpanseBudgetBill on firstlastexpanseBudgetBill.economic_code_id=economiccode.id
+order by t_p_economic_code,s_p_economic_code,p_economic_code,economic_code]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="third_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="third_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="third_year"/>
+	</field>
+	<field name="second_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="second_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="second_year"/>
+	</field>
+	<field name="first_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="first_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="first_year"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="economic_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="economic_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="economic_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="p_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="p_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="p_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="p_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="p_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="p_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="p_economic_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="p_economic_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="p_economic_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="s_p_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="s_p_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="s_p_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="s_p_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="s_p_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="s_p_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="s_p_economic_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="s_p_economic_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="s_p_economic_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="t_p_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="t_p_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="t_p_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="t_p_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="t_p_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="t_p_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="t_p_economic_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="t_p_economic_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="t_p_economic_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="preadpapproved_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="preadpapproved_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="preadpapproved_amount"/>
+	</field>
+	<field name="preradpapproved_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="preradpapproved_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="preradpapproved_amount"/>
+	</field>
+	<field name="adp_approved_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="adp_approved_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="adp_approved_amount"/>
+	</field>
+	<field name="radp_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="radp_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="radp_amount"/>
+	</field>
+	<field name="second_expance_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="second_expance_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="second_expance_amount"/>
+	</field>
+	<field name="first_expance_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="first_expance_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="first_expance_amount"/>
+	</field>
+	<field name="second_six_expance_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="second_six_expance_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="second_six_expance_amount"/>
+	</field>
+	<field name="first_six_expance_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="first_six_expance_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="first_six_expance_amount"/>
+	</field>
+	<field name="three_expance_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="three_expance_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="three_expance_amount"/>
+	</field>
+	<variable name="sub_parent_e_code" class="java.lang.String">
+		<variableExpression><![CDATA[$F{p_economic_code} + "-"+$F{p_name_bangla}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{p_economic_code} + "-"+$F{p_name_bangla}]]></initialValueExpression>
+	</variable>
+	<variable name="second_expence_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{second_expance_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{second_expance_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="first_expence_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{first_expance_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{first_expance_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="second_six_expence_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{second_six_expance_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{second_six_expance_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="first_six_expence_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{first_six_expance_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{first_six_expance_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="three_expence_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{three_expance_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{three_expance_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="pre_adp_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{preadpapproved_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{preadpapproved_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="pre_radp_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{preradpapproved_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{preradpapproved_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="adp_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{adp_approved_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{adp_approved_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="radp_sub_total" class="java.lang.Float" resetType="Group" resetGroup="first_eco_group" incrementType="Group" incrementGroup="first_eco_group" calculation="Sum">
+		<variableExpression><![CDATA[$F{radp_amount}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{radp_amount}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="second_expence_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$V{second_expence_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{second_expence_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="first_expence_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{first_expence_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{first_expence_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="second_six_expence_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{second_six_expence_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{second_six_expence_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="first_six_expence_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{first_six_expence_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{first_six_expence_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="three_expence_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{three_expence_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{three_expence_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="pre_adp_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{pre_adp_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{pre_adp_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="pre_radp_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{pre_radp_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{pre_radp_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="adp_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{adp_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{adp_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="radp_total" class="java.lang.Float" resetType="Group" resetGroup="s_p_e_c_group" incrementType="Group" incrementGroup="s_p_e_c_group" calculation="Sum">
+		<variableExpression><![CDATA[$V{radp_sub_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{radp_sub_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_second_expence_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{second_expence_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{second_expence_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_first_expence_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{first_expence_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{first_expence_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_second_six_expence_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{second_six_expence_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{second_six_expence_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_first_six_expence_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{first_expence_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{first_expence_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_three_expence_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{three_expence_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{three_expence_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_pre_adp_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{pre_adp_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{pre_adp_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_pre_radp_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{pre_radp_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{pre_radp_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_adp_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{adp_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{adp_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<variable name="net_radp_total" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{radp_total}.floatValue()]]></variableExpression>
+		<initialValueExpression><![CDATA[$V{radp_total}.floatValue()]]></initialValueExpression>
+	</variable>
+	<group name="s_p_e_c_group">
+		<groupExpression><![CDATA[$F{s_p_economic_code}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="0" y="0" width="60" height="30" uuid="706439b3-2618-4dfa-93c9-9dc3a39a6df6"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{s_p_economic_code}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="60" y="0" width="740" height="30" uuid="8e3d3f87-db6d-408c-99c1-91102000a569"/>
+					<box topPadding="3" leftPadding="10" bottomPadding="3" rightPadding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{s_p_name_bangla}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="157" height="30" uuid="82b593d6-4ea9-47ab-9dd2-c3e0ad555588"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["উপমোট -" + $F{s_p_name_bangla} + " : "]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="157" y="0" width="60" height="30" uuid="9bd7d08c-7b40-48ec-9a00-64a0204ee8b0"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_expence_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="217" y="0" width="60" height="30" uuid="0a6328e3-d0fa-4b2f-a90c-08778963832e"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_expence_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="277" y="0" width="60" height="30" uuid="9f57ba3e-bf06-4c5b-83d8-047e5a28affb"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_six_expence_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="337" y="0" width="60" height="30" uuid="eddad178-2b2a-4496-8060-ec67c535e21c"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_six_expence_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="397" y="0" width="60" height="30" uuid="d764f9f3-5ac9-4bd0-b26c-e1c002b1d4ac"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{three_expence_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="457" y="0" width="60" height="30" uuid="8a123cad-7325-4250-ae93-4686f0e8f75b"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{pre_adp_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="517" y="0" width="60" height="30" uuid="f5f133ba-3941-44ed-9a38-5268bd9ca6ed"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{pre_radp_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="577" y="0" width="60" height="30" uuid="6d0b8f86-147c-48d6-ae1a-060d432b72b7"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{adp_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="637" y="0" width="60" height="30" uuid="da91d852-b49b-4e5a-b0b8-5fa572350cf2"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{radp_total}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="697" y="0" width="103" height="30" uuid="9a626d1e-43fd-43e3-bc69-ee1688bd99ee">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="first_eco_group">
+		<groupExpression><![CDATA[$F{p_economic_code}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField>
+					<reportElement x="0" y="0" width="60" height="20" uuid="ce9a6e71-8bae-4dc2-946b-64793b15346c"/>
+					<box padding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p_economic_code}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="60" y="0" width="740" height="20" uuid="f3991788-90a9-4d4c-8f21-91bda2a5c95e"/>
+					<box topPadding="3" leftPadding="10" bottomPadding="3" rightPadding="3">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{p_name_bangla}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="157" height="30" uuid="9f905034-d9eb-4545-961d-15cc3cc7b4b6"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["উপমোট -" + $F{p_name_bangla} + " : "]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="157" y="0" width="60" height="30" uuid="d98d5ebe-e054-4bdc-9682-76cf5102e273"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_expence_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="217" y="0" width="60" height="30" uuid="d070a34f-4f4b-4ce7-b812-a565cf974f0d"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_expence_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="277" y="0" width="60" height="30" uuid="9bd903b8-a5fb-40e1-ac12-3f27eee0ce47"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{second_six_expence_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="337" y="0" width="60" height="30" uuid="bb38f807-ee5d-4c2f-9303-392a2c3ef76f"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{first_six_expence_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="397" y="0" width="60" height="30" uuid="8d844258-ea58-4939-927a-e6978a4914bb"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{three_expence_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="457" y="0" width="60" height="30" uuid="6cea1237-0161-431a-9fee-f7b0803b5e5d"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{pre_adp_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="517" y="0" width="60" height="30" uuid="a67b4886-770b-4d44-ba0c-655ec67e3436"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{pre_radp_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="577" y="0" width="60" height="30" uuid="17db0b37-669b-4ae1-bf18-1cc133ebf581"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{adp_sub_total}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement x="637" y="0" width="60" height="30" uuid="1d50ed75-a0e6-4f59-90a8-06f41684a2eb"/>
+					<box padding="3">
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{radp_sub_total}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="697" y="0" width="103" height="30" uuid="3d4b5a86-03a5-40f0-b272-61d7b7e8b8ab">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN"/>
+					</textElement>
+					<text><![CDATA[]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="5" width="800" height="35" uuid="14b7f73c-6f9e-4668-9947-3eaf19f7ae55"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla_landscape}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="175" splitType="Stretch">
+			<staticText>
+				<reportElement x="-2" y="50" width="140" height="30" uuid="0af60ff7-903c-4333-8a69-a2775a88bb7c"/>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মন্ত্রণালয়/বিভাগ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="50" width="12" height="30" uuid="00dbd2eb-b6cc-445f-9f63-527958e5d1f2"/>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="50" width="368" height="30" uuid="97ebbe4f-667e-460d-a09e-56c3231ff350"/>
+				<box topPadding="3" leftPadding="5" bottomPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[১১৯-প্রতিরক্ষা মন্ত্রণালয়]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="80" width="140" height="30" uuid="9a0a0061-c85c-4766-bb62-b3e063eb33fb"/>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রাতিষ্ঠানিক কোড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="80" width="12" height="30" uuid="56e14cc0-6984-4bc7-9016-b5e6b799c8a9"/>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="80" width="368" height="30" uuid="4e332868-4991-41c0-a0f4-410fa34b180c"/>
+				<box topPadding="3" leftPadding="5" bottomPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[১১৯০৯-আন্তঃ বাহিনী দপ্তরসমূহ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="110" width="140" height="30" uuid="14a5a7e0-7613-4b11-81db-e235d2db9061"/>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পরিচালন ইউনিট]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="110" width="12" height="30" uuid="579c903e-4390-4e4a-951e-c1b157e4c56b"/>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="110" width="368" height="30" uuid="939eec07-c60c-489f-b1d9-40f7fb62c661"/>
+				<box topPadding="3" leftPadding="5" bottomPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[১১৯০৯১৩-বাংলাদেশ সমরাস্ত্র কারখানা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-2" y="140" width="140" height="30" uuid="29d810de-41db-4728-bb3e-c509b9021c70"/>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ফিল্ড অফিস/কার্যক্রম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="140" width="12" height="30" uuid="5db01e79-6371-4fac-a9b6-8f4c5df8c907"/>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="140" width="368" height="30" uuid="1a933290-6ca2-4cee-ae11-3fdc7c0247b1"/>
+				<box topPadding="3" leftPadding="5" bottomPadding="3" rightPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[১১৯০৯১৩১০৪৩৬৩-বাংলাদেশ সমরাস্ত্র কারখানা,গাজীপুর]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="10" y="0" width="781" height="30" uuid="e419bbb4-6ca5-45bc-80c8-512c386ed496"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_FINANCIAL_YEAR} + " অর্থবছরের সংশোধিত বাজেট প্রাক্কলন (পরিচয়ালন ব্যয়)"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="660" y="160" width="137" height="15" uuid="4b7f34a6-cf17-4256-a6f6-fbf5e67138ff">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[(অংকসমুহ হাজার টাকায়)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="74" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="60" height="59" uuid="fabd3971-1f74-4724-a3dc-b912d9ca5ddf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6b71a38e-2434-4e7e-b52e-ab645a260eda"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অর্থনৈতিক কোড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="97" height="59" uuid="ae7a55c2-c713-4811-9299-706e04082451">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e8827a17-48d8-4a1f-8043-e798dc10b9e8"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বিবরণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="59" width="60" height="15" uuid="4d750bea-97aa-4ca1-bde3-b116d0428482">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[১]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="59" width="97" height="15" uuid="ba677b5c-06fe-4395-aa86-0e17c44b4aff">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[২]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="0" width="300" height="16" uuid="ecbdafd8-5f55-4915-8091-ca25bf17454b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[প্রকৃত ব্যয়]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="0" width="103" height="59" uuid="ddb319e9-83a0-4a55-88f9-e33b230f0c22">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[হ্রাস/বৃদ্ধির কারণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="157" y="59" width="60" height="15" uuid="8d7d64d4-e848-40fd-a5be-be837b1f58bf">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৩]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="59" width="60" height="15" uuid="5c325a0b-eba1-4e81-b0e6-b73547e7dd6e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৪]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="277" y="59" width="60" height="15" uuid="2365f403-8ee3-4be5-a212-061a5381e5fe">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৫]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="59" width="60" height="15" uuid="b8ad0e10-1068-4d34-a428-69e07b65675d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৬]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="59" width="60" height="15" uuid="d3bdf17d-4ff7-4096-90b0-98bbadc71acb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৭]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="457" y="59" width="60" height="15" uuid="4c2256b9-518d-4675-8f79-b44bf68b6c9d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৮]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="517" y="59" width="60" height="15" uuid="7ec6fe2d-b7ea-4316-b4bf-1e0a8cf6d8b1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[৯]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="577" y="59" width="60" height="15" uuid="dfe3a9cf-ae17-4bb8-9f46-89b7114a0379">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[১০]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="637" y="59" width="60" height="15" uuid="7e59d0e4-3426-47c1-85f7-be6c5f8742c7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[১১]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="59" width="103" height="15" uuid="35c7db29-7fbd-4b13-82b5-a23924dab31c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[১২]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="157" y="16" width="60" height="43" uuid="cfa526d1-7051-4a40-86d6-d9ac42e769e2"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{third_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="217" y="16" width="60" height="43" uuid="6a3c4e1b-19b8-4a6f-aadc-ac67562d45ab"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{second_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="277" y="16" width="60" height="43" uuid="71e315cb-b464-481c-8193-9bbcdff4ced2"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["১ম ৬ মাস " + $F{third_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="337" y="16" width="60" height="43" uuid="654a7fe4-22ee-4740-8cc7-e0ae16f00cf6"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["১ম ৬ মাস " + $F{second_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="397" y="16" width="60" height="43" uuid="7eac03e8-caf3-4ea7-9e59-826781a59a54"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["১ম ৩ মাস " + $F{first_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="60" height="59" uuid="a776164b-7235-45c5-ad08-8349116edd2d"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["সংশোধিত " +$F{second_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="577" y="0" width="60" height="59" uuid="2cb3ecbe-26a1-41d5-8826-1575899dae5c"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বাজেট " + $F{first_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="637" y="0" width="60" height="59" uuid="6d4e9a26-3a39-4445-abf6-5b7e2599810c"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["প্রস্তাবিত সংশোধিত " + $F{first_year}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="457" y="0" width="60" height="59" uuid="4b0c4f77-a696-4e52-8e9c-1fb3034e35f8"/>
+				<box padding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বাজেট " + $F{second_year}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="60" y="0" width="97" height="20" uuid="397ff570-3f3d-4803-a468-577e2c59cced">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d7574428-4821-4e5f-9439-9b81fcdf3a0a"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name_bangla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="60" height="20" uuid="fa5a9832-264c-49d6-b7c3-fbc5259e76a6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="72bc6d71-4e1f-4478-b88c-50e751403bb8"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{economic_code}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="457" y="0" width="60" height="20" uuid="856f6a9d-e7f5-4db3-aa26-d690631ba311">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="18be7cbf-b11a-4c5f-a939-87a8d3c6ac5a"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{preadpapproved_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="60" height="20" uuid="c152b9a8-cc83-4be3-8209-fd8346464c64">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="da4f10a3-8047-4ad2-be0b-51c21ff7a481"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{preradpapproved_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="577" y="0" width="60" height="20" uuid="9102f676-39db-49b9-9b0d-50a6d3b48e87">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e3e33f79-21d1-416b-8b8a-9a16dd06026f"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{adp_approved_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="637" y="0" width="60" height="20" uuid="8e4036b0-4c99-43b2-b868-40dc1aedd396">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c3f9a1b5-5a62-4510-8955-a6edda4d8595"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{radp_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="157" y="0" width="60" height="20" uuid="ab35588c-aa82-40c2-ad8b-738dbfb4a6cb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7ceba507-f6a1-45a9-a833-0b1701ae7e63"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{second_expance_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="217" y="0" width="60" height="20" uuid="07871460-5f82-4396-8973-7c38c1689ee6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="219c8a13-b456-4bb1-a492-980aa1d051ac"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{first_expance_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="277" y="0" width="60" height="20" uuid="cd809390-e234-4e2c-8c9d-a59d7a7b9704">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="728170a9-28e0-4669-b34c-b47542269079"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{second_six_expance_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="337" y="0" width="60" height="20" uuid="b9900ae2-e2e1-4f4a-971b-19d1a06f3b76">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="86096ce1-30a8-44b5-9f30-0c2627750cd3"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{first_six_expance_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="397" y="0" width="60" height="20" uuid="a67df754-6640-47ee-8394-6952f4539293">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="22812da2-5c74-4146-87c4-c2a0f5b78a3e"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{three_expance_amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="697" y="0" width="103" height="20" uuid="0fba724e-31dd-4799-bdd5-9e3c9c5f7dbe">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<summary>
+		<band height="92" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="157" height="30" uuid="d96a289e-e0bd-4d2c-a9f8-7f488cac7805">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট - বাংলাদেশ সমরাস্ত্র কারখানা, গাজীপুর :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="157" height="30" uuid="98e3e8ac-ddbc-44bc-8bd4-679e20b99764">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট - বাংলাদেশ সমরাস্ত্র কারখানা :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="157" height="30" uuid="b0f242ff-96c9-41ef-bfff-659a6860db2d">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট - আন্তঃ বাহিনী দপ্তরসমূহ :]]></text>
+			</staticText>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="157" y="0" width="60" height="30" uuid="3a7b1411-783f-48ee-9169-a4576b2d84ed"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_second_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="157" y="30" width="60" height="30" uuid="80b21cf8-d3a6-4fdf-9581-bcc01ab0db86"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_second_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="157" y="60" width="60" height="30" uuid="c23a3710-ea6e-4583-91eb-579e27a14ee1"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_second_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="217" y="0" width="60" height="30" uuid="c736ebee-139d-481a-a4ce-4898f3aabf38"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_first_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="217" y="30" width="60" height="30" uuid="bb1723ce-5cf4-4431-bbb3-add3dbac266f"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_first_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="217" y="60" width="60" height="30" uuid="eed3346d-e57e-4418-a3d2-409d212d7a54"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_first_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="277" y="0" width="60" height="30" uuid="40e8fa64-aadd-44f6-8390-200531754a2d"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_second_six_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="277" y="30" width="60" height="30" uuid="86f5f8e8-3697-4a7c-9141-96699be87a7c"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_second_six_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="277" y="60" width="60" height="30" uuid="1ba2ba88-8f90-46ff-be3c-d419affef737"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_second_six_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="337" y="0" width="60" height="30" uuid="85bfd06b-5ded-41a5-beb7-c8e08bb80a9b"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_first_six_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="337" y="30" width="60" height="30" uuid="3f9b8ecb-122e-42e3-a070-28ef4c617a07"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_first_six_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="337" y="60" width="60" height="30" uuid="299e2b00-35da-4f4a-b60c-70deef2a2bc7"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_first_six_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="397" y="0" width="60" height="30" uuid="409a489f-d99a-495a-ba17-8b5ad3e593c1"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_three_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="397" y="30" width="60" height="30" uuid="604c48b3-2f2b-497b-afc0-552310d9727e"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_three_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="397" y="60" width="60" height="30" uuid="ed5c8b4e-4153-4084-8fa9-0ea2adb2d95f"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_three_expence_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="457" y="0" width="60" height="30" uuid="ffa19ac7-c675-41a1-9e01-59952585195f"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_pre_adp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="457" y="30" width="60" height="30" uuid="7f51a317-139a-492b-a9a8-547539c698ce"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_pre_adp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="457" y="60" width="60" height="30" uuid="c68d33ad-7461-490d-a65e-3ba9661542a0"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_pre_adp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="517" y="0" width="60" height="30" uuid="dd7d63dd-a258-4b17-a4d3-b7ad741afe4d"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_pre_radp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="517" y="30" width="60" height="30" uuid="8ffc4cbf-855a-4865-be8e-c2c49532c56e"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_pre_radp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="517" y="60" width="60" height="30" uuid="536e259c-4f1a-4447-8add-bdfbed0529b2"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_pre_radp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="577" y="0" width="60" height="30" uuid="28fd43c3-904c-4b50-b1b4-2baa5e8ba86e"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_adp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="577" y="30" width="60" height="30" uuid="50a1a522-6684-4997-9aa9-980537b7c88f"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_adp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="577" y="60" width="60" height="30" uuid="5ed07cec-a756-4180-ae31-bb0f29dd9fee"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_adp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="637" y="0" width="60" height="30" uuid="1c7aafa3-7bad-47fb-8e1e-a2b91d386263"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_radp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="637" y="30" width="60" height="30" uuid="c9e131b2-f95b-4003-a469-74204d57c6b2"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_radp_total}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#;(#,##0.00#-)" isBlankWhenNull="true">
+				<reportElement x="637" y="60" width="60" height="30" uuid="8d3ac903-18c8-4344-9c80-62922a600a9b"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{net_radp_total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="697" y="0" width="103" height="30" uuid="67b82422-646b-4a0e-afd0-2779aa877210">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="30" width="103" height="30" uuid="0513db88-9874-4c63-8efd-39f50d812248">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="697" y="60" width="103" height="30" uuid="d0f8f57c-39e0-4eb1-927d-8d99c3d19b59">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

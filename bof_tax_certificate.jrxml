@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rw_welfareLoan_statement" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="750" leftMargin="72" rightMargin="20" topMargin="72" bottomMargin="20" uuid="34fa0ec6-9f1a-47f7-930f-77987775d0f5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="229"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="764"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="inch"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="inch"/>
+	<parameter name="P_FINANCIAL_YEAR" class="java.lang.String"/>
+	<parameter name="P_EMP_CODE" class="java.lang.String"/>
+	<parameter name="P_PRINT_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select round(cast(sum(coalesce(value,0)) as integer),2) tax_amount,
+hepi.employee_name_bangla||','|| get_com_lookup_bn_name(heoi.designation_id)||'/'||hepi.code emoloyee_name,
+fin_year,  date($P{P_PRINT_DATE}) print_dt
+from fin_account_wise_tax_emp fmsp , hrm_employee_personal_information hepi,
+hrm_employee_official_information heoi 
+where 1=1
+and fmsp.employee_personal_information_id=hepi.id 
+and hepi.id=heoi.employee_id
+and fmsp.account_code='99999'
+and (  $P{P_FINANCIAL_YEAR} is null or fin_year=  $P{P_FINANCIAL_YEAR} ) --'2021-22' ----P_FINANCIAL_YEAR
+and ( $P{P_EMP_CODE}  is null or hepi.code= $P{P_EMP_CODE}  ) --'1992' ----P_EMPLOYEE_CODE
+group by hepi.employee_name_bangla,heoi.designation_id,hepi.code,hepi.id,fin_year]]>
+	</queryString>
+	<field name="tax_amount" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="tax_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="tax_amount"/>
+	</field>
+	<field name="emoloyee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emoloyee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emoloyee_name"/>
+	</field>
+	<field name="fin_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="fin_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="fin_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_account_wise_tax_emp"/>
+	</field>
+	<field name="print_dt" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="print_dt"/>
+		<property name="com.jaspersoft.studio.field.label" value="print_dt"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="450" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="2" width="709" height="64" uuid="02e92d0d-6e62-4bb8-97f9-6bbda99501b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="styled">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["গণপ্রজাতন্ত্রী বাংলাদেশ সরকার" + "\n" +" অর্থ-নিয়ন্ত্রক এর কার্যালয়" + "\n" + "বাংলাদেশ সমরাস্ত্র কারখানা" + "\n" + "গাজীপুর সেনানিবাস, গাজীপুর। "]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="80" width="430" height="22" uuid="83a48075-24ec-47df-a5b5-798aeed27c7a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9ca8e30-897e-4cd5-a03e-36d2676f103f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পত্র নং- এফসি (বিওএফ)/বেতন/সাঃযোঃ/ প্রঃ দ্রঃ/৩৬-৬ষ্ঠ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="710" height="35" uuid="3caabd67-ab22-42e2-bf5f-470c27faee04">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9ca8e30-897e-4cd5-a03e-36d2676f103f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="18" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[প্রত্যয়ন পত্র]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="20" y="170" width="690" height="180" uuid="ff01685e-a383-40ce-afc4-1c0feb4ba291"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[(($F{emoloyee_name} == null) ? "     এই মর্মে প্রত্যয়ন করা যাচ্ছে যে, বাংলাদেশ সমরাস্ত্র কারখানা, গাজীপুর সেনানিবাস, গাজীপুরে কর্মরত জনাব " :  (
+    ($F{emoloyee_name} == "") ? "     এই মর্মে প্রত্যয়ন করা যাচ্ছে যে, বাংলাদেশ সমরাস্ত্র কারখানা, গাজীপুর সেনানিবাস, গাজীপুরে কর্মরত জনাব " : (
+          ($F{emoloyee_name} == "null") ? "     এই মর্মে প্রত্যয়ন করা যাচ্ছে যে, বাংলাদেশ সমরাস্ত্র কারখানা, গাজীপুর সেনানিবাস, গাজীপুরে কর্মরত জনাব " : "     এই মর্মে প্রত্যয়ন করা যাচ্ছে যে, বাংলাদেশ সমরাস্ত্র কারখানা, গাজীপুর সেনানিবাস, গাজীপুরে কর্মরত জনাব "+ $F{emoloyee_name} + " এর আয়কর বাবদ " + $F{fin_year} + " অর্থ বছরে মাসিক বেতন হতে "+ $F{tax_amount}+" /- মাত্র কর্তনের মাধ্যমে আদায় করা হয়েছে।"
+            ) ))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="600" y="80" width="60" height="22" uuid="84bd37cf-370f-496e-9a1c-54c4764133ab">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{print_dt}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="1" y="0" width="729" height="450" uuid="f2508602-1fa0-4ede-acd2-a9669cd19bdc"/>
+				<box>
+					<pen lineWidth="0.5" lineStyle="Double"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</frame>
+			<staticText>
+				<reportElement x="499" y="80" width="100" height="22" uuid="9ac85fab-b0ba-4a30-8131-461a32a991b7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9ca8e30-897e-4cd5-a03e-36d2676f103f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ             ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="660" y="80" width="20" height="22" uuid="c99d07b3-5216-4722-885e-68df809c6426">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9ca8e30-897e-4cd5-a03e-36d2676f103f"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[খ্রিঃ]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

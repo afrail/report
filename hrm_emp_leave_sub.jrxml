@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_emp_leave_sub" pageWidth="250" pageHeight="842" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="5ee9f4ea-efe9-4912-97f1-243a1faba5d9">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select from_date, to_date, total_days, leave_type_id, case when leave_type_id=10 then 'L' else 'M' end Leave_type 
+from hrm_employee_leave_information
+where 1=1
+and employee_id = $P{P_EMPLOYEE_ID} 
+and leave_type_id in(10,41)
+order by from_date,to_date,total_days asc]]>
+	</queryString>
+	<field name="from_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="to_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="total_days" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="leave_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="leave_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="leave_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_type"/>
+	</field>
+	<variable name="v_total_earn_days" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_days}]]></variableExpression>
+	</variable>
+	<group name="leave_type_id">
+		<groupExpression><![CDATA[$F{leave_type_id}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20">
+			<staticText>
+				<reportElement x="0" y="0" width="210" height="20" uuid="a01e6b23-0d22-4126-80f1-6f7b3c08fff8"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অর্জিত ছুটি ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="80" height="16" uuid="c20c7e21-b4a3-478f-aea8-e358934ec1f8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="04a20350-10f4-4aa6-8558-77939e7da642"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{from_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="80" y="0" width="80" height="16" uuid="7526edaa-b43a-4b3b-ab1c-700ba99b330b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="0" width="50" height="16" uuid="e182c069-e64d-4e35-8163-d9fbd746320b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4589ca36-cfba-4ca4-91c8-b70f6ad698ff"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_days}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="30">
+			<textField isBlankWhenNull="true">
+				<reportElement x="160" y="0" width="50" height="20" uuid="64d59d23-c041-4317-a1c6-993a71026b00">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{v_total_earn_days}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="20" uuid="9f3cf921-6219-414a-a4d3-2b785d726ba2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[   মোট অর্জিত ছুটি  :]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

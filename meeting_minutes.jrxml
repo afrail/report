@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="meeting_minutes" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bdfbaacc-3602-4084-a941-27e128a84b7c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<parameter name="P_MEETING_ID" class="java.lang.Integer"/>
+	<parameter name="meeting_minutes_sub_report" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select b.meeting_reference,TO_CHAR(b.meeting_date, 'DD-mm-yyyy')||' তারিখে '||to_char(b.meeting_time ::time,'HH:MI')||' ঘটিকায় '||meeting_venue||' এ অনুষ্টিতব্য '
+||b.meeting_subject||' কার্যবিবরণী ও উপস্থিতি ' as subjct, get_com_lookup_bn_name(b.office_id) officerID,
+emp_name, designation from (
+select meeting_id,
+inform_employee_name emp_name,
+inform_employee_designation designation, serial_no
+from rec_meeting_invitation
+where 1=1
+and meeting_id = $P{P_MEETING_ID}
+and length(inform_employee_name)>2
+union all
+select meeting_id,
+case when employee_id is null then "name" else get_emp_bn_name(employee_id) end emp_name,
+case when employee_designation_id is null then designation else get_com_lookup_bn_name(employee_designation_id)
+end designation, serial_no
+from rec_meeting_invitation
+where 1=1
+and meeting_id = $P{P_MEETING_ID}) a , rec_meeting_master b
+where 1=1
+and a.meeting_id=b.id
+order by serial_no asc]]>
+	</queryString>
+	<field name="meeting_reference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="meeting_reference"/>
+		<property name="com.jaspersoft.studio.field.label" value="meeting_reference"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_meeting_master"/>
+	</field>
+	<field name="subjct" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="subjct"/>
+		<property name="com.jaspersoft.studio.field.label" value="subjct"/>
+	</field>
+	<field name="officerid" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="officerid"/>
+		<property name="com.jaspersoft.studio.field.label" value="officerid"/>
+	</field>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<textField>
+				<reportElement x="145" y="20" width="290" height="30" uuid="d2a8aaee-7d41-4dad-b22e-a80ecb096d82"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{officerid}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="0" width="180" height="20" uuid="31a1ba44-0e08-41cf-89a4-204e1749c943"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="14"/>
+				</textElement>
+				<text><![CDATA[বাংলাদেশ সমরাস্ত্র কারখানা]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="56" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="26" width="550" height="30" uuid="39f72c82-c535-402f-b31f-258bc662a36a"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subjct}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="270" height="26" uuid="bff7ab51-058e-4fd2-a1c0-95dcbcfb3e55"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{meeting_reference}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="250" height="20" uuid="5a4504c5-1f79-4ef8-97e5-1c14f22049e6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0732189b-4a24-427b-b37d-87f3cffef379"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="0" width="270" height="20" uuid="9fd2b760-6d91-4bf3-b31f-76cfbb370a85">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cbb43dd3-1fb1-4308-be7f-331345721ed1"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="50">
+			<textField>
+				<reportElement x="372" y="10" width="180" height="21" uuid="9628e00f-b974-4473-9064-c72b1599f8fb"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="30" width="180" height="20" uuid="eb4f930b-5eab-4440-9736-d1cd32dc0a11"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="150" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="595" height="90" uuid="775d286d-78f4-4f4e-af28-d4dd3e6be7bf"/>
+				<subreportParameter name="P_MEETING_ID">
+					<subreportParameterExpression><![CDATA[$P{P_MEETING_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{meeting_minutes_sub_report}]]></subreportExpression>
+				
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

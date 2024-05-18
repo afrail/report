@@ -1,0 +1,1105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="quertly_report_for_female_quota" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="750" leftMargin="72" rightMargin="20" topMargin="50" bottomMargin="20" uuid="75d0f137-f033-435c-bb6c-722031fef2cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="248"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="752"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="565"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="421"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="981be4c7-dc5c-403d-b431-55ae7b214c43">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+		<queryString language="SQL">
+			<![CDATA[select class_wise_pappo.*,class_wise_paptto.prapto from class_wise_pappo, class_wise_paptto
+where 1=1
+and class_wise_pappo.sl=class_wise_paptto.sl]]>
+		</queryString>
+		<field name="sl" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="sl"/>
+			<property name="com.jaspersoft.studio.field.label" value="sl"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="class_wise_pappo"/>
+		</field>
+		<field name="title" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="title"/>
+			<property name="com.jaspersoft.studio.field.label" value="title"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="class_wise_pappo"/>
+		</field>
+		<field name="prappo" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="prappo"/>
+			<property name="com.jaspersoft.studio.field.label" value="prappo"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="class_wise_pappo"/>
+		</field>
+		<field name="prapto" class="java.lang.Long">
+			<property name="com.jaspersoft.studio.field.name" value="prapto"/>
+			<property name="com.jaspersoft.studio.field.label" value="prapto"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="class_wise_paptto"/>
+		</field>
+		<variable name="prapto1" class="java.lang.Long" resetType="Column" calculation="Sum">
+			<variableExpression><![CDATA[$F{prapto}]]></variableExpression>
+		</variable>
+		<variable name="prappo1" class="java.lang.Long" resetType="Column" calculation="Sum">
+			<variableExpression><![CDATA[$F{prappo}]]></variableExpression>
+		</variable>
+		<variable name="prappo2" class="java.lang.Long" resetType="Column" calculation="Sum">
+			<variableExpression><![CDATA[$F{prappo}]]></variableExpression>
+		</variable>
+		<variable name="prapto2" class="java.lang.Long" resetType="Column" calculation="Sum">
+			<variableExpression><![CDATA[$F{prapto}]]></variableExpression>
+		</variable>
+		<variable name="prappo3" class="java.lang.Long" calculation="Sum">
+			<variableExpression><![CDATA[$F{prappo}]]></variableExpression>
+		</variable>
+		<variable name="prapto3" class="java.lang.Long" calculation="Sum">
+			<variableExpression><![CDATA[$F{prapto}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<queryString language="SQL">
+		<![CDATA[select first_class_g,coalesce(sec_class_g,'0')sec_class_g,coalesce(sec_class_non_g,'0')sec_class_non_g,
+coalesce(beshamorik,'0')beshamorik,coalesce(ere,'0')ere,coalesce(first_non_civil,'0')first_non_civil,
+coalesce(first_civil,'0')first_civil,
+get_eng_month_bangla(cast(to_char(current_date,'mm' ) as integer))||', '||to_char(current_date,'yyyy' ) mm,
+sec_class_gazz,sec_class_non_gazz,non_gazz_emp,non_gazz_karigor,eri,female_1st_class,
+female_sec_class_gazzet,female_sec_class_non_gazzet,female_non_gazz_emp,female_karigor,
+'বাংলাদেশ সমরাস্ত্র কারখানা (বিওএফ) গাজীপুর সেনানিবাস,গাজীপুর'inst_name,
+(first_non_civil+first_civil+sec_class_gazz+sec_class_non_gazz)total_gazz,
+(female_1st_class+female_sec_class_gazzet+female_sec_class_non_gazzet)total_female,
+(((female_1st_class+female_sec_class_gazzet+female_sec_class_non_gazzet)*100)/(first_non_civil+first_civil+sec_class_gazz+sec_class_non_gazz))gazzet_employee_perc,
+(female_non_gazz_emp+female_karigor)total_female,
+(non_gazz_emp+non_gazz_karigor+eri)total_non_gazz,
+(((female_non_gazz_emp+female_karigor)*100)/(non_gazz_emp+non_gazz_karigor+eri))non_gazzet_employee_perc,
+'' remarks
+from total_employee_count_vu]]>
+	</queryString>
+	<field name="first_class_g" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="first_class_g"/>
+		<property name="com.jaspersoft.studio.field.label" value="first_class_g"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="sec_class_g" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="sec_class_g"/>
+		<property name="com.jaspersoft.studio.field.label" value="sec_class_g"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="sec_class_non_g" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="sec_class_non_g"/>
+		<property name="com.jaspersoft.studio.field.label" value="sec_class_non_g"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="beshamorik" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="beshamorik"/>
+		<property name="com.jaspersoft.studio.field.label" value="beshamorik"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="ere" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ere"/>
+		<property name="com.jaspersoft.studio.field.label" value="ere"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="first_non_civil" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="first_non_civil"/>
+		<property name="com.jaspersoft.studio.field.label" value="first_non_civil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="first_civil" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="first_civil"/>
+		<property name="com.jaspersoft.studio.field.label" value="first_civil"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="mm" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mm"/>
+		<property name="com.jaspersoft.studio.field.label" value="mm"/>
+	</field>
+	<field name="sec_class_gazz" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="sec_class_gazz"/>
+		<property name="com.jaspersoft.studio.field.label" value="sec_class_gazz"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="sec_class_non_gazz" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="sec_class_non_gazz"/>
+		<property name="com.jaspersoft.studio.field.label" value="sec_class_non_gazz"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="non_gazz_emp" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="non_gazz_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="non_gazz_emp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="non_gazz_karigor" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="non_gazz_karigor"/>
+		<property name="com.jaspersoft.studio.field.label" value="non_gazz_karigor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="eri" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="eri"/>
+		<property name="com.jaspersoft.studio.field.label" value="eri"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="female_1st_class" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="female_1st_class"/>
+		<property name="com.jaspersoft.studio.field.label" value="female_1st_class"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="female_sec_class_gazzet" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="female_sec_class_gazzet"/>
+		<property name="com.jaspersoft.studio.field.label" value="female_sec_class_gazzet"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="female_sec_class_non_gazzet" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="female_sec_class_non_gazzet"/>
+		<property name="com.jaspersoft.studio.field.label" value="female_sec_class_non_gazzet"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="female_non_gazz_emp" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="female_non_gazz_emp"/>
+		<property name="com.jaspersoft.studio.field.label" value="female_non_gazz_emp"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="female_karigor" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="female_karigor"/>
+		<property name="com.jaspersoft.studio.field.label" value="female_karigor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="total_employee_count_vu"/>
+	</field>
+	<field name="inst_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inst_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="inst_name"/>
+	</field>
+	<field name="total_gazz" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_gazz"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_gazz"/>
+	</field>
+	<field name="total_female" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_female"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_female"/>
+	</field>
+	<field name="gazzet_employee_perc" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="gazzet_employee_perc"/>
+		<property name="com.jaspersoft.studio.field.label" value="gazzet_employee_perc"/>
+	</field>
+	<field name="COLUMN_23" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_female"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_female"/>
+	</field>
+	<field name="total_non_gazz" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="total_non_gazz"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_non_gazz"/>
+	</field>
+	<field name="non_gazzet_employee_perc" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="non_gazzet_employee_perc"/>
+		<property name="com.jaspersoft.studio.field.label" value="non_gazzet_employee_perc"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+	</field>
+	<variable name="first_class_g1" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{first_class_g}]]></variableExpression>
+	</variable>
+	<variable name="sec_class_g" class="java.lang.Integer">
+		<variableExpression><![CDATA[$F{sec_class_g}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<staticText>
+				<reportElement x="493" y="14" width="238" height="15" uuid="d7941c30-c599-474c-85ea-7133dbdf1604"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নথি নম্বরঃ২৩.২৭.০০০০.১১৫.০৬.০০১.৯৬.০০২]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="492" y="0" width="238" height="14" uuid="3ad1372a-19cd-4137-a5de-07931db683d1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রোড়পত্র ক]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="603" y="29" width="62" height="20" uuid="d78f14c7-2cda-40cc-8199-731fc70a9370"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mm}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="577" y="29" width="25" height="20" uuid="2093171e-67bc-4096-ab86-53f5fb2ea26f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="78">
+			<textField>
+				<reportElement x="599" y="0" width="129" height="30" uuid="8d8c6dc1-6c56-4d67-8765-b45b8c41da0a"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["মন্তব্য"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="24" height="60" uuid="b7dc7a41-1d17-40d3-9b50-a91ab695d5aa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রঃ 
+নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="0" width="110" height="30" uuid="d324d347-f901-468b-ba7b-bc670ca3686a"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মঞ্জুরকৃত পদের সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="0" width="134" height="60" uuid="315894ef-1dad-416f-9636-ba594b00ccb5"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রতিষ্ঠানের নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="30" width="55" height="30" uuid="22fd97d7-2948-4abb-a251-23450a8a92b1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গেজেটেড কর্মকর্তা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="30" width="55" height="30" uuid="552e103c-a35f-4313-88dd-cf10e0ad625c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নন-গেজেটেড কর্মচারী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="25" height="18" uuid="23fc0d63-decd-47ce-bcf2-d9b9ded09bc8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="60" width="134" height="18" uuid="f4c3d252-07d6-460d-b364-fc4c242bdee6">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="159" y="60" width="55" height="18" uuid="ccc5c846-3de0-4363-85ee-e2984ff3c571">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৩(ক)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="60" width="55" height="18" uuid="ee53921b-a3d9-4ab9-81cb-3d689431f643">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৩(খ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="30" width="55" height="30" uuid="a8b73d65-03bc-48bd-a8ae-361caf464a47">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নন-গেজেটেড কর্মচারী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="30" width="55" height="30" uuid="f1c20a9b-6564-4aef-a457-bb6d3b2d32ac">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গেজেটেড কর্মকর্তা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="60" width="55" height="18" uuid="c672b4fb-717e-4d8e-850d-34f9e5616dde">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৪(ক)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="60" width="55" height="18" uuid="ca00df84-2c7a-4c68-b2d2-c89321da15dc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৪(খ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="269" y="0" width="110" height="30" uuid="45d9ef6e-63fe-402e-8d42-df98a52a35ea"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পূরণকৃত পদের সংখ্যা ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="0" width="110" height="30" uuid="8bd65b00-0624-4885-86bd-71b8c7e1f42d"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নিয়োজিত মহিলার সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="30" width="55" height="30" uuid="dd509987-7430-4af4-b1ed-fef3954161c4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গেজেটেড কর্মকর্তা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="30" width="55" height="30" uuid="df4616e0-c471-4007-ab51-7c1675cb3cc7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নন-গেজেটেড কর্মচারী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="60" width="55" height="18" uuid="fcbe86e5-33cf-446b-9624-42f385749fa4">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৫(ক)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="434" y="60" width="55" height="18" uuid="31bf4132-1908-49bb-870a-573f7907e9b7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৫(খ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="544" y="30" width="55" height="30" uuid="feb3d3e8-8ec0-4c88-85c2-85d7cec644f5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নন-গেজেটেড কর্মচারী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="0" width="110" height="30" uuid="5efbb665-4697-4bdb-8de2-a26b210971e4"/>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[শতকরা হিসাব]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="30" width="55" height="30" uuid="c2f30179-1495-40a9-bb39-63613f5662a0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গেজেটেড কর্মকর্তা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="489" y="60" width="55" height="18" uuid="97d19b3c-6265-4cc8-b784-fcfb28cb47c1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৫(ক)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="544" y="60" width="55" height="18" uuid="4be799d7-4298-4854-8196-a49bf40f26d5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[৫(খ)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="599" y="30" width="129" height="30" uuid="4680094a-06ef-4070-ba0e-237d4457c019">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="599" y="60" width="129" height="18" uuid="ba386f9d-0e10-417f-a1f6-56d9d15ed52c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="52">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="25" y="0" width="134" height="52" uuid="f2f8f9fb-3be5-422d-888d-ac610c4f176b">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বাংলাদেশ সমরাস্ত্র কারখানা (বিওএফ) গাজীপুর সেনানিবাস, গাজীপুর"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="159" y="0" width="55" height="52" uuid="fb02435f-308d-4f97-89b2-fa87f271723e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{first_class_g} ==null ? "": $F{first_class_g})+ "\n"+ 
+($F{sec_class_g} ==null ? "": $F{sec_class_g}) + "\n"+ 
+($F{sec_class_non_g} ==null ? "": $F{sec_class_non_g})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="24" height="52" uuid="3240d802-8222-41b0-9f17-787d5e3829ba">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="214" y="0" width="55" height="52" uuid="1a9ccc24-473f-43aa-9e41-8b5bd05e1d79">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="2" rightPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{beshamorik}==null ? "": $F{beshamorik} ) + "\n"+ 
+($F{ere}==null ? "": $F{ere} )]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="269" y="0" width="55" height="52" uuid="82a54b49-139e-4a8a-8d72-a8fa9b98732c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{first_non_civil} ==null ? "": $F{first_non_civil})+ "\n"+ 
+($F{first_civil} ==null ? "": $F{first_civil}) + "\n"+ 
+($F{sec_class_gazz} ==null ? "": $F{sec_class_gazz})+ "\n"+ 
+($F{sec_class_non_gazz} ==null ? "": $F{sec_class_non_gazz})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="324" y="0" width="55" height="52" uuid="644cff02-e5da-44f9-9351-42a1270558b9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{non_gazz_emp} ==null ? "": $F{non_gazz_emp})+ "\n"+ 
+($F{non_gazz_karigor} ==null ? "": $F{non_gazz_karigor}) + "\n"+ 
+($F{eri} ==null ? "": $F{eri})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="379" y="0" width="55" height="52" uuid="7084ba4d-11eb-4259-b4c0-84ab17994096">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{female_1st_class} ==null ? "": $F{female_1st_class})+ "\n"+ 
+($F{female_sec_class_gazzet} ==null ? "":$F{female_sec_class_gazzet}) + "\n"+ 
+($F{female_sec_class_non_gazzet} ==null ? "": $F{female_sec_class_non_gazzet})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="434" y="0" width="55" height="52" uuid="d49d011b-ef29-498b-9784-543b5e7c7773">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{female_non_gazz_emp} ==null ? "": $F{female_non_gazz_emp})+ "\n"+ 
+($F{female_karigor} ==null ? "":$F{female_karigor})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="490" y="0" width="55" height="52" uuid="c0be2023-0f79-4f58-a9b2-f92cf97f8fb7">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gazzet_employee_perc}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="544" y="0" width="55" height="52" uuid="4a34cf14-fab4-4b56-9d6b-83d79d1d65a9">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="2">
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{non_gazzet_employee_perc}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="599" y="0" width="129" height="52" uuid="4237c988-7be5-4a9c-b017-748ac30cbef0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement x="252" y="0" width="100" height="16" uuid="f49660da-c536-400d-9b3c-6c7a4502a049">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পৃষ্ঠাঃ " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="352" y="0" width="100" height="16" uuid="f1a1718f-2c68-4730-bfa7-4f91510a062b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="167" splitType="Stretch">
+			<textField>
+				<reportElement x="159" y="0" width="55" height="20" uuid="56e72c13-783b-41e7-8435-5ed11dbd0191"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{first_class_g} + 
+$F{sec_class_g}+ 
+$F{sec_class_non_g}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="214" y="0" width="55" height="20" uuid="c66e0554-8d25-4fe9-98d2-746422e437b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beshamorik}+
+$F{ere}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="55" height="20" uuid="0b5a70be-871f-445c-9202-1c06faebf475"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{first_non_civil} + 
+$F{first_civil} + 
+$F{sec_class_gazz}+ 
+$F{sec_class_non_gazz}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="325" y="0" width="55" height="20" uuid="e0391b1c-60b1-4caa-bc7c-6775c51640b8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{non_gazz_emp} + 
+$F{non_gazz_karigor}+ 
+$F{eri}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="0" width="55" height="20" uuid="91a02912-9b82-47c9-bb31-71df1ae5bc25"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{female_1st_class}+ 
+$F{female_sec_class_gazzet} + 
+$F{female_sec_class_non_gazzet}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="0" width="55" height="20" uuid="03a211b5-87a0-477e-a3e5-e62370831543"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{female_non_gazz_emp}+ 
+$F{female_karigor}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="159" height="20" uuid="843e87c9-7dae-4726-afcb-8cf087b91717"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[মোট-]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement style="Table_TH" x="0" y="29" width="599" height="90" uuid="8d2f1d07-67aa-4d23-ab3e-d64e41ae0330">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset1" uuid="f552d1cb-7d02-4085-b493-1bd414f5051a">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="30" uuid="d4262b31-e453-4099-8cbb-b1f607d2262b">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableFooter height="20">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</jr:tableFooter>
+						<jr:columnHeader height="20">
+							<staticText>
+								<reportElement x="0" y="0" width="30" height="20" uuid="434b2671-75aa-47a8-a28d-8ec6c941a036"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<text><![CDATA[sl]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField>
+								<reportElement x="0" y="0" width="30" height="20" uuid="27d80630-90f5-4efa-a806-d2a716189463"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sl}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="1ab3c743-7f10-4631-95bb-f98101f33b87">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableFooter height="20">
+							<box>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+						</jr:tableFooter>
+						<jr:columnHeader height="20">
+							<staticText>
+								<reportElement x="0" y="0" width="100" height="20" uuid="90b2ae95-df8b-43c3-b55f-a6f33962adb6">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<text><![CDATA[]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="20" uuid="2ca0a173-5f72-42f7-a647-b2d8efe69380"/>
+								<box leftPadding="3">
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="6720e960-6b97-487b-8551-f1e9196bc6c6">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+						<jr:tableFooter height="20">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="c5df8233-8f65-4b00-adbd-23bdb0e5da90"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{prappo3}]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader height="20">
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="20" uuid="01b1479f-59c3-4bba-8902-6b576c0bcb36"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<text><![CDATA[মঞ্জুরী]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="110d9119-4adc-4ef6-a8ab-506e561afc9a"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{prappo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="6eb896c1-4995-4953-b166-d2aa50ce1aa2">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+						<jr:tableFooter height="20">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="4e372b14-dbd9-4fc2-bac4-54d37001916c"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{prapto3}]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:columnHeader height="20">
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="20" uuid="4e52bae2-5c4f-408f-99ac-a4b9ed9bfa40"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<text><![CDATA[কর্মরত]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:detailCell height="20">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="50" height="20" uuid="e4180529-9518-4f28-a321-2d740a967cca"/>
+								<box>
+									<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{prapto}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</summary>
+</jasperReport>

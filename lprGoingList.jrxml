@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="lprGoingList" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="61b9d228-a958-42c4-80a4-16a972087d3a">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_EMP_CLASS" class="java.lang.Integer"/>
+	<parameter name="P_HRM_TYPE" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+	PERSONAL.CODE,
+	PERSONAL.EMPLOYEE_NAME_BANGLA||','||GET_COM_LOOKUP_BN_NAME(EMPOFF.DESIGNATION_ID)||','||
+	GET_EMPLOYEE_BRACH_WING_SHOP(PERSONAL.ID) EMP_DES_SECTION,
+	TO_CHAR(PERSONAL.LPR_DATE - INTERVAL '1 DAY', 'DD-MM-YYYY') RETIERMENT_DATE,
+	TO_CHAR(PERSONAL.LPR_DATE + INTERVAL '1 YEAR', 'DD-MM-YYYY') LPR_END_DATE,
+	TO_CHAR(PERSONAL.LPR_DATE,'DD-MM-YYYY') AS LPR_DATE ,
+	TO_CHAR(PERSONAL.DATE_OF_BIRTH,'DD-MM-YYYY') AS DATE_OF_BIRTH,EMPOFF.MAIN_SALARY,
+	GET_COM_LOOKUP_BN_NAME(EMPGRADE.EMPLOYEE_CLASS) AS CLASS_NAME
+FROM
+	HRM_EMPLOYEE_PERSONAL_INFORMATION PERSONAL,
+	HRM_EMPLOYEE_OFFICIAL_INFORMATION EMPOFF,
+	HRM_EMPLOYEE_GRADE EMPGRADE
+WHERE
+	1 = 1
+	AND EMPOFF.IS_CIVIL = TRUE
+	AND PERSONAL.ID = EMPOFF.EMPLOYEE_ID
+	AND EMPOFF.GRADE_ID = EMPGRADE.ID
+    AND DATE(PERSONAL.LPR_DATE) BETWEEN $P{P_FROM_DATE} AND $P{P_TO_DATE}
+	AND EMPGRADE.EMPLOYEE_CLASS=COALESCE($P{P_EMP_CLASS},EMPGRADE.EMPLOYEE_CLASS)
+	AND PERSONAL.HRM_TYPE = COALESCE( $P{P_HRM_TYPE}, PERSONAL.HRM_TYPE)
+ORDER BY  
+	GET_DES_SERIAL(EMPOFF.DESIGNATION_ID), EMPOFF.SENIORITY_NUMBER ASC]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="emp_des_section" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_des_section"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_des_section"/>
+	</field>
+	<field name="retierment_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="retierment_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="retierment_date"/>
+	</field>
+	<field name="lpr_end_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lpr_end_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="lpr_end_date"/>
+	</field>
+	<field name="lpr_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lpr_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="lpr_date"/>
+	</field>
+	<field name="date_of_birth" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.label" value="date_of_birth"/>
+	</field>
+	<field name="main_salary" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="main_salary"/>
+		<property name="com.jaspersoft.studio.field.label" value="main_salary"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="class_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="class_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="class_name"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="550" height="20" uuid="8953032d-a814-44b6-8e39-5bc089970b61"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="16" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পিআরএল গমনকারীদের অর্থবছর ভিক্তিক মূলবেতন সহ নামীয় তালিকাঃ "]]></textFieldExpression>
+			</textField>
+			<textField pattern="d-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="20" width="555" height="27" uuid="ef5fae06-ca66-48aa-aa70-7ad5d7beefe4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{P_FROM_DATE} == $P{P_TO_DATE}) ? " "+new SimpleDateFormat("dd-MM-yyyy").format($P{P_FROM_DATE}) : "  তারিখ হইতে: "+new SimpleDateFormat("dd-MM-yyyy").format($P{P_FROM_DATE}) + "  তারিখ পর্যন্ত: "+new SimpleDateFormat("dd-MM-yyyy").format($P{P_TO_DATE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="60" height="30" uuid="1c1ce975-24be-4cf3-b5d8-fdd39797550f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ব্যাক্তিগত নম্বর ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="190" height="30" uuid="23ebb040-aa39-4d97-adae-1f2717718cdb"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[নাম,পদবী,শাখা ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="250" y="0" width="100" height="30" uuid="f4832a8d-0329-4e84-bb1d-eafee30d9098"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পিআরএল শুরু হওয়ার 
+তারিখ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="0" width="100" height="30" uuid="1b50434f-8cc1-4bfc-bdf9-b7fe7dd51417"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পিআরএল শেষ  হওয়ার তারিখ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="0" width="100" height="30" uuid="42bb92e3-0414-4fac-bcaf-9c7fb3139ac6"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পিআরএল শেষ হওয়ার তারিখে মূল বেতন ]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="16" uuid="a0fd2f73-5a42-4dcb-b73b-e35b9439e1fb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f37dc4a-f28e-4638-abf3-752017ee36a3"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="60" y="0" width="190" height="16" uuid="a175231f-dad9-4873-96d8-88fefa5913be">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f37dc4a-f28e-4638-abf3-752017ee36a3"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_des_section}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="250" y="0" width="100" height="16" uuid="1c4e9f1a-8ead-4f9d-accb-2c4a09a83ff4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f37dc4a-f28e-4638-abf3-752017ee36a3"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{retierment_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="350" y="0" width="100" height="16" uuid="a493d0f5-b924-45a2-9cf0-dc6dd9cd0af0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f37dc4a-f28e-4638-abf3-752017ee36a3"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lpr_end_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="450" y="0" width="100" height="16" uuid="be1bedcb-b1ff-4d60-bfd7-b9838882fd6d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4f37dc4a-f28e-4638-abf3-752017ee36a3"/>
+				</reportElement>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{main_salary}!=null?$F{main_salary}:".00")]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="446" y="0" width="69" height="16" uuid="2a753bd1-dea6-4eed-9efb-44255ec0a5a8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="515" y="0" width="40" height="16" uuid="60a63b3e-1cf2-4b8c-aa52-1f9dd006c32d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

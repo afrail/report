@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acc_incident_information" pageWidth="612" pageHeight="792" orientation="Landscape" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7ed1454c-1c3d-4963-b1ef-5f754f067010">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT  INCIDENT_INFO.ID,'Date :'||'  '|| TO_CHAR(INCIDENT_INFO.INCIDENCE_DATE,'DD-MM-YYYY')INC_DATE,'DAMAGE INFORMATION :'||'  '||INCIDENT_INFO.DAMAGE_INFORMATION AS DAMAGE_INFORMATION,'DESCRIPTION :'||'  '||INCIDENT_INFO.DESCRIPTION
+AS DESCRIPTION,
+'FINDING :'||'  '||INCIDENT_INFO.FINDING AS FINDING,'Subject :'||'  '||INCIDENT_INFO.INCIDENT_SUBJECT AS INCIDENT_SUBJECT,INCIDENT_INFO.INCIDENT_TIME,
+INCIDENT_INFO.INSPECT_BY,INCIDENT_INFO.LOCATION,'RECOMMANDATION :'||'  '||INCIDENT_INFO.RECOMMANDATION AS RECOMMANDATION,INCIDENT_TYPE.NAME
+,INCIDENT_TYPE.BANGLA_NAME,INCIDENT_INFO.TYPE_OF_INCIDENT 
+FROM ACC_TYPE_OF_INCIDENT INCIDENT_TYPE,ACC_INCIDENT_INFORMATION INCIDENT_INFO  
+WHERE 1=1 
+AND INCIDENT_TYPE.ID=INCIDENT_INFO.TYPE_OF_INCIDENT 
+AND INCIDENT_INFO.ID ||''=COALESCE( $P{P_ID},INCIDENT_INFO.TYPE_OF_INCIDENT )||''
+ORDER BY INCIDENT_INFO.INCIDENCE_DATE,INCIDENT_INFO.TYPE_OF_INCIDENT ASC]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="inc_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inc_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="inc_date"/>
+	</field>
+	<field name="damage_information" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="damage_information"/>
+		<property name="com.jaspersoft.studio.field.label" value="damage_information"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="description"/>
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="finding" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="finding"/>
+		<property name="com.jaspersoft.studio.field.label" value="finding"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="incident_subject" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="incident_subject"/>
+		<property name="com.jaspersoft.studio.field.label" value="incident_subject"/>
+	</field>
+	<field name="incident_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="incident_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="incident_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="inspect_by" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inspect_by"/>
+		<property name="com.jaspersoft.studio.field.label" value="inspect_by"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="location"/>
+		<property name="com.jaspersoft.studio.field.label" value="location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="recommandation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="recommandation"/>
+		<property name="com.jaspersoft.studio.field.label" value="recommandation"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_type_of_incident"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_type_of_incident"/>
+	</field>
+	<field name="type_of_incident" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="type_of_incident"/>
+		<property name="com.jaspersoft.studio.field.label" value="type_of_incident"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_incident_information"/>
+	</field>
+	<group name="incidence_date">
+		<groupExpression><![CDATA[$F{inc_date}]]></groupExpression>
+	</group>
+	<group name="type_of_incident" isStartNewPage="true" keepTogether="true">
+		<groupExpression><![CDATA[$F{type_of_incident}]]></groupExpression>
+		<groupHeader>
+			<band height="163">
+				<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+					<reportElement x="-1" y="90" width="113" height="20" isPrintWhenDetailOverflows="true" uuid="d94ab82f-0f69-4991-838b-709a6438e88d"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inc_date}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+					<reportElement x="454" y="90" width="113" height="20" isPrintWhenDetailOverflows="true" uuid="269d5ba4-3a7b-445e-b81f-c3af7e5f8248"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{incident_time}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="400" y="89" width="40" height="20" isPrintWhenDetailOverflows="true" uuid="5f82ab5d-6509-4a7c-ab40-f8ca3d13d468"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<text><![CDATA[ Time ]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="88" y="117" width="172" height="20" isPrintWhenDetailOverflows="true" uuid="982a943a-e5eb-42fe-aeb8-0dcdddd03590"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="454" y="112" width="113" height="21" isPrintWhenDetailOverflows="true" uuid="c5975c46-8bbf-4ef1-87e1-9cb1d46ae2bd"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{location}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="116" width="80" height="20" isPrintWhenDetailOverflows="true" uuid="c45177f3-788e-48e7-b7c9-a512da573f64"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<text><![CDATA[ Type of Incident  ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="390" y="112" width="52" height="20" isPrintWhenDetailOverflows="true" uuid="347f7891-333e-4d59-ae59-bd50997d248b"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<text><![CDATA[ Location ]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="88" y="142" width="172" height="20" isPrintWhenDetailOverflows="true" uuid="fdac2924-ca17-4c6f-8c86-29bc0986c0a7"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{inspect_by}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="1" y="141" width="79" height="20" isPrintWhenDetailOverflows="true" uuid="c5d251cc-08a1-408e-9b01-f4d21211bf0e"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="10"/>
+					</textElement>
+					<text><![CDATA[ Inspected By      ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="430" y="111" width="31" height="23" isPrintWhenDetailOverflows="true" uuid="5904d078-d7d6-4c6c-b313-f88249b2bf8e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="430" y="88" width="31" height="23" isPrintWhenDetailOverflows="true" uuid="0440ce14-4797-41f8-82c9-14cace1f2662"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="70" y="139" width="31" height="23" isPrintWhenDetailOverflows="true" uuid="e7bfe04c-5e9d-4997-88fc-9196c4c092f9"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="70" y="115" width="31" height="23" isPrintWhenDetailOverflows="true" uuid="81e44e32-ca17-4538-bb09-2e5fa42ca619"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="11"/>
+					</textElement>
+					<text><![CDATA[:]]></text>
+				</staticText>
+				<subreport>
+					<reportElement x="0" y="0" width="569" height="50" uuid="1f4f0730-8b83-4ac5-9931-784e9b829e31"/>
+					<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+				</subreport>
+				<textField isStretchWithOverflow="true" >
+					<reportElement stretchType="RelativeToTallestObject" x="1" y="64" width="569" height="22" uuid="0b1cbef7-d4c7-43a2-873f-8343c64e9845"/>
+					<box leftPadding="3" rightPadding="3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{incident_subject}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="1" y="5" width="566" height="21" uuid="e65a230f-7f50-4136-8be1-29744aa7f62f"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="29">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="5" width="568" height="21" uuid="c36c464e-d1a9-43d6-be8b-e9c8fb26fae2"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{damage_information}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="28">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="-1" y="5" width="569" height="20" uuid="c7129fb3-c3a7-4f9b-a50c-81bddf4848e6"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{finding}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="31">
+			<textField isStretchWithOverflow="true" >
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="5" width="569" height="20" uuid="ac67a25d-1326-44d1-907a-68b83c1324ce"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{recommandation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

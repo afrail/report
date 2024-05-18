@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pension_on_progress_sub1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="920590c9-c64f-4d30-9f27-d5cafb9fe606">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_REMARKS" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+(select count(*)total   from hrm_employee_personal_information hepi ,
+hrm_employee_official_information heoi 
+where 1=1
+and hepi.id=heoi.employee_id
+and heoi.is_civil=true
+and heoi.employee_type_id=36
+AND DATE(hepi.lpr_date) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE})femilly_case_count,
+(SELECT count(*)total
+FROM FIN_PENSION_APPLICATION_INFORMATION FPAI ,FIN_PENSION_AMOUNT FPA 
+WHERE 1=1
+AND FPAI.ID=FPA.PENSION_APPLICATION_INFORMATION_ID 
+AND DATE(REGISTRATION_DATE) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE} 
+and form_type_id=2
+AND FPAI.IS_CONFIRM =1)pension_case_complete,
+(SELECT count(*)total
+FROM FIN_PENSION_APPLICATION_INFORMATION FPAI ,FIN_PENSION_AMOUNT FPA 
+WHERE 1=1
+AND FPAI.ID=FPA.PENSION_APPLICATION_INFORMATION_ID 
+AND DATE(REGISTRATION_DATE) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE} 
+and form_type_id=2
+AND FPAI.IS_CONFIRM =2)pension_case_runing,
+(SELECT count(*)total
+FROM FIN_PENSION_APPLICATION_INFORMATION FPAI ,FIN_PENSION_AMOUNT FPA 
+WHERE 1=1
+AND FPAI.ID=FPA.PENSION_APPLICATION_INFORMATION_ID 
+AND DATE(REGISTRATION_DATE) BETWEEN $P{P_FROM_DATE} AND  $P{P_TO_DATE} 
+and form_type_id=2
+AND FPAI.IS_CONFIRM =4)ad_ccdf]]>
+	</queryString>
+	<field name="femilly_case_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="femilly_case_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="femilly_case_count"/>
+	</field>
+	<field name="pension_case_complete" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pension_case_complete"/>
+		<property name="com.jaspersoft.studio.field.label" value="pension_case_complete"/>
+	</field>
+	<field name="pension_case_runing" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="pension_case_runing"/>
+		<property name="com.jaspersoft.studio.field.label" value="pension_case_runing"/>
+	</field>
+	<field name="ad_ccdf" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="ad_ccdf"/>
+		<property name="com.jaspersoft.studio.field.label" value="ad_ccdf"/>
+	</field>
+	<variable name="femilly_case_count1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{femilly_case_count}]]></variableExpression>
+	</variable>
+	<variable name="pension_case_complete1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{pension_case_complete}]]></variableExpression>
+	</variable>
+	<variable name="pension_case_runing1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{pension_case_runing}]]></variableExpression>
+	</variable>
+	<variable name="ad_ccdf1" class="java.lang.Long" calculation="Sum">
+		<variableExpression><![CDATA[$F{ad_ccdf}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="87" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="46" width="120" height="40" uuid="541738ea-5f5e-43ff-8c1d-3b83bd008b06"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{femilly_case_count1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="120" y="46" width="110" height="40" uuid="bec02fcc-3f6b-4147-8b1b-8b104762a2ad"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pension_case_complete1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="46" width="110" height="40" uuid="b3167455-1927-4c60-9845-5178471227f2"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{pension_case_runing1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="340" y="46" width="140" height="40" uuid="734cefa9-5019-4146-95b0-ba773500689b"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ad_ccdf1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="480" y="46" width="76" height="40" uuid="549a1bc3-043d-47ab-826e-8715635c6f6f"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_REMARKS}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="3" width="120" height="30" uuid="22017194-65c5-46ef-92f8-4b772c903b5e"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পারিবারিক পেনশন কেইস সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="3" width="110" height="30" uuid="c3cf8dea-b0dc-4334-b89c-1cee1459631f"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পেনশন নিস্পত্তির সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="3" width="110" height="30" uuid="5eecad36-1b92-48c7-a33b-a8117dda1540"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পেনশন কার্যক্রম প্রক্রিয়াধীন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="3" width="140" height="30" uuid="d41bc35c-5bdc-4e6b-a34c-a9d38b2feac0"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[এডি.সিসিডিএফ(বিওএফ) এ প্রেরণ করা হয়েছে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="3" width="76" height="30" uuid="66292803-f879-464e-bca7-21c2729be2d8"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মন্তব্য]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="33" width="120" height="13" uuid="57c71756-e61b-4a23-9ff1-8d0a58e78e10"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[(১)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="33" width="110" height="13" uuid="9ee5a903-fd3b-4a77-94af-46172cf3e9bf"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[(২)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="33" width="110" height="13" uuid="97d091a4-09b6-4176-a476-2cf72da8e6e0"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[(৩)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="33" width="140" height="13" uuid="0cecf41f-d63f-4b65-b506-649a7fc30c30"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[(৪)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="33" width="76" height="13" uuid="50a4f788-1121-4316-8b77-3a504c5cf81b"/>
+				<box>
+					<pen lineWidth="0.05"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[(৫)]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

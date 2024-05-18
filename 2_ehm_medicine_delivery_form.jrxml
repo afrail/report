@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_ehm_medicine_delivery_form" pageWidth="350" pageHeight="500" whenNoDataType="AllSectionsNoDetail" columnWidth="310" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c79b5f93-b0d8-42b4-9ea2-652aaa031e4f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="188"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="801"/>
+	<parameter name="P_TOKEN_ID" class="java.lang.Integer"/>
+	<parameter name="prescription_master_id" class="java.lang.Integer"/>
+	<parameter name="2token_medicin_sub" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	id,
+	pat_pres_master_id,
+	patient_code,
+	patient_name,
+	rank_name,
+	DOB,
+	patin_age,
+	gender,
+	blood_group,
+	prescription_date,
+	token_number token_register_no,
+	case
+		when length(section_name)>2 then section_name
+		else only_patient_code
+	end only_patient_code,
+	section_name
+from
+	(
+	select
+		etr.id,
+		pat_pres_master_id,
+		epi.patient_code,
+		case when epi.relation_type>0 then trim(epi.patient_name)||' '||
+get_com_lookup_name(epi.relation_type)||' of '||get_patient_name_with_rank(epi.patient_id)
+ else get_patient_name_with_rank(epi.id) end patient_name ,
+		date(epi.date_of_birth) DOB,
+		case
+			when epi.date_of_birth>'1930-01-01' then get_age_as_date(date(epi.date_of_birth),
+			date(etr.visit_date))
+			else ''
+		end patin_age,
+		get_com_lookup_name(epi.gender_id) gender ,
+		get_com_lookup_name(epi.blood_group_id) blood_group,
+		to_char(visit_date,'ddMMYYYY')||token_number token_number,
+		coalesce(get_com_lookup_name(epi.designation_id),epi.designation_name) rank_name,
+		to_char(visit_date,'dd-mm-yyyy') prescription_date,
+		translate(epi.patient_code, '0123456789-()!@#$%^&*_', '') only_patient_code,
+		(
+		select
+			get_com_lookup_name(coalesce(coalesce(coalesce(heoi.shop_id, heoi.group_id), heoi.wing_id), heoi.branch_id)) section_name
+		from
+			hrm_employee_official_information heoi ,
+			hrm_employee_personal_information hepi
+		where
+			hepi.id = heoi.employee_id
+			and hepi.code = epi.emp_code) section_name
+	from
+		ehm_token_register etr
+	left join ehm_patient_info epi on
+		etr.patient_id = epi.id
+	where
+		1 = 1
+		and etr.id = $P{P_TOKEN_ID}) s]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_token_register"/>
+	</field>
+	<field name="pat_pres_master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="pat_pres_master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="pat_pres_master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_token_register"/>
+	</field>
+	<field name="patient_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patient_info"/>
+	</field>
+	<field name="patient_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_name"/>
+	</field>
+	<field name="rank_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank_name"/>
+	</field>
+	<field name="dob" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="dob"/>
+		<property name="com.jaspersoft.studio.field.label" value="dob"/>
+	</field>
+	<field name="patin_age" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patin_age"/>
+		<property name="com.jaspersoft.studio.field.label" value="patin_age"/>
+	</field>
+	<field name="gender" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gender"/>
+		<property name="com.jaspersoft.studio.field.label" value="gender"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+	</field>
+	<field name="prescription_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prescription_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="prescription_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_token_register"/>
+	</field>
+	<field name="token_register_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="token_register_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="token_register_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_token_register"/>
+	</field>
+	<field name="only_patient_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="only_patient_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="only_patient_code"/>
+	</field>
+	<field name="section_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="section_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="section_name"/>
+	</field>
+	<title>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="240" y="0" width="70" height="25" uuid="d3ad94b2-0ad9-493c-a2c9-88a65ec20779">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[বা সে ফ চ-১২৭৬ক
+বি.এ.এফ.এম-১২৭৬ক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="18" uuid="3e4459ff-2061-44c1-9195-8ffad0bb13f4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[রেজিঃ.........................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="95" y="18" width="110" height="25" uuid="387ee02b-41b1-4493-9dcb-fc9a4ff3e3c5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="16" isBold="true" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[ঔষুধ বিতরণ ফরম]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="220" y="25" width="70" height="18" uuid="ea2284c0-fcc7-4966-a54c-52a5434dba67"/>
+				<jr:Codabar xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA[$F{token_register_no}]]></jr:codeExpression>
+				</jr:Codabar>
+			</componentElement>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="90" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="160" height="15" uuid="0418ca7f-6414-4edc-99c4-822e0e42872b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[সম্মিলিত সামরিক হাস্পাতাল/এম ডি এস...........]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="15" width="160" height="15" uuid="85147a95-6e70-4c95-87e7-5279da2764e3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[স্টাফ সার্জন/এমআই রুম/ওপিডি/বিশেষজ্ঞঃ.........]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="30" width="100" height="15" uuid="cbc00a92-b47a-4fb3-a768-140aa58c937e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="30" width="140" height="15" uuid="b9fd93d4-db75-49ce-a325-ce8cb6cf3725">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rank_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="45" width="290" height="15" uuid="7da1c0bb-18ed-4e7a-b42a-9b642e6b4b84">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="60" width="110" height="15" uuid="f5b0200b-7759-411d-8e97-cecb97723a17">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patin_age}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="75" width="110" height="15" uuid="ad16b464-b63f-41f6-a2f7-14ae0a31eb6c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prescription_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="20" height="15" uuid="a3f793e9-e97e-4b26-83c3-3e4d9ef4022a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[নং --]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="50" height="15" uuid="fe25960a-e924-4866-91d5-ba71f3e44c3d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[নাম --]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="75" width="50" height="15" uuid="ea604270-6db3-4b37-b29f-fd0f1e40d04a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[তারিখ ---------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="50" height="15" uuid="a8356fb6-9550-4335-b7fd-91171a035e41">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[বয়স -----------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="30" width="30" height="15" uuid="c075d42f-ecd2-420d-b370-60a4ba5fdf1e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পদবী --]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="60" width="50" height="15" uuid="c2973fea-be1e-4f0c-99ad-353916ebcc24">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[ইউনিট ---------]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="210" y="60" width="100" height="15" uuid="cf5473bd-70c3-44c6-a75b-94ae0c43cf51">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{section_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="220" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="15" uuid="136e3788-cca5-4057-ad2a-4b8594e3a1f2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রঃ/নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="190" height="15" uuid="b86ed8d0-422c-4e7c-b975-81cd2029fd4f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ঔষধের নাম মাত্রাসহ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="0" width="70" height="15" uuid="523924ae-9a16-40c1-842b-83a276972128">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পরিমাণ]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="2" width="310" height="27" isRemoveLineWhenBlank="true" uuid="3ca0b2c9-1675-4373-b8f4-1ddfe76c3453"/>
+				<subreportParameter name="prescription_master_id">
+					<subreportParameterExpression><![CDATA[$P{prescription_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2token_medicin_sub}]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="0" y="16" width="1" height="203" uuid="261e9a6f-6a59-4813-8d59-18b68154919b"/>
+			</line>
+			<line>
+				<reportElement x="50" y="16" width="1" height="203" uuid="bd9e9af2-3cc7-44a3-a60a-5e55e68b36b9"/>
+			</line>
+			<line>
+				<reportElement x="240" y="15" width="1" height="205" uuid="3a5eeb10-e127-42dc-8007-e0c7dc6b3425"/>
+			</line>
+			<line>
+				<reportElement x="310" y="15" width="1" height="205" uuid="4da5dce2-db9e-433b-b5b4-004de247b264"/>
+			</line>
+			<line>
+				<reportElement x="0" y="219" width="310" height="1" uuid="e1359d71-7caa-4539-bf33-8daa11a3d8f3"/>
+			</line>
+			<staticText>
+				<reportElement x="51" y="203" width="188" height="15" uuid="c1a90324-a7a4-473d-b14e-f1f36e76a2c3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[সর্বোমোট উপাদান (কথায়)]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

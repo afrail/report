@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_employee_promotion_history" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="83c67510-ab7b-40f7-a638-6b0a0124f08b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_BRANCH_ID" class="java.lang.Integer" nestedType="java.lang.Integer"/>
+	<parameter name="P_WING_ID" class="java.lang.Integer"/>
+	<parameter name="P_GROUP_ID" class="java.lang.Integer"/>
+	<parameter name="P_SHOP_ID" class="java.lang.Integer"/>
+	<parameter name="P_LINE_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla_landscape" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_HRM_TYPE" class="java.lang.Integer"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>  
+	<queryString language="SQL">
+		<![CDATA[SELECT PERSONAL.CODE||'/'||GET_COM_LOOKUP_NAME(PREVIOUS_BRANCH_ID)||'/'||
+GET_COM_LOOKUP_NAME(PREVIOUS_WING_ID)||'/'||GET_COM_LOOKUP_NAME(PREVIOUS_SHOP)||'/'||
+GET_COM_LOOKUP_NAME(PREVIOUS_GROUP)||'/'||
+GET_COM_LOOKUP_NAME(PREVIOUS_LINE)||','||GET_COM_LOOKUP_NAME(PREVIOU_DESIGNATION_ID)||' '||PERSONAL.EMPLOYEE_NAME AS EMPLOYEE_PREVIOUS_INFO,
+GET_COM_LOOKUP_NAME(PRESENT_DESIGNATION_ID)||','||PROMOTION.PRESENT_SCALE||'/-'||
+GET_EMP_GRADE_NAME(PRESENT_GRADE_ID)AS EMPLOYEE_PRESENT_DESIG_INFO,
+GET_COM_LOOKUP_NAME(PRESENT_BRANCH_ID)||'/'||
+GET_COM_LOOKUP_NAME(PRESENT_WING_ID)||'/'||GET_COM_LOOKUP_NAME(PRESENT_SHOP)||'/'||
+GET_COM_LOOKUP_NAME(PRESENT_GROUP)||'/'||
+GET_COM_LOOKUP_NAME(PRESENT_LINE) AS EMPLOYEE_PRESENT_INFO
+FROM HRM_EMPLOYEE_PERSONAL_INFORMATION PERSONAL
+INNER JOIN HRM_EMPLOYEE_PROMOTION_INFORMATION PROMOTION  
+ON PERSONAL.ID=PROMOTION.EMPLOYEE_ID
+FULL OUTER JOIN HRM_EMPLOYEE_TRANSFER_INFORMATION TRANSFER
+ON PERSONAL.ID=TRANSFER.EMPLOYEE_ID
+WHERE 1=1
+AND (TRANSFER.PRESENT_BRANCH_ID= COALESCE($P{P_BRANCH_ID},PRESENT_BRANCH_ID) OR PRESENT_BRANCH_ID IS NULL)
+AND (TRANSFER.PRESENT_WING_ID=COALESCE($P{P_WING_ID},TRANSFER.PRESENT_WING_ID) OR PRESENT_WING_ID IS NULL)
+AND (TRANSFER.PRESENT_GROUP=COALESCE ($P{P_GROUP_ID},TRANSFER.PRESENT_GROUP) OR PRESENT_GROUP IS NULL)
+AND (TRANSFER.PRESENT_SHOP=COALESCE($P{P_SHOP_ID},TRANSFER.PRESENT_SHOP) OR PRESENT_SHOP IS NULL)
+AND (TRANSFER.PRESENT_LINE=COALESCE($P{P_LINE_ID},TRANSFER.PRESENT_LINE) OR PRESENT_LINE IS NULL)
+AND PERSONAL.HRM_TYPE=COALESCE( $P{P_HRM_TYPE},PERSONAL.HRM_TYPE)
+AND (TRANSFER.EMPLOYEE_ID=COALESCE($P{P_EMPLOYEE_ID},TRANSFER.EMPLOYEE_ID) OR TRANSFER.EMPLOYEE_ID IS NULL)
+AND TRANSFER.TRANSFER_DATE IS NOT NULL
+ORDER BY PERSONAL.CODE ASC
+]]>
+	</queryString>
+	<field name="employee_previous_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_previous_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_previous_info"/>
+	</field>
+	<field name="employee_present_desig_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_present_desig_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_present_desig_info"/>
+	</field>
+	<field name="employee_present_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_present_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_present_info"/>
+	</field>
+	<group name="employee_previous_info">
+		<groupExpression><![CDATA[$F{employee_previous_info}]]></groupExpression>
+	</group>
+	<group name="employee_present_desig_info">
+		<groupExpression><![CDATA[$F{employee_present_desig_info}]]></groupExpression>
+	</group>
+	<group name="employee_present_info">
+		<groupExpression><![CDATA[$F{employee_present_info}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="50" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="800" height="50" uuid="7a6b7c6a-bcca-40e5-a4f6-068d35e071ed"/>
+				<subreportParameter name="P_BRANCH_ID">
+					<subreportParameterExpression><![CDATA[$P{P_BRANCH_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla_landscape}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="140">
+			<staticText>
+				<reportElement x="1" y="0" width="50" height="18" uuid="3b9f61f1-d1aa-4c67-a2c8-ae59d19f82a0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="53" y="0" width="39" height="18" uuid="1947145a-ae44-4946-bf63-4a531326ba65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement x="751" y="4" width="49" height="30" uuid="397369b1-eaea-406a-9a97-d1e8944504f5"/>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="648" y="4" width="100" height="30" uuid="9ef5fdca-b5dc-498b-a7f3-a3090a90ef30"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="694" y="34" width="107" height="18" uuid="5b2e93f7-30c5-4fb2-be76-f6ef26889cdf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="631" y="34" width="82" height="18" uuid="1e466628-c9cb-4ecf-b65d-baff0d880fa3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[তারিখ    :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="53" width="801" height="29" uuid="b294aecd-8d16-42a8-ae63-49b93c6b30e8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[পদোন্নতি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="83" width="801" height="28" uuid="b6fb5a38-ff7b-4712-b4c4-1af4f50ccd6d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ 1.কমান্ড্যান্ট বি ও এফ এর অনুমোদনক্রমে কারখানার নিম্নলিখিতঃ ব্যাক্তিগণকে তাদের নামের পাশে র্উল্লিখিত বিবরণমতে অস্স্থায়ী পদোন্নতি আদেশ জারি করা হলো :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="111" width="250" height="29" uuid="6b5400cb-ce0e-4e35-9c76-be5700ab6c2f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ বিভাগীয় পদোন্নতি/সংযুক্তি-কর্মচারী ও কারিগর]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="32" uuid="19decb1e-1ea0-419e-aa63-d3deb2c29e68"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="50" y="0" width="230" height="32" uuid="0a2b717c-74f7-4cc4-ae19-2635927dad53"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ব্যাক্তিগত নম্বর/ফ্যাক্টরি/উইং,গ্রুপ,শপ,লাইন পদবী ও নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="260" height="32" uuid="45b3d2d9-2b2b-4399-a67b-cc37d3c3f8bf"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[পদোন্নতি প্রাপ্ত পদের নাম ও বেতন স্কেল]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="0" width="260" height="32" uuid="c619db10-2711-4bbf-a181-e4e797b38458"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[পদায়নকৃত ফ্যাক্টরি/উইং,গ্রুপ,শপ ও লাইন]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="0" width="230" height="20" uuid="dcd9625c-6903-428c-8795-3b60d6370b0e"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_previous_info}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="280" y="0" width="260" height="20" uuid="1f5f0d28-535a-4f81-81fa-35df2f64ccf9"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_present_desig_info}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="540" y="0" width="260" height="20" uuid="7fb68c2d-d689-4e8a-8138-17545dd2a0f8"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_present_info}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="50" height="20" uuid="4a5ad282-2c9f-49b5-a516-3de64170b202"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="20" width="261" height="20" uuid="83a8ed7d-f4c0-46b7-9ec9-41ef2911d628"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[  Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="637" y="20" width="80" height="20" uuid="607ad082-0e81-48e3-a806-2b85777bb280"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<textField pattern="M/d/yy h:mm a">
+				<reportElement x="719" y="20" width="79" height="20" uuid="7244c213-9f17-4f04-94db-b90e8e7ce983"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

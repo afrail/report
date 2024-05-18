@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_sec_token" pageWidth="342" pageHeight="267" whenNoDataType="AllSectionsNoDetail" columnWidth="332" leftMargin="5" rightMargin="5" topMargin="5" bottomMargin="0" uuid="c350b753-bb4f-4640-a42c-a7c9d9b86a35">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof_ibcs"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="177"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="818"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="P_APP_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select 
+	(
+	select
+	case
+		when a.signature_file_location is null then '/bof/data/images/not_found.jpg'
+		when a.signature_file_location = '/' then '/bof/data/images/not_found.jpg'
+		when a.signature_file_location != '/' then concat(a.signature_file_location , a.signature_file_name)
+	end "auth_signature_url"
+	from
+		security_officer a
+	where
+		a.id = 9  ) auth_signature_url,
+	l.license_number,
+	p."name",
+	get_com_lookup_bn_name(p.present_district_id) address,
+	p.mobile_number,
+	to_char(l.issue_date,'dd-MM-yyyy') || ' হতে ' || to_char(l.expire_date,'dd-MM-yyyy') license_range
+from
+	hrm_person_non_bof p,
+	sec_person_non_bof_license l,
+	sec_person_non_bof_entrnc_app a
+where 1=1
+and a.application_for_id = p.id 
+and l.application_id = a.id 
+and a.id = $P{P_APP_ID}]]>
+	</queryString>
+	<field name="auth_signature_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_signature_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_signature_url"/>
+	</field>
+	<field name="license_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="license_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="license_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="sec_person_non_bof_license"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_person_non_bof"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+	</field>
+	<field name="mobile_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_person_non_bof"/>
+	</field>
+	<field name="license_range" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="license_range"/>
+		<property name="com.jaspersoft.studio.field.label" value="license_range"/>
+	</field>
+	<title>
+		<band height="230" splitType="Stretch">
+			<image hAlign="Center">
+				<reportElement x="171" y="0" width="161" height="230" uuid="eb6c89e2-cefb-4f05-9bc7-39a7c3d73db0"/>
+				<imageExpression><![CDATA["/bof/data/report/images/temp_pass_bg_1.png"]]></imageExpression>
+			</image>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="20" y="29" width="129" height="173" uuid="f92a4e03-c259-454b-8276-33fdee2cccbb"/>
+				<imageExpression><![CDATA["/bof/data/report/images/water_mark.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="0" y="109" width="23" height="15" uuid="9ef66a5e-475f-4b5a-987e-1d5bcae2c8a2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ঠিকানা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="206" width="161" height="12" uuid="5b0dad7f-d276-4d89-9f83-c62e3a291853">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ব্যবস্থাপক নিরাপত্তা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="94" width="13" height="15" uuid="bf169483-2600-41c1-9f31-fb48a4941fcc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[নাম ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="124" width="41" height="15" uuid="04353f1a-f0c2-4c7d-8dff-6c40faa44aaf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[মোবাইল নং]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="46" y="124" width="115" height="15" uuid="fe993869-9d81-42be-ad64-2b0fa43bcf1e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobile_number}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="216" width="161" height="12" uuid="5b8334e6-bfc0-4e75-94da-4f71ebe51145"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[প্রদানকারী কর্তৃপক্ষ, নিরাপত্তা উইং, বিওএফ]]></text>
+			</staticText>
+			<image hAlign="Right" vAlign="Middle">
+				<reportElement x="60" y="1" width="40" height="40" uuid="0514db0c-b88b-4569-8d1b-1c2bd8f09bdc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="18" y="94" width="143" height="15" uuid="43e3024d-969f-4109-866b-f0d770846e7c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="41" y="124" width="5" height="15" uuid="a0250e90-5b1d-4334-935e-2dd13df133ec">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="109" width="5" height="15" uuid="fea9200f-90aa-44a2-af20-3733c45e5d31">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="28" y="109" width="133" height="15" uuid="5e65b152-8056-40bb-808c-b4683afe187d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="58" y="157" width="45" height="45" uuid="767db3b7-8e31-4511-9e5d-d0e872fed43e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$F{auth_signature_url}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="45" width="161" height="19" uuid="d3665323-7dce-4bae-bd50-f8302c7dd63a">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["নিরাপত্তা টোকেন"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="94" width="5" height="15" uuid="0ddf73cd-e4ed-42cd-9e68-3e33f46b79a5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="41" y="66" width="80" height="25" uuid="09d2f257-bf64-454a-8691-4f4c463806a1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA[$F{license_number}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<staticText>
+				<reportElement x="0" y="139" width="22" height="15" uuid="a8c4b127-4294-40b4-bd91-114f22486866">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[মেয়াদ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="27" y="139" width="134" height="15" uuid="403f121d-5b28-46d2-a1a7-06f342375e01"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{license_range}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="22" y="139" width="5" height="15" uuid="b187621e-94ad-4309-ae38-29ca43342292">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

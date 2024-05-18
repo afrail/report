@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="leave_certificate" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="272da6d5-7e03-45fe-afde-a6bd1b37bc52">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="Empty Dataset1" uuid="e122caa0-7e31-484c-b232-ad33d99a61c0"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select b.code,d.JOINING_DATE,get_leave_type_name(a.LEAVE_TYPE_ID),null FROM_DATE,null TO_DATE,
+LEAVE_LOCATION,a.LEAVE_REASON, b.employee_name,get_com_lookup_name(b.EMPLOYEE_RANK)
+from HRM_EMPLOYEE_LEAVE_INFORMATION a, HRM_EMPLOYEE_PERSONAL_INFORMATION b, hrm_commision_information c,
+HRM_EMPLOYEE_OFFICIAL_INFORMATION d
+where 1=1
+and b.id=a.employee_id
+and c.employee_id=a.employee_id
+and d.employee_id=a.employee_id
+and a.EMPLOYEE_ID=COALESCE(   $P{P_EMPLOYEE_ID} ,a.EMPLOYEE_ID)]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="joining_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="get_leave_type_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="get_leave_type_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="get_leave_type_name"/>
+	</field>
+	<field name="from_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="to_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="leave_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="leave_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_leave_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="get_com_lookup_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="get_com_lookup_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="get_com_lookup_name"/>
+	</field>
+	<group name="leave_reason">
+		<groupExpression><![CDATA[$F{leave_reason}]]></groupExpression>
+	</group>
+	<group name="employee_name">
+		<groupExpression><![CDATA[$F{employee_name}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<subreport>
+				<reportElement x="-11" y="0" width="581" height="60" uuid="45d2389f-282a-4531-8af0-3eaf72fae42d"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="560" height="20" uuid="e3e97f80-782e-4d13-a81f-7c199170d719"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Leave Application ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="647" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="30" width="30" height="20" uuid="b7e75872-b840-440a-a655-9bb46c5c3a0d"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[1.No:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="71" y="30" width="100" height="20" uuid="42d3e3d0-3b8f-4207-8eb6-a5c7b5b54c47"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="225" y="30" width="40" height="20" uuid="71348773-d6f7-4bc1-b61c-fe67523651a0"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[2.Rank:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="265" y="30" width="100" height="20" uuid="5c9d1cbc-c5fb-4d8d-b3c8-9065731d12fb"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{get_com_lookup_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="373" y="30" width="44" height="20" uuid="080f845a-0739-4536-a583-7bb9489c5c72"/>
+				<textElement>
+					<font fontName="Calibri" size="11"/>
+				</textElement>
+				<text><![CDATA[3.Name:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="417" y="30" width="100" height="20" uuid="d83b8f49-d47b-4f96-b376-7595bdcf13cd"/>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="51" width="80" height="19" uuid="ea86592f-100c-4fac-babf-dce49f170b57"/>
+				<text><![CDATA[4.Appointment:]]></text>
+			</staticText>
+			<textField pattern="MMM d, yyyy" isBlankWhenNull="true">
+				<reportElement x="121" y="51" width="80" height="19" uuid="5b555044-0303-4855-ac5b-9ec67579e68d"/>
+				<textFieldExpression><![CDATA[$F{joining_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="225" y="51" width="100" height="19" uuid="628d5e09-1e88-4242-a74d-c45545a2bf17"/>
+				<text><![CDATA[5.Unit:_________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="76" width="163" height="30" uuid="363076b0-fa46-48d2-bd04-91c41aacdd02"/>
+				<text><![CDATA[6.Application For Leave :
+  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="225" y="78" width="119" height="20" uuid="c4bbca2e-5ff7-49b5-8fb1-e84d558de900"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[From]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="344" y="78" width="109" height="20" uuid="82d2ab6a-1fac-4ac7-9284-9fd4f3f8ba92"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="184" width="299" height="26" uuid="44c4e3f0-9e10-4ca2-8904-61fa9d3825ef"/>
+				<text><![CDATA[It is to certify that the above mentioned leve is my due.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="212" width="160" height="30" uuid="0612cf03-00a2-45db-b7b5-0300b271d27c"/>
+				<text><![CDATA[Date :___________/    /20  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="210" width="166" height="32" uuid="d2b0edb1-d1cb-45bc-883c-75376dcf0c45"/>
+				<text><![CDATA[__________________                        BA-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="242" width="236" height="30" uuid="6288e2fa-c277-4a48-be56-a556547b0fb2"/>
+				<text><![CDATA[2nd Part: (to be filled up by the commander)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="270" width="100" height="30" uuid="192ee840-9b83-446a-bf03-06ec7e5bb492"/>
+				<text><![CDATA[To:__________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="270" width="100" height="30" uuid="44e9691a-f7f6-4cfc-b926-c2a7c6bda6aa"/>
+				<text><![CDATA[File No:__________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="296" width="100" height="30" uuid="f0c299de-14d4-47c6-beb3-1f08e8b67ae4"/>
+				<text><![CDATA[Unit_________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="331" width="100" height="30" uuid="7f7bde34-a74c-4be4-8865-a2a37c14924e"/>
+				<text><![CDATA[Media(C)________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="300" width="100" height="30" uuid="bf335097-816d-4d41-88c7-c257b9a77352"/>
+				<text><![CDATA[Date:________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="361" width="238" height="30" uuid="a7a31c00-736d-4b9d-ae60-3dc40714c0c4"/>
+				<text><![CDATA[Subject:Application For EX BD Leave-Officer]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="391" width="238" height="30" uuid="0699eeba-12fb-4a70-8597-86345630ea58"/>
+				<text><![CDATA[The above mentioned application has been recomended(d)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="421" width="394" height="30" uuid="5958b31d-bd41-4d8d-b26c-cf874c408707"/>
+				<text><![CDATA[This is to be certify that,the applicant officer is eligible to get leave and this sanction will not cause any change or loss of the Government/Regimental claims.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="451" width="160" height="16" uuid="aaac1ffc-e06d-4ba4-b57a-516bc445e331"/>
+				<text><![CDATA[Rank with signature:___________                        ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="504" width="283" height="69" uuid="111c6132-8f81-4fa8-98ac-395a13e2fb45"/>
+				<text><![CDATA[3rd Part: (Two month above leave to be filled up by CMA Authority)
+No:______________        DCMO(O):_______________
+Date:_____________        Name:__________________
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="49" y="111" width="69" height="30" uuid="713bf154-183b-434a-9fc9-08620527542e">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Calibri"/>
+				</textElement>
+				<text><![CDATA[Type of Leave  :   ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="118" y="111" width="100" height="30" uuid="84bea2c4-87da-470b-9386-16e4823cf7aa"/>
+				<textFieldExpression><![CDATA[$F{get_leave_type_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="49" y="151" width="169" height="19" uuid="95dac198-4e2a-4b57-a229-9b95605a3db4">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<text><![CDATA[Place when in leave :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="155" width="130" height="27" uuid="df504fa4-600a-488f-9a3f-b3e5cf3c7a26"/>
+				<text><![CDATA[-------------------------------Signature]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="39" y="574" width="283" height="73" uuid="11fa91b4-2391-4320-9a8e-7b4c5a52c3c0"/>
+				<text><![CDATA[4th Part: (Fill up by Internal Authority)
+To:______________          No_______________
+_________________        Headquarters:__________________
+                                          Date: ______________________
+Signature with Designation______________________________
+                                          Apoinment______________]]></text>
+			</staticText>
+			<textField pattern="MMM d, yyyy" isBlankWhenNull="true">
+				<reportElement x="225" y="98" width="119" height="30" uuid="179bee45-afd4-458c-8355-4ae86b1212f6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{from_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="MMM d, yyyy" isBlankWhenNull="true">
+				<reportElement x="344" y="98" width="109" height="30" uuid="c668352a-c7b0-49c0-940d-ed7c5024f856"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{to_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="159" y="151" width="100" height="19" uuid="82d29ce1-e599-4d9f-ba0d-c6c7772a7713"/>
+				<textFieldExpression><![CDATA[$F{leave_location}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="44" y="89" width="107" height="1" uuid="8d8b2ae7-e00e-4cf3-8606-1672f1329209"/>
+			</line>
+			<staticText>
+				<reportElement x="239" y="467" width="160" height="20" uuid="4eaf5de6-ebf6-449b-a299-054de3200f1e"/>
+				<text><![CDATA[                      Name:  __________
+         ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="487" width="160" height="16" uuid="b0622d3c-d71c-40d0-acb0-a5029c08eb47"/>
+				<text><![CDATA[          Appointment :___________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="38" y="0" width="239" height="20" uuid="ad515a55-d1a1-4841-a051-1e58e5ef81f1"/>
+				<textElement>
+					<font fontName="Calibri" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[1st Part: (to be filled up by the officer)]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

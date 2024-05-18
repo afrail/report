@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="daily_attendance_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ddd2cceb-77d0-4f2d-bb7a-b78e7c2db430">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_ATTENDANCE_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select 
+case when C.status = 'A' then 'Absent Employee            '||count(C.employee_id) 
+when C.status = 'P' then 'Present Employee           '||count(C.employee_id)
+when C.status like '%L%' then 'Leave Employee                    '||count(C.employee_id)
+end P_status, count(C.employee_id)
+from ACC_EMPLOYEE_ATTENDANCE C
+where 1=1
+AND DATE(C.ATTENDANCE_DATE)=$P{P_ATTENDANCE_DATE}
+group by C.status
+union all 
+select 'Late Attendance               '||count(*), count(*)
+from ACC_EMPLOYEE_ATTENDANCE 
+where 1=1
+AND DATE(ATTENDANCE_DATE)=$P{P_ATTENDANCE_DATE}
+and late_time>'0']]>
+	</queryString>
+	<field name="p_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="p_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="p_status"/>
+	</field>
+	<field name="count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="count"/>
+		<property name="com.jaspersoft.studio.field.label" value="count"/>
+	</field>
+	<variable name="total_employee" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{count}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="280" height="20" uuid="3cff891e-78ae-4f30-90b0-a3339212d2ff"/>
+				<box leftPadding="4">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{p_status}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="20"/>
+	</summary>
+</jasperReport>

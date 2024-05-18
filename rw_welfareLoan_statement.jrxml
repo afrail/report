@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rw_welfareLoan_statement" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="34fa0ec6-9f1a-47f7-930f-77987775d0f5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="229"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="764"/>
+	<parameter name="P_TO_DATE" class="java.util.Date" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select id,code staff_number, employee_name_bangla,designation_name||','||
+employee_offcie designation_name,approve_amount,paid_amount,unpaid_amount,unpaid_installment,
+ '( '||get_eng_month_bangla(CAST (to_char(now(), 'MM') AS INTEGER)) || ' '|| to_char(now(),'YYYY') || 'পর্যন্ত )'  mont
+ from (
+select flem.id, hepi.code, hepi.employee_name_bangla, approve_amount, 
+get_employee_desig_bn(hepi.id) designation_name,
+get_employee_brach_wing_shop(hepi.id) employee_offcie,
+(select sum(amount) from fin_loan_entry_details 
+where master_id=flem.id
+and paid=true) paid_amount,
+(select sum(amount) from fin_loan_entry_details 
+where master_id=flem.id
+and paid=false) unpaid_amount,
+(select count(*) from fin_loan_entry_details 
+where master_id=flem.id
+and paid=false) unpaid_installment
+from fin_loan_entry_master flem ,
+hrm_employee_personal_information hepi 
+where 1=1
+and page_type=2
+and is_confirm=true
+and hepi.id=flem.employee_id) xx
+where 1=1
+and unpaid_amount>0
+order by id asc]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_loan_entry_master"/>
+	</field>
+	<field name="staff_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="staff_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="staff_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="designation_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_name"/>
+	</field>
+	<field name="approve_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="approve_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="approve_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_loan_entry_master"/>
+	</field>
+	<field name="paid_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="paid_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="paid_amount"/>
+	</field>
+	<field name="unpaid_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="unpaid_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="unpaid_amount"/>
+	</field>
+	<field name="unpaid_installment" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="unpaid_installment"/>
+		<property name="com.jaspersoft.studio.field.label" value="unpaid_installment"/>
+	</field>
+	<field name="mont" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mont"/>
+		<property name="com.jaspersoft.studio.field.label" value="mont"/>
+	</field>
+	<variable name="Loan_total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{approve_amount}]]></variableExpression>
+	</variable>
+	<variable name="paid_amount" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{paid_amount}]]></variableExpression>
+	</variable>
+	<variable name="un_apid_amount" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{unpaid_amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="0" width="550" height="18" uuid="02e92d0d-6e62-4bb8-97f9-6bbda99501b6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["কল্যাণ তহবিল হতে ঋণ গ্রহণকারী অপরিশোধিত ব্যক্তিদের নামীয় তালিকাঃ " + $F{mont}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="0" width="46" height="32" uuid="d0a52587-c0ca-4682-a547-9bcd6d136930">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a9ca8e30-897e-4cd5-a03e-36d2676f103f"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ব্যক্তিগত নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="0" width="104" height="32" uuid="1291be15-06cb-479d-b735-b12db7654a9e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="517" y="0" width="34" height="32" uuid="8b66a57b-f6dc-4da3-afa6-b98fd0f27449"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[অবশিষ্ট কিস্তি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="377" y="0" width="70" height="32" uuid="db2df654-d9f6-42dd-b62a-0e674156b9f7"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পরিশোধকৃত টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="447" y="0" width="70" height="32" uuid="920a4e3f-952e-4f9e-b6b5-bf5237d29778"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[অপরিশোধকৃত টাকা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="29" height="32" uuid="769fba67-6708-4b3a-a914-5c07bf86d5fe">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="127" height="32" uuid="c4dd03e1-b1d4-4929-ae5b-c5ae699a51db">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পদবী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="307" y="0" width="70" height="32" uuid="0a573ce2-a324-4254-a18a-6a2688352166"/>
+				<box padding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[গ্রহণকৃত টাকা]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="30" y="0" width="46" height="18" uuid="448a9f47-8c3c-4bf6-a326-3d6cc37f1bb5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f192be01-cd45-4cc8-a8c9-cb2b4ed42237"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{staff_number}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="76" y="0" width="104" height="18" uuid="484742d2-4d22-4656-88a1-bc1e8fa911e4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f41de886-1008-4e48-afd3-f4d8d6cc0674"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name_bangla}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="180" y="0" width="127" height="18" uuid="2f057d84-c39d-4de1-a59a-fad0fda21204">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="029abfa6-b93c-4847-907a-6354659c6a41"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="307" y="0" width="70" height="18" uuid="0e52835f-83f8-4915-8aa3-9ca4acea4ab0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="151d253f-12d0-4c42-9eec-116a4805d6ac"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approve_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="377" y="0" width="70" height="18" uuid="ff74f747-69d4-45ad-aa95-59476a014e9f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="04519982-4749-4962-82a1-f80d0fcc81cf"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{paid_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="447" y="0" width="70" height="18" uuid="7b89894d-8d2f-47d5-993e-f2c2edb966c0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4c226d02-0b47-4d33-9a9d-fb6cffa7a469"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unpaid_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="517" y="0" width="34" height="18" uuid="8813d44c-ce77-4c91-b20d-9f8b0d8b0f51">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f4d2b92f-e9c7-4f5a-a414-c2be9b4aebf5"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unpaid_installment}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="1" y="0" width="29" height="18" uuid="a66c2691-2cd5-471c-8607-10dfde52da49">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="3" bottomPadding="0" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="287" y="0" width="100" height="16" uuid="1d5129e1-3130-4f1f-af5d-5d3a2fe65a10">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="187" y="0" width="100" height="16" uuid="8ce91fa4-3751-475f-8b7b-aabb6ae4625e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["পৃষ্ঠাঃ " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="50">
+			<textField>
+				<reportElement x="307" y="0" width="70" height="20" uuid="b28fbf5d-bcc7-44b7-8972-a56f1cfdd773"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Loan_total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="67" height="20" uuid="95650e1a-8187-402f-87cb-3a7636062389"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{paid_amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="0" width="70" height="20" uuid="104ca72e-766d-48ac-bc00-6ff7a06ba967"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{un_apid_amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="207" y="0" width="93" height="20" uuid="41681c5b-d01e-497c-83b0-cfbefe3cb83a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট :]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="details_of_osd_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="53a7c746-b119-4ed7-b7e7-ae02880fb9cc">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<queryString language="SQL">
+		<![CDATA[select a.code ,get_com_lookup_name(a.employee_rank) rank_name,  a.employee_name, get_com_lookup_name(c.wing_id ) wing_name,
+b.absence_from_date ,
+b.reason  from hrm_employee_personal_information a, 
+hrm_long_time_absence_information b, hrm_employee_official_information c
+where 1=1
+and a.id=b.emp_id 
+and a.id=c.employee_id 
+and c.inactive_type  is null
+and b.absence_to_date is null]]>
+	</queryString>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="rank_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank_name"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="wing_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="wing_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="wing_name"/>
+	</field>
+	<field name="absence_from_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="absence_from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="absence_from_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_long_time_absence_information"/>
+	</field>
+	<field name="reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_long_time_absence_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="0" width="50" height="30" uuid="7ff53158-c008-4d02-acc2-425bbb301d6b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9705fcd2-cb06-4fa3-b9d8-ade3af1e0b81"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Pers No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="70" height="30" uuid="91bfcab1-ad66-4141-9d31-2ba878878611">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1db3af0c-676e-4fa7-b0bc-49d8b22210ec"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Rank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="90" height="30" uuid="39ebdf75-e132-4339-92ab-45be6318ea75">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0dd7c935-5c78-4a85-b193-dfacd5ad968a"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="80" height="30" uuid="4f813851-1b37-40ac-8ccc-0c21cad5934e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30fd539c-7d17-4e76-ab6e-33224d7514e8"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Unit/Sub Unit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="0" width="100" height="30" uuid="7700b588-f47a-4d9b-ac15-a4b2a3a3fa71">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34777895-e497-448f-9d9b-16a728b61944"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Date Of Absent]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="0" width="170" height="30" uuid="99bc6b95-8034-42cb-ba1a-e04d1ca2e702">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="31e5e337-763d-4b64-b3c2-78eced3aea45"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[Reasons Of Absent(Details All)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-10" y="0" width="30" height="30" uuid="95980073-264f-469c-9935-e206ad392ec5"/>
+				<textElement textAlignment="Center">
+					<font size="11" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="20" y="0" width="50" height="20" uuid="90b37ecb-dc07-4d32-a689-37ca31a91d63">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9705fcd2-cb06-4fa3-b9d8-ade3af1e0b81"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="70" y="0" width="60" height="20" uuid="7335f3e8-5fef-42a3-8aed-5d8c23195715">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1db3af0c-676e-4fa7-b0bc-49d8b22210ec"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rank_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="130" y="0" width="90" height="20" uuid="ff003397-95d8-4e7c-9b97-9ba5bfcbda46">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0dd7c935-5c78-4a85-b193-dfacd5ad968a"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="220" y="0" width="80" height="20" uuid="9657b2ac-c45d-4de0-8cb1-3d9273f833fe">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="30fd539c-7d17-4e76-ab6e-33224d7514e8"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{wing_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="300" y="0" width="100" height="20" uuid="44b91479-cb48-446f-b942-46bd608078da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="34777895-e497-448f-9d9b-16a728b61944"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{absence_from_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="400" y="0" width="170" height="20" uuid="4f3ac594-3564-4274-8263-8709643c766b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="31e5e337-763d-4b64-b3c2-78eced3aea45"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font fontName="Nirmala" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="-10" y="0" width="30" height="20" uuid="afae3143-e622-4c5e-aee1-089d56360176"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.15" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{PAGE_COUNT}+"."]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

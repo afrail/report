@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2raw_new_maridlist_employee" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ac9140e1-158c-4477-8b17-c127d004a601">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select repi.id id, repi.employee_id,repi.employee_name_bangla||'<br>'||get_com_lookup_bn_name(designation_id)
+employee_name, get_com_lookup_bn_name(relation_id)||':'||case when length(dependent_name_bangla)>3 then dependent_name_bangla
+else dependent_name end family_name,  'জন্ম:'||to_char(date(refi.date_of_birth),'dd-mm-yyyy')||
+coalesce(case when relation_id in(41,1682,1683) then case when date(repi.marrige_date)>'1900-01-01' then 
+'<br>'|| 'বিবাহ: '||to_char(date(repi.marrige_date),'dd-mm-yyyy') end end,'') family_date,
+refi.active_age,
+(select count(*)
+from raw_employee_family_information refi ,raw_employee_personal_information repi 
+where 1=1
+and repi.id=refi.employee_id
+and repi.is_confirm=true
+and refi.is_confirm=false
+and refi.active_age>'3'
+and relation_id not in(41,1682,1683)
+) half_unit,
+(select count(*)
+from raw_employee_family_information refi ,raw_employee_personal_information repi 
+where 1=1
+and repi.id=refi.employee_id
+and repi.is_confirm=true
+and refi.is_confirm=false
+and refi.active_age<'3'
+and relation_id not in(41,1682,1683)
+) baby_unit
+from raw_employee_family_information refi ,raw_employee_personal_information repi 
+where 1=1
+and repi.id=refi.employee_id
+and repi.is_confirm=true
+and refi.is_confirm=false
+and relation_id not in(41,1682,1683)
+
+
+]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="employee_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+	</field>
+	<field name="family_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="family_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_name"/>
+	</field>
+	<field name="family_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="family_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_date"/>
+	</field>
+	<field name="active_age" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="active_age"/>
+		<property name="com.jaspersoft.studio.field.label" value="active_age"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_family_information"/>
+	</field>
+	<field name="half_unit" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="half_unit"/>
+		<property name="com.jaspersoft.studio.field.label" value="half_unit"/>
+	</field>
+	<field name="baby_unit" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="baby_unit"/>
+		<property name="com.jaspersoft.studio.field.label" value="baby_unit"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="24">
+			<staticText>
+				<reportElement x="0" y="0" width="330" height="12" uuid="9fd1b3f7-d314-4f5b-8cf9-f9af76959202">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[গ।  বিওএফ এবং জিই (আর্মি) বিওএফ এর  কর্মচারী/কারিগরের সন্তানের রেশন  ইউনিট সংযোজন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="60" height="12" uuid="058dce30-6eda-44e9-9100-e161771b9b22">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অর্ধ ইউনিট          ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="12" width="60" height="12" uuid="07ae2666-3858-4f00-a9f1-ab804e988eb0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[শিশু ইউনিট         ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="449" y="0" width="100" height="12" uuid="14c40d77-ecc8-47b4-b539-03833add9e45"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{half_unit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="450" y="12" width="100" height="12" uuid="af54cf69-0fcd-4b99-8699-a3b813cb578d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{baby_unit}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="30" y="0" width="200" height="30" uuid="1c8fc979-0cf7-45bc-aa93-d6b29d72fa67">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93e899c4-7aa6-4a43-8281-732a9b6e7f6b"/>
+				</reportElement>
+				<box leftPadding="7">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement markup="html">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="0" width="193" height="30" uuid="2e0b3497-8204-4342-9305-437569848e0e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93e899c4-7aa6-4a43-8281-732a9b6e7f6b"/>
+				</reportElement>
+				<box leftPadding="7">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="423" y="0" width="126" height="30" uuid="757f0030-dac7-4eaf-b875-fd3bd6479edd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="93e899c4-7aa6-4a43-8281-732a9b6e7f6b"/>
+				</reportElement>
+				<box leftPadding="7">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="30" height="30" uuid="12f7af57-7ef6-4c71-ad60-42c6a747d60d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

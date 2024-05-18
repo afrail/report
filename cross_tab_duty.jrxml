@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cross_tab_duty" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="530" leftMargin="45" rightMargin="20" topMargin="20" bottomMargin="20" isSummaryWithPageHeaderAndFooter="true" uuid="6a6c8962-ea2e-4daa-b564-79407b634302">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof_live"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="289"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="704"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="P_ROSTER_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select a.id,
+	'WEEKLY DUTY ROSTER OF ' || UPPER(c.group_name) group_name ,
+	date(a.from_date),
+	a.duration,
+	date(a.from_date)+ a.duration-1 to_date,
+	get_emp_CODE(b.employee_personal_information_id)
+ as employee_code,
+	a.id,
+	d.ser_no ,
+	b.employee_personal_information_id,
+	get_emp_name(b.employee_personal_information_id)
+ as employee_name,
+	get_com_short_code(b.designation_id) short_code,
+	b.designation_id,
+	get_duty_point_code(normal_duty_point_master_id)|| chr(10)|| normal_duty_from_time || '-' || normal_duty_to_time || chr(10)||
+        coalesce(get_duty_point_code(over_duty_point_master_id), '')|| chr(10)|| coalesce (over_duty_from_time,
+	'')|| '-' || coalesce (over_duty_to_time,
+	'') duty_point,
+	date(normal_duty_date) duty_date,
+	(
+	select
+		string_agg(distinct Duty_name, ',') as Duty_name
+	from
+		(
+		select
+			h.id,
+			normal_duty_point_master_id,
+			adpm.code || '=' || adpm."name" Duty_name
+		from
+			acc_duty_point_roster_dec_details g,
+			acc_duty_point_roster_dec_master h,
+			acc_duty_point_master adpm
+		where
+			1 = 1
+			and h.id = g.master_id
+			and adpm.id = g.normal_duty_point_master_id
+			and h.id = $P{P_ROSTER_ID}
+	union all
+		select
+			h.id,
+			over_duty_point_master_id,
+			adpm.code || '=' || adpm."name" Duty_name
+		from
+			acc_duty_point_roster_dec_details g,
+			acc_duty_point_roster_dec_master h,
+			acc_duty_point_master adpm
+		where
+			1 = 1
+			and h.id = g.master_id
+			and adpm.id = g.over_duty_point_master_id
+			and h.id = $P{P_ROSTER_ID} ) k
+	group by
+		id) duty_point_details ,
+	get_emp_name(a.authority_id) || chr(10)||
+get_emp_rank(a.authority_id)|| chr(10)||
+ case when a.authority_des = 1612 then get_com_lookup_name(a.authority_des) else 'Acting Manager Security' end || chr(10)||
+'BOF Gazipur Cantt' authority,
+	get_emp_name(a.incharge_1) || chr(10)||coalesce(get_emp_rank(a.incharge_1),'')|| chr(10)||
+get_com_lookup_name(a.incharge1_des) incharge1,
+	get_emp_name_with_rank(a.incharge_2) || chr(10)||
+get_com_lookup_name(a.incharge2_des) incharge2
+from
+	acc_duty_point_roster_dec_master a,
+	acc_duty_point_roster_dec_details b ,
+	acc_security_group_master c,
+	acc_security_group_detail d,
+	acc_security_group_master_detail_list e
+where
+	1 = 1
+	and a.id = b.master_id
+	and a.security_group_master_id = c.id
+	and c.id = e.security_group_master_id
+	and d.id = e.detail_list_id
+	and d.employee_id = b.employee_personal_information_id
+	and a.id = $P{P_ROSTER_ID}
+order by
+	d.ser_no asc]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_duty_point_roster_dec_master"/>
+	</field>
+	<field name="group_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="group_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="group_name"/>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+	</field>
+	<field name="duration" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="duration"/>
+		<property name="com.jaspersoft.studio.field.label" value="duration"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_duty_point_roster_dec_master"/>
+	</field>
+	<field name="to_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+	</field>
+	<field name="employee_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_code"/>
+	</field>
+	<field name="COLUMN_7" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_duty_point_roster_dec_master"/>
+	</field>
+	<field name="ser_no" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="ser_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ser_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_security_group_detail"/>
+	</field>
+	<field name="employee_personal_information_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_personal_information_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_personal_information_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_duty_point_roster_dec_details"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+	</field>
+	<field name="short_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="short_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="short_code"/>
+	</field>
+	<field name="designation_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_duty_point_roster_dec_details"/>
+	</field>
+	<field name="duty_point" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="duty_point"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_point"/>
+	</field>
+	<field name="duty_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="duty_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_date"/>
+	</field>
+	<field name="duty_point_details" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="duty_point_details"/>
+		<property name="com.jaspersoft.studio.field.label" value="duty_point_details"/>
+	</field>
+	<field name="authority" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="authority"/>
+		<property name="com.jaspersoft.studio.field.label" value="authority"/>
+	</field>
+	<field name="incharge1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="incharge1"/>
+		<property name="com.jaspersoft.studio.field.label" value="incharge1"/>
+	</field>
+	<field name="incharge2" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="incharge2"/>
+		<property name="com.jaspersoft.studio.field.label" value="incharge2"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="490" height="20" uuid="5fbe40de-c749-4fe9-ae6b-6b672845d39c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{group_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="19" width="490" height="19" uuid="edaed3a9-e6c1-41e8-b035-79b349b3532b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BOF, GAZIPUR CANTT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="38" width="100" height="20" uuid="383d23f6-0c4b-4a47-9e16-4c8433e5ef68"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="38" width="20" height="20" uuid="74cbc992-9c6c-44d7-b4eb-a45f6446da77"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[To]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="230" y="38" width="70" height="20" uuid="b9176b82-9ca9-456c-aa0c-4ebb041f9d36"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="300" y="38" width="80" height="20" uuid="23fc2fe5-a897-432e-8763-2bbd5248ad2d"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="130" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="77" width="553" height="27" isPrintWhenDetailOverflows="true" uuid="9e802da7-025f-4724-b435-669f9f15891a"/>
+				<textElement>
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duty_point_details}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="104" width="100" height="13" uuid="47fb131e-c3f2-48a0-b187-77db54c6aec6"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="453" y="104" width="100" height="13" uuid="6c310c86-cd8e-487f-b0c1-b4e09dad59b6"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="119">
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="31" width="170" height="31" isPrintWhenDetailOverflows="true" uuid="228dcbe9-6bf8-41b3-ae99-b3e14212a209"/>
+				<textFieldExpression><![CDATA[$F{incharge2}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="453" y="105" width="100" height="13" uuid="cfa7caf3-bf04-44a5-993c-c7bcf269cf11"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Page" isBlankWhenNull="true">
+				<reportElement x="0" y="25" width="180" height="53" isPrintWhenDetailOverflows="true" uuid="bd99685a-44f2-4328-b6e6-d4a2d505f198"/>
+				<textFieldExpression><![CDATA[$F{incharge1}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="0" y="78" width="553" height="27" isPrintWhenDetailOverflows="true" uuid="f0867a50-93c0-4698-8b9c-3a4524c51eaa"/>
+				<textElement>
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{duty_point_details}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="105" width="100" height="13" uuid="e0eec0c2-65eb-49c9-aa7e-b57f0b8b5657"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="24" width="172" height="54" isPrintWhenDetailOverflows="true" uuid="09b8ad06-4058-4093-95cd-c9db2fb3ee6d"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{authority}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+	<summary>
+		<band height="64" splitType="Stretch">
+			<crosstab>
+				<reportElement x="0" y="0" width="550" height="50" isPrintWhenDetailOverflows="true" uuid="c8513644-d8e8-4282-8010-bafa1f352897">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report"/>
+				</crosstabDataset>
+				<rowGroup name="ser_no" width="20">
+					<bucket class="java.lang.Integer">
+						<bucketExpression><![CDATA[$F{ser_no}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="20" height="30" uuid="67c6caff-e36a-4343-935c-1c8de14a9655"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{ser_no}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="240" height="20" forecolor="#FFFFFF" uuid="d01ba707-1422-433b-a762-307872083260"/>
+								<text><![CDATA[Total ser_no]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="employee_code" width="40">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{employee_code}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField>
+								<reportElement x="0" y="0" width="40" height="30" uuid="41c179ac-518c-4d99-91ac-55af8db8ed88"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{employee_code}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="180" height="20" uuid="0104f9ca-637f-4f3f-9e5a-8cff9aafe9b4"/>
+								<text><![CDATA[Total employee_code]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="short_code" width="30">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{short_code}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField isBlankWhenNull="true">
+								<reportElement x="0" y="0" width="30" height="30" uuid="fecc5f2f-7108-4245-9b59-000fe46a4818"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{short_code}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="120" height="20" uuid="03917a1d-6a07-4b98-9cf8-634d9490c18a"/>
+								<text><![CDATA[Total short_code]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="employee_name" width="70">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{employee_name}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="30" backcolor="#FFFFFF" uuid="b583a424-585d-4047-902e-7e68cf289126"/>
+								<box leftPadding="2"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font fontName="Arial" size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{employee_name}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab_CG">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="c91d12b6-487f-4609-89e8-53c95d022e04"/>
+								<text><![CDATA[Total employee_name]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="duty_date" height="20">
+					<bucket class="java.sql.Date">
+						<bucketExpression><![CDATA[$F{duty_date}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CH">
+							<textField pattern="d/M/yy">
+								<reportElement style="Crosstab_CT" x="0" y="0" width="50" height="20" backcolor="#FFFFFF" uuid="48d08c63-f170-4fee-a97f-d8aa364cf555"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="Arial" size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{duty_date}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="6acb81e6-68fc-4b74-9c7e-33cc19f88800"/>
+								<text><![CDATA[Total duty_date]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="duty_point_MEASURE" class="java.lang.String">
+					<measureExpression><![CDATA[$F{duty_point}]]></measureExpression>
+				</measure>
+				<crosstabCell width="50" height="30">
+					<cellContents mode="Opaque" style="Crosstab_CD">
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="50" height="30" uuid="24bb1341-6230-47ad-9d2a-a9c077653e45"/>
+							<textElement textAlignment="Center" verticalAlignment="Top">
+								<font fontName="Arial" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" columnTotalGroup="duty_date">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="dd9a3a77-58b7-440d-8e46-2e4f8f8ae4ad"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="ser_no">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="d20cff27-8c9c-4d88-871d-f7998bd08b9c"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="ser_no" columnTotalGroup="duty_date">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="72f39cf4-3139-4a21-83d7-fbba0ea786ee"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="employee_code">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="09a5456d-a1a8-427c-a896-bbfe32eef777"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="employee_code" columnTotalGroup="duty_date">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="d211f6bc-0780-4635-b71a-27d7491bd477"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="short_code">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="994743d2-a7ac-4767-b11d-9a5c1d7a1372"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="short_code" columnTotalGroup="duty_date">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="b06e4004-2b9a-410a-b62f-4ffcb88464e5"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="employee_name">
+					<cellContents mode="Opaque" style="Crosstab_CG">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="1bcef3a6-bf68-4430-8401-409faebc1ac2"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="employee_name" columnTotalGroup="duty_date">
+					<cellContents mode="Opaque" style="Crosstab_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" forecolor="#FFFFFF" uuid="620865e7-4388-4d03-b40d-e5ee2ed8cb9a"/>
+							<textFieldExpression><![CDATA[$V{duty_point_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+			<staticText>
+				<reportElement x="90" y="0" width="70" height="20" isPrintWhenDetailOverflows="true" uuid="93d26eff-3df5-46f8-97ca-469fc76d1e19">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="20" height="20" isPrintWhenDetailOverflows="true" uuid="b65c6682-8005-4ec3-8586-472c200c3922">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[SER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="20" y="0" width="40" height="20" isPrintWhenDetailOverflows="true" uuid="34485102-6a5c-4033-b7c3-5d1e206e3519">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[P No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="0" width="30" height="20" isPrintWhenDetailOverflows="true" uuid="a5b4aefc-0554-48c1-9116-6354c461e5fd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Rank]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

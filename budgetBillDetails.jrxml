@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="budgetBillDetails" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="92755a40-6cb1-4e25-8ee6-8b5f544bb1aa">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<parameter name="P_FINANCIAL_YEAR_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT FINANCIAL_YEAR_ID,FINANCIAL_YEAR,ECONOMIC_CODE_ID,BEC.NAME_BANGLA,BEC.ECONOMIC_CODE ,
+PURCHASE_BILL_AMOUNT,PURCHASE_NET_AMOUNT ,REFERENCE_NUMBER,BILL_SUBMIT_DATE
+FROM BUDGET_BILL BB , BUDGET_ECONOMIC_CODE BEC ,BUDGET_FINANCAIL_YEAR BFY 
+WHERE 1=1
+AND BB.ECONOMIC_CODE_ID=BEC.ID
+AND BB.FINANCIAL_YEAR_ID =BFY.ID
+AND FINANCIAL_YEAR_ID= $P{P_FINANCIAL_YEAR_ID}
+order by ECONOMIC_CODE_ID,BEC.NAME_BANGLA ASC]]>
+	</queryString>
+	<field name="financial_year_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="financial_year_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="financial_year_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_bill"/>
+	</field>
+	<field name="financial_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_financail_year"/>
+	</field>
+	<field name="economic_code_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="economic_code_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="economic_code_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_bill"/>
+	</field>
+	<field name="name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="economic_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="economic_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="economic_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+	</field>
+	<field name="purchase_bill_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="purchase_bill_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="purchase_bill_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_bill"/>
+	</field>
+	<field name="purchase_net_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="purchase_net_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="purchase_net_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_bill"/>
+	</field>
+	<field name="reference_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reference_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="reference_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_bill"/>
+	</field>
+	<field name="bill_submit_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="bill_submit_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_submit_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_bill"/>
+	</field>
+	<variable name="subtotal_billamount" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{purchase_bill_amount}]]></variableExpression>
+	</variable>
+	<variable name="total_billamount" class="java.lang.Integer" resetType="Group" resetGroup="economic_code" calculation="Sum">
+		<variableExpression><![CDATA[$F{purchase_bill_amount}]]></variableExpression>
+	</variable>
+	<variable name="total_billamount_net" class="java.lang.Integer" resetType="Group" resetGroup="economic_code" calculation="Sum">
+		<variableExpression><![CDATA[$F{purchase_net_amount}]]></variableExpression>
+	</variable>
+	<variable name="subtotal_billamount_net" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{purchase_net_amount}]]></variableExpression>
+	</variable>
+	<group name="name_bangla">
+		<groupExpression><![CDATA[$F{name_bangla}]]></groupExpression>
+	</group>
+	<group name="economic_code" keepTogether="true">
+		<groupExpression><![CDATA[$F{economic_code}]]></groupExpression>
+		<groupHeader>
+			<band height="55" splitType="Stretch">
+				<staticText>
+					<reportElement x="40" y="25" width="120" height="30" uuid="39890dc6-05d3-4524-a83c-76fc0ad71136"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<text><![CDATA[রেফারেন্স]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="160" y="25" width="164" height="30" uuid="d1e0ee2d-2a39-4548-a0fb-618bfcd006cc"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<text><![CDATA[বিল জমা দেওয়ার তারিখ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="324" y="25" width="112" height="30" uuid="083797cb-7380-4c20-8cb1-e1ab785f17d2"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<text><![CDATA[বিলের পরিমাণ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="436" y="25" width="110" height="30" uuid="87becc4a-61eb-4c98-b2d9-a2713d927611"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<text><![CDATA[নেট পরিমাণ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="25" width="40" height="30" uuid="24a3982d-46f5-4de5-ae53-83cf1b761079"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<text><![CDATA[ক্রমিক]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="0" y="0" width="480" height="25" uuid="8c5c84b4-3c89-48ed-b30f-7e17b0214977"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["বাজেট কোডঃ"+" "+($F{economic_code}!=null?$F{economic_code}:"")+"-"+" "+($F{name_bangla}!=null?$F{name_bangla}:"")]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="16">
+				<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="324" y="0" width="112" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="30299707-1d83-411c-91aa-c3e8729ed194"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_billamount}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="436" y="0" width="110" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="9de295d3-3dbf-4982-ab5a-237a1df53b3b"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{total_billamount_net}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="324" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="c6b132ae-7204-423e-8e36-093c022392c2"/>
+					<box leftPadding="3" rightPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["মোটঃ"]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="9" width="550" height="30" uuid="ed6b3f85-abd2-4876-8a43-78b0dfe10dd2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বাজেট বিলের বিবরণ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="40" width="230" height="20" uuid="a09ab3cc-ca74-46af-8a75-6c6779313465"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["অর্থ বছরঃ "+" "+($F{financial_year}!=null?$F{financial_year}:"")]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="40" y="0" width="120" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="90e572f5-6709-4a62-85ad-6cc9c21f0075"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reference_number}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="160" y="0" width="164" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="3440f45d-b628-4296-ad2c-934070de4090"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_submit_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="324" y="0" width="112" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="029b981d-8daf-482f-90d3-a8b36e30d6cd"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{purchase_bill_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="436" y="0" width="110" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="798dce2e-25a4-4393-a17d-ac805ba585b7"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{purchase_net_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="40" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="e18909ae-fc23-4ae0-8fa0-afcfeb6bc2b2"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{economic_code_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="436" y="0" width="69" height="16" uuid="c72ea185-0079-4739-a8ae-27b29379f116"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="505" y="0" width="40" height="16" uuid="3c292245-0ec0-438b-abaa-11deda36c658"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="16">
+			<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="324" y="0" width="112" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="02ff2b6b-7c80-4115-865c-47053e0998e2"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{subtotal_billamount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="324" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="295787ad-fe41-4e27-b674-509a339a93b3"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["সর্বমোটঃ"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="#,##0.00#;#,##0.00#-" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="436" y="0" width="110" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="economic_code" uuid="0515901f-9c05-4c82-8e5a-1a5215c6d415"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{subtotal_billamount_net}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

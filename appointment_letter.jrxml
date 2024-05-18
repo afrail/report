@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="appointment_letter" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="87c8f4f8-6745-4880-a498-4e665c6b72a0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_REC_REFERENCE_ID" class="java.lang.Integer"/>
+	<parameter name="P_REC_DESIG_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT get_grad_slab_rec( a.recruitment_ref_id,a.designation_id) scle,
+	get_com_lookup_bn_name( a.designation_id) des_name,
+	b.emp_id,
+	c.applicant_name,
+	c.entry_date application_date,
+	c.father_name,
+	a.last_join_date,
+	c.present_care_of,
+	c.present_post_office,
+	get_com_lookup_bn_name( c.present_district_id) distict_name,
+	get_grad_bn_name( get_rec_grad( a.recruitment_ref_id,a.designation_id)) grade_name,
+	get_grad_slab_rec_start ( a.recruitment_ref_id,a.designation_id) basic,
+	b.join_date,a.recruitment_ref_id
+FROM rec_select_applicant_master a, rec_select_applicant_details b,
+	rec_application_information c, rec_select_applicant_master_selection_application_entry_details d
+WHERE 
+	 1 = 1 
+	 and a.id=d.selection_application_entry_master_id 
+	 and b.id=d.selection_application_entry_details_id 
+	AND b.applicant_id = c.id 
+	AND a.recruitment_ref_id =coalesce( $P{P_REC_REFERENCE_ID},a.recruitment_ref_id )
+	   AND a.designation_id =coalesce( $P{P_REC_DESIG_ID}, a.designation_id)
+ORDER BY b.emp_id asc]]>
+	</queryString>
+	<field name="scle" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="scle"/>
+		<property name="com.jaspersoft.studio.field.label" value="scle"/>
+	</field>
+	<field name="des_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="des_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="des_name"/>
+	</field>
+	<field name="emp_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_select_applicant_details"/>
+	</field>
+	<field name="applicant_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="applicant_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="applicant_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="application_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="application_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="application_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="father_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="father_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="father_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="last_join_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="last_join_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="last_join_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_select_applicant_master"/>
+	</field>
+	<field name="present_care_of" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_care_of"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_care_of"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="present_post_office" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_post_office"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_post_office"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="distict_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="distict_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="distict_name"/>
+	</field>
+	<field name="grade_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="grade_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="grade_name"/>
+	</field>
+	<field name="basic" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="basic"/>
+		<property name="com.jaspersoft.studio.field.label" value="basic"/>
+	</field>
+	<field name="join_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="join_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="join_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_select_applicant_details"/>
+	</field>
+	<field name="recruitment_ref_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="recruitment_ref_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="recruitment_ref_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_select_applicant_master"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="611">
+			<staticText>
+				<reportElement x="2" y="265" width="550" height="340" uuid="096827d4-73a4-4f44-a1af-e3489dec926b"/>
+				<box leftPadding="3"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[নিয়োগের জন্য নির্বাচিত করা হয়েছেঃ
+ক।   পুলিশ বিভাগ তদন্তে চারিত্রিক বৈশিষ্ট্য অ আচরণ সন্তোষজনক হতে হবে।
+খ।   বিভাগীয় ডাক্তার কর্তৃক পরীক্ষান্তে স্বাস্থ্য যথাযথ/নিয়োগের জন্য উপযুক্ত বিবেচিত  হতে হবে।
+২। আপনি ০২ (দুই) বৎসর সময়কালের জন্য অবেক্ষাধীন থাকবেন। অবেক্ষাধীন সময়কালে প্রতি ০১ (এক) বৎসর অন্তর আপনার কার্যক্রম মূল্যায়ন করা হবে। মূল্যায়ন সাজনক বিবেচিত না হলে অবেক্ষাধীন সময়ে বিনা নোটিশে চাকুরী হতে অপসরণ করা যাবে।
+
+৩। অবেক্ষাধীন সময় শেষ হবার পর কমপক্ষে ০৫ (পাঁচ) বৎসর চাকুরী করতে হবে এ মর্মে ১০০ (একশত পঞ্চাশ) টাকার নন জুডিশিয়াল স্ট্যাম্পে অংগীকারনামা নিতে হবে।
+
+৪। আবেদনপর সাথে পরীক্ষা নিরীক্ষা/তদন্তে ভুল/ প্রমাণিত হলে এবং প্রতি মিনিটে নেয় ২০ এবং ইংরেজীতে ২৮ শব্দের গতি সম্পন্ন ব্যর্থ হলে আপনাকে যে কোন সময় চাকুরী হতে অপসরণ করা যাবে
+
+৫। আপনার চাকুরীর অন্যান্য শর্তী বংলাদেশ সমরাস্ত্র কারখানায় সপর্যায়ভুক্ত কর্মচারীদের বেলায় প্রযোজ্য শর্তের অনুরূপ হবে।
+
+৬। উল্লেখিত শর্ত সমূহ গ্রহণযোগ্য হলে আপনাকে আগামী                     তারিখ অথবা তৎপূর্বে যে কোন কার্যদিবসে সকাল ০৯০ সময় বাংলাদেশ সমরাস্ত্র কারখানায় নিয়োগ ও প্রশিক্ষণ শাখায় শিক্ষাগত  যোগ্যতা ও বয়ন সংসহ উপস্থিত হতে অনুরোধ করা যাচ্ছে।
+
+৭। এ ব্যাপারে আপনাকে কোন প্রকার যাতায়াত ভাতা দেয়া হবে না।
+
+৮। অনুগ্রহ পূর্বক প্রাপ্তি স্বীকার করবেন
+]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="606" width="99" height="1" uuid="6ff40401-5d53-4af7-8224-b99ce3835f13"/>
+			</break>
+			<staticText>
+				<reportElement x="5" y="8" width="50" height="20" uuid="ef9d4f74-efaf-44ba-a2e7-15fc2c0e8671"/>
+				<textElement>
+					<font fontName="Nirmala UI" size="13"/>
+				</textElement>
+				<text><![CDATA[প্রতি,]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="35" y="28" width="295" height="20" uuid="477cdfe1-7ffd-4c74-9034-8e70757a092a"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{applicant_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="48" width="250" height="20" uuid="665b3cb3-d8e8-4003-8379-59b0bf7a8354"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{father_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="68" width="250" height="20" uuid="0c135743-3663-4e57-8dfd-158cfab24259"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{present_care_of}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="35" y="88" width="250" height="20" uuid="c887d1b3-022e-425d-953d-538f9b01120a"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{distict_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="55" y="114" width="250" height="20" uuid="728cfd42-5c3e-4b2d-84db-4c953bb05a86"/>
+				<box leftPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{des_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="5" y="114" width="50" height="20" uuid="428ffc8f-2403-450d-8ff1-b17ce222009d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[নিয়োগপত্র - ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="136" width="65" height="20" uuid="860b3202-e830-416e-a4e2-24ef6401539c"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[বরাত :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="158" width="25" height="20" uuid="33b8d417-b8c0-4a9a-9006-e323937e503c"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[ক ।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="37" y="158" width="59" height="20" uuid="6f8a45db-6e34-4ef4-8d7e-8837e1c38279"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[আপনার]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="84" y="158" width="100" height="20" uuid="c0983067-1555-431e-89d8-f5e467842552"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{join_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="158" width="120" height="20" uuid="6cd2c09c-e0c6-4b21-bf1f-967607525ee8"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[ইং তারিখের আবেদনপত্র ।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="190" width="25" height="20" uuid="354a64ad-7c08-48b0-b06c-17756a394710"/>
+				<box leftPadding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="13"/>
+				</textElement>
+				<text><![CDATA[১ ।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="191" width="144" height="19" uuid="f78feed9-738f-4e2f-9bc1-eaa5c99fe41d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[আপনাকে জাতীয় বেতন স্কেল ২০১৬ এর]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="190" y="191" width="90" height="19" uuid="ca307c3c-882c-469a-a738-a6292a63016c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grade_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="282" y="192" width="118" height="19" uuid="fecdb6d8-1de1-46d2-9d57-df54e5412d0a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[টাকার বেতন স্কেলে প্রারম্ভিক টাকা]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="403" y="192" width="77" height="19" uuid="94185e40-82ac-4529-89c6-87a9ca6eae7d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{basic}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="220" width="238" height="19" uuid="619d92e0-14e0-49d3-8fdc-01073c7535d1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[এবং তৎসহ নিয়মানুযায়ী দেয়া সুবিধাসহ বাংলাদেশ সমরাস্ত্র কারখানার]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="242" y="221" width="138" height="18" uuid="1013a0a3-4074-452c-9d69-28a1813c24ae"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{des_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="240" width="398" height="19" uuid="febb6791-b6a8-4340-b1b5-172396ec34c2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[পদে সাইয়ে ভিক্তিতে নিম্নলিখিত শর্তে নিয়োগের জন্য নির্বাচিত করা হয়েছে :]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement x="225" y="474" width="78" height="20" uuid="07fad719-8eb4-429a-aa25-8b4b49ec9f76"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{last_join_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

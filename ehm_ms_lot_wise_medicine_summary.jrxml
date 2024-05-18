@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TEMPLATE_BOF_POTRAIT_EN" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="66e85374-e502-42aa-a302-59880b074d7f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<style name="is_exp_date_between_six_month" forecolor="#0A0909">
+		<box>
+			<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{is_exp_date_between_six_month}==true]]></conditionExpression>
+			<style mode="Opaque" forecolor="#FF0000" fill="Solid" pattern="" isBlankWhenNull="true"/>
+		</conditionalStyle>
+	</style>
+	<queryString language="SQL">
+		<![CDATA[select
+	ROW_NUMBER () OVER (
+		PARTITION BY emm.medicine_group, slw.medicine_name
+		ORDER BY
+			emm.medicine_group, slw.medicine_name, lot_no, expire_date
+	) sl,
+	slw.lot_no,
+	slw.medicine_name,
+	slw.expire_date,
+	slw.cumulative_sum availableQty,
+	get_ehm_com_lookup_name(emm.medicine_group_id) groupName,
+	is_exp_date_between_six_month
+from
+	v_ehm_medicine_stock_lot_wise slw,
+	ehm_medicine_master emm 
+where slw.medicine_id = emm.id]]>
+	</queryString>
+	<field name="sl" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="sl"/>
+		<property name="com.jaspersoft.studio.field.label" value="sl"/>
+	</field>
+	<field name="lot_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lot_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="lot_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_ehm_medicine_stock_lot_wise"/>
+	</field>
+	<field name="medicine_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_ehm_medicine_stock_lot_wise"/>
+	</field>
+	<field name="expire_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="expire_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="expire_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_ehm_medicine_stock_lot_wise"/>
+	</field>
+	<field name="availableqty" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="availableqty"/>
+		<property name="com.jaspersoft.studio.field.label" value="availableqty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_ehm_medicine_stock_lot_wise"/>
+	</field>
+	<field name="groupname" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="groupname"/>
+		<property name="com.jaspersoft.studio.field.label" value="groupname"/>
+	</field>
+	<field name="is_exp_date_between_six_month" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="is_exp_date_between_six_month"/>
+		<property name="com.jaspersoft.studio.field.label" value="is_exp_date_between_six_month"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="v_ehm_medicine_stock_lot_wise"/>
+	</field>
+	<variable name="availableqty1" class="java.lang.Long" resetType="Group" resetGroup="Group1" calculation="Sum">
+		<variableExpression><![CDATA[$F{availableqty}]]></variableExpression>
+	</variable>
+	<group name="Group1" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{groupname}]]></groupExpression>
+		<groupHeader>
+			<band height="43">
+				<staticText>
+					<reportElement x="450" y="23" width="104" height="20" uuid="05709560-47f6-46be-9737-287e29802af3">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5912489b-df7e-4e30-b638-84ce77707c4e"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Available Quantity]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="224" y="23" width="136" height="20" uuid="9a5845d8-f5c6-4d4f-b77c-7e4895d34439">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5912489b-df7e-4e30-b638-84ce77707c4e"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Lot No.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="360" y="23" width="90" height="20" uuid="cb0607f5-d8c5-40b6-b502-51f13527ac5d">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5912489b-df7e-4e30-b638-84ce77707c4e"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Expire Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="20" y="23" width="204" height="20" uuid="daf458d0-e9d8-458d-a895-bb9022ec8dc6">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5912489b-df7e-4e30-b638-84ce77707c4e"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Medicine Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="0" y="23" width="20" height="20" uuid="df801ce0-aa91-4f2f-bd42-2a15bb5846aa">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5912489b-df7e-4e30-b638-84ce77707c4e"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[SL]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="0" y="3" width="554" height="20" uuid="abba8499-6030-4d74-9a71-a4334eab585c"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{groupname}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement x="450" y="0" width="104" height="30" uuid="73f5c764-4fb6-407a-9999-2173ad5fa84a"/>
+					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="3">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{availableqty1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="450" height="30" uuid="2e7f6222-de3f-4a4d-8353-814a2a572c19"/>
+					<box leftPadding="0" rightPadding="5">
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Total]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="84" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="13" width="595" height="16" uuid="53797113-8948-4412-9ab2-deefad168ccb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["BANGALDESH ORDNANCE FACTORIES"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="29" width="595" height="16" uuid="251ac7e9-4709-43f0-80ca-8e04dbcf0da5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gazipur Cantonment"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="45" width="595" height="16" uuid="df31c863-bbcd-43e8-9cb9-b643dad23962">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gazipur-1703"]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank" evaluationTime="Auto">
+				<reportElement x="480" y="12" width="50" height="50" uuid="aa02fac1-0612-4803-aa73-f26df80fe999"/>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="-20" y="64" width="594" height="20" uuid="d4cf3fb9-7336-41ca-9c2e-127f757e41c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MEDICINE LOT WISE STOCK (Main Store)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="10" uuid="b31273ad-1342-4c7b-9bfa-367f5ecffa5d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10">
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="10" uuid="6c64110a-ea99-4af5-a3c4-99feff81926b">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} >1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement style="is_exp_date_between_six_month" x="224" y="0" width="136" height="30" uuid="c13c79a3-ed52-464d-8ef6-29dbb8d10b5d"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lot_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="is_exp_date_between_six_month" x="20" y="0" width="204" height="30" uuid="2e0dfdc2-1e06-44b5-8a58-1ef89556ade0"/>
+				<box topPadding="2" leftPadding="3" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicine_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement style="is_exp_date_between_six_month" x="360" y="0" width="90" height="30" uuid="8e2f53c0-3c66-4229-b7d6-d8e7b3f68b82"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{expire_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="is_exp_date_between_six_month" x="450" y="0" width="104" height="30" uuid="e8a4c3c6-a927-4cc2-962b-898e6db8e4ab"/>
+				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="4">
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{availableqty}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="is_exp_date_between_six_month" x="0" y="0" width="20" height="30" uuid="1a09c9f4-8fc6-49c0-8573-b4e48655faf5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Group1_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="44" splitType="Stretch">
+			<textField pattern="MMM d, yyyy h:mm:ss a" isBlankWhenNull="true">
+				<reportElement x="100" y="22" width="180" height="15" uuid="d0e5062d-1cdd-40e2-b574-04fb33f41a1c">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-18" y="22" width="120" height="15" uuid="c1f9c85e-0d83-4f2e-adef-006d8507decb">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[This report is generated from BOF-ERP on]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="27" width="139" height="10" uuid="4150a9f4-816c-45c5-b688-e5fff7d75a73">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="262" y="7" width="30" height="15" uuid="ecd00f87-be83-4395-bd98-d9ed3f0def70"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

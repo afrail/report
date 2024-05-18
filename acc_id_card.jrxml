@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="acc_id_card" pageWidth="150" pageHeight="242" whenNoDataType="AllSectionsNoDetail" columnWidth="150" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="718edbf3-c541-4792-8720-8b762b79bd25">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof_live"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="132"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="861"/>
+	<property name="com.jaspersoft.studio.unit." value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="mm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="mm"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="650"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="336"/>
+	<parameter name="P_CARD_ISSUE_ID" class="java.lang.Integer"/>
+	<parameter name="acc_id_card_sub_second" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="acc_id_card_sub_third" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select
+	card.id,
+	card.card_no,
+	emp.code "per_no",
+	get_com_lookup_name(card.designation_id) "rank",
+	upper(emp.employee_name) employee_name,
+	(select get_com_lookup_name(hep.blood_group) from hrm_employee_personal_information hep where id = emp.id) "blood_group",
+	card.issue_date,
+	case
+		when emp.image_url is null then '/bof/data/images/not_found.jpg'
+		when emp.image_url = '/' then '/bof/data/images/not_found.jpg'
+		when emp.image_url != '/' then concat(emp.image_url, emp.image)
+	end "image_url",
+	case
+		when emp.signature_url is null then '/bof/data/images/not_found.jpg'
+		when emp.signature_url = '/' then '/bof/data/images/not_found.jpg'
+		when emp.signature_url != '/' then concat(emp.signature_url, emp.signature)
+	end "signature_url",
+	(
+	select
+	case
+		when a.signature_url is null then '/bof/data/images/not_found.jpg'
+		when a.signature_url = '/' then '/bof/data/images/not_found.jpg'
+		when a.signature_url != '/' then concat(a.signature_url, a.signature)
+	end "auth_signature_url"
+	from
+		hrm_employee_personal_information a
+	where
+		a.id = 2649 ) "auth_signature_url"
+from
+	acc_employee_id_card_entry card,
+	hrm_employee_personal_information emp
+where
+	1 = 1
+	and emp.id = card.employee_id
+	and card.id = $P{P_CARD_ISSUE_ID}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="card_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="card_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="card_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="per_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="per_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="per_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="rank" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+	</field>
+	<field name="issue_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="issue_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="issue_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_employee_id_card_entry"/>
+	</field>
+	<field name="image_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="image_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="image_url"/>
+	</field>
+	<field name="signature_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="signature_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="signature_url"/>
+	</field>
+	<field name="auth_signature_url" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_signature_url"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_signature_url"/>
+	</field>
+	<pageHeader>
+		<band height="242">
+			<property name="com.jaspersoft.studio.unit.height" value="mm"/>
+			<image onErrorType="Icon">
+				<reportElement x="9" y="41" width="55" height="55" uuid="e094f597-55bf-4b17-b970-cb566f768d45"/>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+			<image hAlign="Right" vAlign="Middle" onErrorType="Icon">
+				<reportElement x="79" y="41" width="67" height="69" uuid="71e2c63f-b01b-42cb-89cb-378d36de877a"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<imageExpression><![CDATA[$F{image_url}]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="48" y="113" width="99" height="14" uuid="0cdba705-65b9-48e0-9a88-c28c735ebc0a"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{card_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="48" y="127" width="99" height="14" uuid="2347fd08-92eb-4acf-86db-4ed72e1d2f47"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{per_no}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="48" y="141" width="99" height="14" uuid="f447cf4b-3691-495c-8960-2c8621e2e81a"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rank}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="48" y="155" width="99" height="14" uuid="2b00db44-797b-41ee-90e8-7ed761ed6613">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="48" y="169" width="99" height="14" forecolor="#E00F04" uuid="6360ed24-3ea8-4cd0-bdcd-91eada6bd758"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{blood_group}.replace( "+", "(+ve)").replace( "-", "(-ve)")]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="48" y="183" width="99" height="14" uuid="91080751-f130-4a91-9721-97ce27bb61ba"/>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{issue_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="183" width="3" height="14" uuid="a94c0e06-6992-4920-bc68-dc943e3a0bfc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="169" width="3" height="14" uuid="b08958c6-8134-4ca3-ba55-60f0ba587100">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="155" width="3" height="14" uuid="50f4df5f-358e-49dc-bb77-07b1f7d883d7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="141" width="3" height="14" uuid="0123c06d-1e3d-491e-9fe6-08cb5caac5f7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="127" width="3" height="14" uuid="5a367cc7-f2bc-4a0d-a241-1c60fcdc8115">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="45" y="113" width="3" height="14" uuid="ac6bc66a-01c4-45db-9911-5e129f859f15">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="5" y="220" width="50" height="8" uuid="e8274416-b41b-40c7-a8bb-92b9a7b0e93e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="5" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Card Holder's Sign"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="85" y="220" width="62" height="8" uuid="062fd94f-0cc8-41f4-a907-20c79763624a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="5" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Authorized Signatory"]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" onErrorType="Icon">
+				<reportElement x="3" y="199" width="55" height="20" uuid="68dbe50e-fab6-4970-810f-0dcf84b9ccb6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$F{signature_url}]]></imageExpression>
+			</image>
+			<image hAlign="Center" onErrorType="Icon">
+				<reportElement x="94" y="199" width="53" height="20" uuid="0329bd2c-abfb-4037-92ad-40d20001d854"/>
+				<imageExpression><![CDATA[$F{auth_signature_url}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="8" y="220" width="44" height="1" uuid="0371f4ad-e78d-40df-8c8c-edc5cdad60dd"/>
+			</line>
+			<line>
+				<reportElement x="94" y="220" width="50" height="1" uuid="fdf86716-3cf0-46a0-8b71-b02260826c01">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="0" y="228" width="160" height="2" forecolor="#EB332D" uuid="824bab1c-b8ad-4ab4-a164-759e03b147a0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.75" lineColor="#030303"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="229" width="150" height="12" forecolor="#DE0804" uuid="f3e81287-1e3e-414d-a8b8-6570bb276159"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Issuing Authority, Sy Wg, BOF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="113" width="41" height="14" uuid="cde07262-5f7b-4458-98cc-39a627ba70b2">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="127" width="41" height="14" uuid="eaf20733-0827-4bf8-b738-33674e4bab0d">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Per No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="141" width="41" height="14" uuid="36025843-1681-437a-99c2-d5f52b26b187">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="155" width="41" height="14" uuid="6e1ab1f5-a374-4110-b366-0bd8e1df2a35">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="169" width="41" height="14" uuid="a614045e-3bda-4576-a9dd-a6b53a8ff54d">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Blood Gp]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="4" y="183" width="41" height="14" uuid="bd433916-2daf-41e9-8caa-fe3745318898">
+					<property name="com.jaspersoft.studio.unit.width" value="mm"/>
+				</reportElement>
+				<box leftPadding="2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dt of Issue]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="6" width="150" height="32" forecolor="#006600" uuid="d5f8a784-4cf3-4d20-8041-bb09acf635a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANGLADESH ORDNANCE FACTORIES]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="20" splitType="Stretch">
+			<subreport>
+				<reportElement x="3" y="0" width="144" height="10" uuid="c1318383-4b40-4e21-9802-afec7898736c"/>
+				<subreportParameter name="P_CARD_ISSUE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_CARD_ISSUE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{acc_id_card_sub_second}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="3" y="10" width="144" height="10" uuid="69667a2a-82dd-478c-a616-4b1d2bb62397"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{acc_id_card_sub_third}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

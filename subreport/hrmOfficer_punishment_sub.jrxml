@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrmOfficer_punishment_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="29b8e4c9-ab30-4284-93c5-848b0de34c03">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[aHJtX2VtcGxveWVlX2Rpc2NpcGxpbmFyeV9pbmZvcm1hdGlvbiAsMTUsMTUsZGNkMGMwYjQtNmQx
+MC00MTk1LWI4OWYtZmM0ODVkZTI3OGVkOw==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT di.description reason,
+	get_DISCIPLINARY_ACTION_type_name( disciplinary_type_id),
+	di.action_date
+FROM hrm_employee_disciplinary_information di
+WHERE 
+	 1 = 1 
+	 AND di.employee_id =  $P{P_EMPLOYEE_ID} ]]>
+	</queryString>
+	<field name="reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_disciplinary_information"/>
+	</field>
+	<field name="get_disciplinary_action_type_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="get_disciplinary_action_type_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="get_disciplinary_action_type_name"/>
+	</field>
+	<field name="action_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="action_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="action_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_disciplinary_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="180" height="20" uuid="bb982a55-83c1-4b2e-beec-ae883c6a2ff4"/>
+				<textElement>
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<text><![CDATA[Punishment Details ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="170" height="30" uuid="fb1dd146-ead1-4226-94d6-51390eaef8d3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c18c1526-01ac-4f9b-bd3d-fa5b3b7ccc20"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reason]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="240" height="30" uuid="60dd4d3c-01f3-492b-a5da-524e155d4fd9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ad6bedb1-070e-48f5-9cff-16352adaad92"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Type Of Punishment ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="130" height="30" uuid="34b83c1d-f4c4-41da-80af-b5d8b503e077">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c621b9f0-9779-49d7-801d-345f41a2a0ef"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Action Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="170" height="30" uuid="e7965cf9-6a01-4f4e-afc7-ffe687616dde">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c18c1526-01ac-4f9b-bd3d-fa5b3b7ccc20"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{reason}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="170" y="0" width="240" height="30" uuid="6d8b8297-d923-423b-825d-227e3f01264b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="8bca7890-a430-493c-9243-2768e7eb0aec"/>
+				</reportElement>
+				<box topPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{get_disciplinary_action_type_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="M/d/yy">
+				<reportElement x="410" y="0" width="130" height="30" uuid="f18ea67e-a2be-4cd3-bb04-d655d7f17478">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c621b9f0-9779-49d7-801d-345f41a2a0ef"/>
+				</reportElement>
+				<box topPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{action_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

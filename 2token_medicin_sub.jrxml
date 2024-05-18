@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2prescription_medicin_sub" pageWidth="320" pageHeight="320" columnWidth="280" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e642e6fa-93d7-4581-ba0c-a271d72b078f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="272"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="716"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="prescription_master_id" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select
+	row_number () over (
+order by
+	eppt.id
+        ) || '. ' as ser_no,
+       emm.medicine_name as medicineName,
+      coalesce (eppt.qty,	0)as quantity     
+from
+	ehm_pat_pres_treatment eppt,
+	ehm_medicine_master emm ,
+	ehm_common_lookup_details ecld
+where
+	1 = 1
+	and eppt.medicine_master_id = emm.id
+	and emm.unit_measurement = ecld.id
+	and pat_pres_master_id = $P{prescription_master_id}
+order by
+	eppt.id asc]]>
+	</queryString>
+	<field name="ser_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ser_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ser_no"/>
+	</field>
+	<field name="medicinename" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medicinename"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicinename"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_master"/>
+	</field>
+	<field name="quantity" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="quantity"/>
+		<property name="com.jaspersoft.studio.field.label" value="quantity"/>
+	</field>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="30" height="18" uuid="fcce4129-18f9-4e3d-862b-9a4527fc9d33">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="872066f1-357d-4977-b83a-4f3c7cde62a9"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ser_no}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="190" height="18" uuid="d4bbb149-ff56-4767-a717-f5b79b163930">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="872066f1-357d-4977-b83a-4f3c7cde62a9"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicinename}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="220" y="0" width="60" height="18" uuid="77a43162-17cc-4179-b053-a2a4475c06a1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="872066f1-357d-4977-b83a-4f3c7cde62a9"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

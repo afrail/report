@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="tpt-mov-sanction" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1dad075-9152-4ae1-88d8-04438513e0d6">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="419"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="570"/>
+		<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT mov.movement_date ,mov.movement_location , mov.movement_reason , mov.movement_time ,
+mov.movement_type_id , mov.auth_of_movement , mov.return_date , mov.return_time ,
+mov.route_in , mov.route_out , mov.movement_reason , mov.remarks , mov.auth_of_movement , 
+get_com_lookup_name(vehicle_type_id) vehicle_type_id , hepi.employee_name 
+FROM hrm_employee_movement_information mov, hrm_employee_personal_information hepi 
+WHERE 1 = 1 
+AND mov.employee_id =  $P{P_EMPLOYEE_ID}
+and mov.movement_date  = (select max(movement_date) from hrm_employee_movement_information hemi where employee_id = mov.employee_id)
+and mov.employee_id = hepi.id]]>
+	</queryString>
+	<field name="movement_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="movement_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="movement_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="movement_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="movement_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="movement_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="movement_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="auth_of_movement" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_of_movement"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_of_movement"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="return_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="return_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="return_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="return_time" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="return_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="return_time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="route_in" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="route_in"/>
+		<property name="com.jaspersoft.studio.field.label" value="route_in"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="route_out" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="route_out"/>
+		<property name="com.jaspersoft.studio.field.label" value="route_out"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="COLUMN_11" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="movement_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="movement_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="COLUMN_13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="auth_of_movement"/>
+		<property name="com.jaspersoft.studio.field.label" value="auth_of_movement"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_movement_information"/>
+	</field>
+	<field name="vehicle_type_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="vehicle_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="vehicle_type_id"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="25" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="1" width="549" height="24" uuid="46887bcb-0aa5-4b5f-a841-2f1b5839f35e"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+		<band height="358">
+			<staticText>
+				<reportElement x="280" y="318" width="9" height="20" uuid="87ff0102-b037-4fd9-a092-af11494db610"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="30" width="240" height="20" uuid="eef8a8b3-6811-4b34-92f6-6d926b8cd828"/>
+				<text><![CDATA[Type & no. of Veh reqr ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="198" width="9" height="20" uuid="3ff6416c-433e-434f-829b-29eee15e5310"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="30" width="9" height="20" uuid="aed3db13-5844-4128-84f4-afe5a48cc6fe"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="277" width="240" height="20" uuid="45d09793-ef55-47c1-8b9f-9f9fc200cd6c"/>
+				<text><![CDATA[Type and list of arms/ammo/stores or other loads]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="297" width="240" height="20" uuid="a830864f-ddf0-460d-8c61-f433021fcb3c"/>
+				<text><![CDATA[Route out ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="90" width="240" height="20" uuid="0b3645d7-0d55-4f0f-b391-e7d12f14b23f"/>
+				<text><![CDATA[Dt of mov ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="318" width="240" height="20" uuid="69eb3fe8-5b7f-420d-aa1a-b1518d788482"/>
+				<text><![CDATA[Route in]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="70" width="240" height="20" uuid="c08a3343-1c5a-4c89-b980-3a0136634ac9"/>
+				<text><![CDATA[User unit/Fmn ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="50" width="240" height="20" uuid="b3a2c569-1543-4064-8bbb-daea231922e7"/>
+				<text><![CDATA[Rk,name and appt of the user/users]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="90" width="9" height="20" uuid="2754ef67-cd1e-4fc4-9e2a-3f401b463e53"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="110" width="240" height="20" uuid="6767537d-1b81-4fe8-aec5-1ed9c6e5fa90"/>
+				<text><![CDATA[Dt of return]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="218" width="240" height="39" uuid="23e23eb0-628c-4d4c-90b5-ae842ff06fc5"/>
+				<text><![CDATA[Reason for not utilizing rail svc:
+where applicable(Quore auth if any requiring imm collection of stores/mov of pers etc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="338" width="9" height="20" uuid="c305e2a1-b5d0-4be3-8374-7c6c0dd31edf"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="130" width="9" height="20" uuid="7b7a8b76-0f5f-45f4-a490-c46571e995a6"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="50" width="9" height="20" uuid="66a4b39c-ee7e-441d-a4ad-d3f4d5a05eb5"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="170" width="240" height="28" uuid="66424fea-0409-4000-8500-57dea74d9e00"/>
+				<text><![CDATA[Specific nature of duty/purpose
+(i.e collection of arms/ammo to attend conf etc.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="277" width="9" height="20" uuid="fd132ea4-5435-4343-b30c-269c5fb7886e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="110" width="9" height="20" uuid="ae7dd94e-aea5-4305-948b-d6be3594a494"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="150" width="240" height="20" uuid="bf0119d6-675e-45bb-929a-483019c054b0"/>
+				<text><![CDATA[Destination(Mention name of sta/place) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="70" width="9" height="20" uuid="3fd7963a-975a-499d-a47e-63ce1e63cebc"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="257" width="9" height="20" uuid="8ac0ed4f-65f0-4463-b888-1cc7e9c9204d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="257" width="240" height="20" uuid="dbaa7eb1-dc74-4456-b40a-d1384536fc18"/>
+				<text><![CDATA[Incase of inter unit transfer of vehs quote auth]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="297" width="9" height="20" uuid="e56f15b2-1cf1-48bb-9bf2-4d0c74078a29"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="198" width="240" height="20" uuid="258e676a-c138-4abd-9d3e-7d5239e84c0d"/>
+				<text><![CDATA[ Auth of the duty mentioned in para 8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="218" width="9" height="39" uuid="e45d1c64-feff-47d0-b5da-37865663efe9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="150" width="9" height="20" uuid="95c32135-d0c1-4921-9e65-cec463d24114"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="338" width="240" height="20" uuid="be2d49ac-8c5e-4e35-9ff9-428c87ff17af"/>
+				<text><![CDATA[Remark]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="170" width="9" height="28" uuid="dd2372cd-e9ae-41d5-8b4a-6710176214ec"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="130" width="240" height="20" uuid="23772776-02ec-4959-b08d-7066928217d3"/>
+				<text><![CDATA[Name of sta/place from where journey commences ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="90" width="22" height="20" uuid="45b91be1-c7ea-4d7a-92a4-e44a6516fcc1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[04.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="49" width="22" height="21" uuid="03caeacb-4986-4981-934d-d187e15fa812"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[02.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="297" width="22" height="20" uuid="fd8a4ef5-cac2-43ba-ba32-3c67d266ce01"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[13.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="150" width="22" height="20" uuid="16046624-a906-4160-93e1-7848fa54bc87"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[07.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="198" width="22" height="20" uuid="26587e65-74e8-4968-9d23-8af9a4492390"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[09.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="338" width="22" height="20" uuid="bb80119e-cc89-4d9c-87d7-e2c1b46009a5"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[15.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="110" width="22" height="20" uuid="c1d4eafc-af51-4696-92df-923ae3bb37f8"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[05.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="30" width="22" height="19" uuid="87505e73-d93d-4e17-9ce1-8de9b06177cb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[01.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="277" width="22" height="20" uuid="32c8eccb-6e8d-41ae-8b56-2c8377612fcb"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[12.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="318" width="22" height="20" uuid="49a9e9c1-5793-4032-887c-bcaa84352ad7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[14.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="257" width="22" height="20" uuid="2e954369-b711-41e7-9414-1baa1d233b20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[11.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="130" width="22" height="20" uuid="6eedc875-f244-4416-83c3-94cad016b41d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[06.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="70" width="22" height="20" uuid="3ca10f6b-bcce-41f0-be7f-55cb24ff88d8"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[03.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="218" width="22" height="39" uuid="e9cf2ca5-616f-4db9-9a3a-641e28c7a7d7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[10.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="170" width="22" height="28" uuid="a23ca690-760d-4755-ab11-303d50793e5d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[08.]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="338" width="160" height="20" uuid="03a5248e-178a-454c-8d0d-b5094ca45111"/>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="318" width="160" height="20" uuid="299d65a3-ac8d-444b-9480-18e50292eda9"/>
+				<textFieldExpression><![CDATA[$F{route_in}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="297" width="160" height="20" uuid="a9a39f2f-6aa3-4472-a292-6f369d4a4d48"/>
+				<textFieldExpression><![CDATA[$F{route_out}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="129" width="160" height="19" uuid="b2f5b877-0bb4-4e86-8e1f-b06adb68d3da"/>
+				<textFieldExpression><![CDATA[$F{movement_location}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="90" width="160" height="20" uuid="f84c37d8-5391-458e-a178-ffe8a68cb164"/>
+				<textFieldExpression><![CDATA[$F{movement_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="110" width="160" height="19" uuid="c6ed7b85-b8f9-4e57-b004-72a795210fde"/>
+				<textFieldExpression><![CDATA[$F{return_date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="198" width="160" height="20" uuid="d34b0e3f-cfd5-43ef-b6a3-95f27c543e1f"/>
+				<textFieldExpression><![CDATA[$F{auth_of_movement}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="218" width="160" height="20" uuid="e888aff4-7e76-4adf-a442-6600e2fac0ee"/>
+				<textFieldExpression><![CDATA[$F{movement_reason}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="30" width="160" height="20" uuid="7858cabc-5f33-4c2b-a90c-7a2e366606c7"/>
+				<textFieldExpression><![CDATA[$F{vehicle_type_id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="293" y="50" width="160" height="20" uuid="a3986730-ed13-4125-abe2-2be34e801e13"/>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="550" height="19" uuid="c34e300b-f961-42a6-b0e1-1ef69cdecd97"/>
+				<textElement textAlignment="Center">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[TPT MOV Sanction For MOV By RD]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="31" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="157" y="0" width="240" height="30" uuid="4741f8ae-903a-47cd-a1a8-2879981949e2"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[A1 
+RESTRICTED]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

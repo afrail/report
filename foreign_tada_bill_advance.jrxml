@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="foreign_tada_bill" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8414deb6-8e58-4ee0-959d-4004bbcddfc2">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="tada_bill_master_id" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="foreign_tada_bill_advance_sub" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select emp_code_bn(d.code)||' '||get_com_lookup_bn_name(a.designation_id)||
+' '||get_emp_bn_name_with_rank(a.employee_id)||' '||coalesce(get_emp_commision(a.employee_id),'')||    '  বাংলাদেশ সমরাস্ত্র কারখানা (বিওএফ)- এর জন্য '
+||a.tour_details||' '
+||get_com_lookup_bn_name(a.country_id)||' সফর সংক্রান্ত '||case when a.is_estimated_bill = true then ' সম্ভাব্য ব্যায় বিবরণী বিল' else ' অগ্রিম বিল' end details,
+ (to_char(a.tour_from_date,'dd-MM-yyyy')) ||' হতে '|| (to_char(a.tour_to_date,'dd-MM-yyyy') )||'পর্যন্ত '
+  ||DATE_PART('day',a.tour_to_date-a.tour_from_date)+1 ||' দিন' tour_day ,
+ c.hotel_allowance||' ইউ এস ডলার ' hotel_rantl,
+ c.cash_allowance ||' ইউ এস ডলার ' cash,
+ c.da_allowance||' ইউ এস ডলার ' da, 
+ a.usd_rate|| ' টাকা প্রতি ইউ এস ডলার ' dolar_rate,
+ ROUND(cast(a.basic_salary_amount  as numeric),2) main_salary, ' ('||get_grade_slab(e.salary_grade_id)||')' grade_slab,
+ get_fin_com_lookup_bn_name(b.tour_type) tour_type,
+ case when b.foreign_bill_type = 1 THEN 'বিমান ভাড়া : ' ||b.details
+ when b.foreign_bill_type = 2 then 'হোটেল ভাড়া : প্রতিদিন '
+ ||c.hotel_allowance|| ' ইউ এস ডলার হিসেবে '
+ ||b.quantity||' দিনের প্রতি ডলার '||a.usd_rate||' টাকা হিসেবে নগদ ভাতা বাবদ দেশীয় মুদ্রায় বিল('
+ ||c.hotel_allowance||'*'||b.quantity||'*'||a.usd_rate||') টাকা ' 
+ when b.foreign_bill_type = 3 then 'নগদ ভাতা : প্রতিদিন '||c.cash_allowance||' ইউ এস ডলার হিসেবে '||b.quantity ||' দিনের প্রতি ডলার '||a.usd_rate||' টাকা হিসেবে নগদ ভাতা বাবদ দেশীয় মুদ্রায় বিল('||b.rate ||'*'||b.quantity||'*'||a.usd_rate||') টাকা' 
+ when b.foreign_bill_type = 4 then 'ট্রানজিট ভাতা : দৈনিক সর্বসাকূল্য ভাতা '||c.da_allowance|| ' ইউ এস ডলার এর ২৫% হারে '||ROUND(cast(b.rate  as numeric),2) ||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে ' ||b.quantity||' টি ট্রানজিট ভাতা বাবদ দেশীয় মুদ্রায় বিল ('
+ ||b.rate ||'*'||b.quantity||'*'||a.usd_rate||') টাকা '
+  when b.foreign_bill_type = 5 then 'টার্মিনাল চার্জ : দৈনিক সর্বসাকূল্য ভাতা '||c.da_allowance|| 
+ ' ইউ এস ডলার এর ১০% হারে '||ROUND(cast(b.rate  as numeric),2) ||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে ' ||b.quantity||
+ ' টি টার্মিনাল চার্জ বাবদ দেশীয় মুদ্রায় বিল ('
+ ||ROUND(cast(b.rate  as numeric),2) ||'*'||b.quantity||'*'||a.usd_rate||') টাকা '
+  when b.foreign_bill_type = 6 THEN 'অভ্যন্তরীন যাতায়াত : দৈনিক সর্বসাকূল্য ভাতা '||c.da_allowance|| 
+ ' ইউ এস ডলার এর ২০% হারে '||ROUND(cast(b.rate  as numeric),2) ||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে অভ্যন্তরীন যাতায়াত বাবদ দেশীয় মুদ্রায় বিল ('
+ ||ROUND(cast(b.rate  as numeric),2) ||'*'||a.usd_rate||') টাকা '
+  when b.foreign_bill_type = 9 then 'পকেট ভাতা : দৈনিক সর্বসাকূল্য ভাতা '||c.da_allowance|| 
+ ' ইউ এস ডলার এর ৩০% হারে '||ROUND(cast(b.rate  as numeric),2) ||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে ' ||b.quantity||
+ ' টি পকেট ভাতা বাবদ দেশীয় মুদ্রায় বিল ('
+ ||ROUND(cast(b.rate  as numeric),2) ||'*'||b.quantity||'*'||a.usd_rate||') টাকা '
+ when b.foreign_bill_type = 10 then 'সর্বসাকূল্য ভাতা  :  ('
+ ||b.rate||'*'||a.usd_rate||') টাকা '
+ else b.details 
+ end bill_type,
+ b.total_amount total, a.amount amount
+from FIN_TADA_BILL_MASTER a,
+fin_foreign_tada_bill_details b,
+fin_foreign_salary_wise_tada c,
+hrm_employee_personal_information d,
+hrm_employee_official_information e 
+where 1=1
+and b.tada_bill_master_id = a.id
+and a.foreign_salary_wise_tada_id = c.id
+and a.employee_id = d.id
+and e.employee_id = d.id
+and a.id =  $P{tada_bill_master_id} 
+order by b.tour_type,b.foreign_bill_type]]>
+	</queryString>
+	<field name="details" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="details"/>
+		<property name="com.jaspersoft.studio.field.label" value="details"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<field name="tour_day" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tour_day"/>
+		<property name="com.jaspersoft.studio.field.label" value="tour_day"/>
+	</field>
+	<field name="hotel_rantl" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="hotel_rantl"/>
+		<property name="com.jaspersoft.studio.field.label" value="hotel_rantl"/>
+	</field>
+	<field name="cash" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cash"/>
+		<property name="com.jaspersoft.studio.field.label" value="cash"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_foreign_salary_wise_tada"/>
+	</field>
+	<field name="da" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="da"/>
+		<property name="com.jaspersoft.studio.field.label" value="da"/>
+	</field>
+	<field name="dolar_rate" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dolar_rate"/>
+		<property name="com.jaspersoft.studio.field.label" value="dolar_rate"/>
+	</field>
+	<field name="main_salary" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="main_salary"/>
+		<property name="com.jaspersoft.studio.field.label" value="main_salary"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="grade_slab" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="grade_slab"/>
+		<property name="com.jaspersoft.studio.field.label" value="grade_slab"/>
+	</field>
+	<field name="tour_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tour_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="tour_type"/>
+	</field>
+	<field name="bill_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bill_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_type"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_foreign_tada_bill_details"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{tour_type}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField isBlankWhenNull="true">
+					<reportElement x="310" y="0" width="100" height="20" uuid="24ee749a-b028-442a-b42e-33121ab3c333"/>
+					<textElement>
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tour_type}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="186" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement x="-1" y="6" width="560" height="20" uuid="cb6ab5f6-960e-4c28-9012-c10ab250195d"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{details}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="60" width="130" height="20" uuid="a76a6f4e-5620-4e8f-9c76-059702c04c70"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ক।  সময়  ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="60" width="50" height="20" uuid="f3792140-c4f3-4cd8-b915-98a80d568883"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="80" width="50" height="20" uuid="f32c065b-429d-4aab-815a-c328d620d51c"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="80" width="130" height="20" uuid="eb7d4750-4c58-4795-a3f9-3e97a6f7e216"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[খ। দৈনিক হোটেল ভাতা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="100" width="130" height="20" uuid="4e959afa-efc2-4a97-bc90-2d1101d7385d"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[গ। দৈনিক নগদ ভাতা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="100" width="50" height="20" uuid="24df5673-4f22-45b0-9801-4ad7a9ed9459"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="120" width="50" height="20" uuid="e2864d82-db30-42ee-8aed-59c2f7ad1e9f"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="120" width="130" height="20" uuid="ee0b0a6d-2247-4e57-86ac-3ffa013b3d00"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ঘ। দৈনিক সর্বসাকুল্য ভাতা ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="140" width="50" height="20" uuid="bef74083-d99b-4282-b9d3-98e19579823d"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="140" width="130" height="20" uuid="a06ae66e-b4d0-4901-b937-f75f3a4926c7"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ঙ। বিনিময় হার ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="180" y="60" width="380" height="20" uuid="fe673176-1300-4b1a-b098-70464413760b"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tour_day}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="80" width="380" height="20" uuid="fcb1baf4-c938-42a8-95cf-0c8e9c1ef017"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{hotel_rantl}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="100" width="380" height="20" uuid="66bc1228-020b-471e-bc16-cf6747ff85da"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cash}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="120" width="380" height="20" uuid="c324463d-b6f9-47ff-9e8f-923e7018d21b"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{da}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="140" width="380" height="20" uuid="0a7d350d-c8a2-483f-93d1-1cd19f16fb66"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dolar_rate}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="55" width="564" height="1" uuid="559f0fb5-4504-41cc-93dc-368a80fc47ff"/>
+			</line>
+			<line>
+				<reportElement x="0" y="185" width="564" height="1" uuid="e1587777-dbe9-424c-ad6a-c97435ab4801"/>
+			</line>
+			<staticText>
+				<reportElement x="130" y="160" width="50" height="20" uuid="38a50a47-0ab7-46c7-8776-24a6d4a1db19"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="160" width="130" height="20" uuid="4f2e55e0-3b61-4c12-8bf3-77356452466f"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[চ। মূলবেতন]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="230" y="160" width="100" height="20" uuid="b9755f4c-09ed-49ca-80ba-29cb4317e202"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grade_slab}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="161" width="50" height="19" uuid="d6eb506c-7b24-4379-a434-325a80628feb"/>
+				<textElement textAlignment="Left">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{main_salary}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="44" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="24" width="299" height="19" uuid="63d16c62-45ea-4413-9192-f55635701170"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="13" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট দেশীয় মুদ্রার প্রয়োজন]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="43" width="560" height="1" uuid="12a94c20-ab09-4069-ac2f-fc8284a789d8"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="440" height="40" uuid="c425261b-34a9-4944-a68a-8d5c9adddec3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ce30d517-2ff8-4f45-89f0-d07740087ebc"/>
+				</reportElement>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_type}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="0.00">
+				<reportElement x="470" y="0" width="70" height="39" uuid="0a5b3165-55fa-4445-b23a-2731e99a50d0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="397fe5c1-73c3-4214-ad13-0e48cdbf57df"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="440" y="0" width="30" height="40" uuid="e8d041de-0190-4337-ae17-9b18378f2a63"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="20">
+			<textField pattern="dd/MM/yyyy hh:mm ">
+				<reportElement x="490" y="0" width="79" height="20" uuid="eab24f05-c92e-416d-b294-f59b81f92136"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="460" y="0" width="30" height="20" uuid="ae982d20-5edd-483e-be0e-e09f397a545e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[তারিখ :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="0" width="261" height="20" forecolor="#706C6C" uuid="5217f46a-d128-4810-93b2-30f610045559"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<text><![CDATA[This Report Is Generate By BOF ERP System ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="57" splitType="Stretch">
+			<textField pattern="#,##0.00;(#,##0.00)">
+				<reportElement x="470" y="0" width="70" height="30" uuid="a3409479-df6f-4e06-8c02-83accd5e30ec"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="560" height="1" uuid="7225a172-f4c9-48db-8a9f-242bc5d9d7b6"/>
+			</line>
+			<staticText>
+				<reportElement x="420" y="-1" width="50" height="30" uuid="4c0dc540-af23-4b81-b0c0-6ca34f6b3c7a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[মোট   :  ]]></text>
+			</staticText>
+			<break>
+				<reportElement x="0" y="34" width="560" height="1" uuid="e13e1e36-c5cf-4db8-b9cc-94c0a36a1081"/>
+			</break>
+			<subreport>
+				<reportElement x="-10" y="37" width="575" height="20" uuid="38865702-c2ea-471a-b5a7-047ef5a46c33"/>
+				<subreportParameter name="tada_bill_master_id">
+					<subreportParameterExpression><![CDATA[$P{tada_bill_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{foreign_tada_bill_advance_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

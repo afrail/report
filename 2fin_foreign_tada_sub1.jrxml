@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2fin_local_tada_sub1" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e01f3b6f-e31d-45fc-8af2-4a4a01bbc152">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="tada_bill_master_id" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select a.id,get_fin_com_lookup_bn_name(b.tour_type) tour_type,
+  case when b.foreign_bill_type = 1 THEN 'বিমান ভাড়া : ' ||b.details
+ when b.foreign_bill_type = 2 then 'হোটেল ভাড়া : প্রতিদিন '
+ ||round(cast(b.rate as numeric) ,2)|| ' ইউ এস ডলার হিসেবে '
+ ||b.quantity||' দিনের প্রতি ডলার '||a.usd_rate||' টাকা হিসেবে নগদ ভাতা বাবদ দেশীয় মুদ্রায় বিল ('
+ ||round(cast(b.rate as numeric) ,2)||'*'||b.quantity||'*'||a.usd_rate||') টাকা ' 
+ when b.foreign_bill_type = 3 then 'নগদ ভাতা : প্রতিদিন '||round(cast(b.rate as numeric) ,2)||'
+ ইউ এস ডলার হিসেবে '||b.quantity ||' দিনের প্রতি ডলার '||a.usd_rate||
+ ' টাকা হিসেবে নগদ ভাতা বাবদ দেশীয় মুদ্রায় বিল('||round(cast(b.rate as numeric) ,2) ||'*'||b.quantity||'*'||a.usd_rate||') টাকা' 
+ when b.foreign_bill_type = 4 then 'ট্রানজিট ভাতা : দৈনিক সর্বসাকূল্য ভাতা '||round(cast(c.da_allowance  as numeric) ,2)|| 
+ ' ইউ এস ডলার এর ২৫% হারে '||round(cast(b.rate as numeric) ,2)||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে ' ||b.quantity||
+ ' টি ট্রানজিট ভাতা বাবদ দেশীয় মুদ্রায় বিল ('
+ ||round(cast(b.rate as numeric) ,2) ||'*'||b.quantity||'*'||a.usd_rate||') টাকা '
+  when b.foreign_bill_type = 5 then 'টার্মিনাল চার্জ : দৈনিক সর্বসাকূল্য ভাতা '||round(cast(c.da_allowance as numeric) ,2)|| 
+ ' ইউ এস ডলার এর ১০% হারে '||round(cast(b.rate as numeric) ,2)||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে ' ||b.quantity||
+ ' টি টার্মিনাল ভাতা বাবদ দেশীয় মুদ্রায় বিল ('
+ ||round(cast(b.rate as numeric) ,2) ||'*'||b.quantity||'*'||a.usd_rate||') টাকা '
+when b.foreign_bill_type = 6 THEN 'অভ্যন্তরীন যাতায়াত : দৈনিক সর্বসাকূল্য ভাতা '||c.da_allowance|| 
+ ' ইউ এস ডলার এর ২০% হারে '||round(cast(b.rate as numeric) ,2) ||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে অভ্যন্তরীন যাতায়াত বাবদ দেশীয় মুদ্রায় বিল ('
+ ||round(cast(b.rate as numeric) ,2) ||'*'||a.usd_rate||') টাকা '
+ when b.foreign_bill_type = 9 then 'পকেট ভাতা : দৈনিক সর্বসাকূল্য ভাতা '||round(cast(c.da_allowance as numeric) ,2)|| 
+ ' ইউ এস ডলার এর ৩০% হারে '||round(cast(b.rate as numeric) ,2) ||' ইউ এস ডলার, প্রতি ডলার '||a.usd_rate|| ' টাকা হিসেবে ' ||b.quantity||
+ ' টি ট্রানজিট ভাতা বাবদ দেশীয় মুদ্রায় বিল ('
+ ||round(cast(b.rate as numeric) ,2) ||'*'||b.quantity||'*'||a.usd_rate||') টাকা '
+ when b.foreign_bill_type = 10 then 'সর্বসাকূল্য ভাতা  :  প্রতিদিন '||round(cast(b.rate as numeric) ,2)||' ইউ এস ডলার হিসেবে '||b.quantity ||' দিনের প্রতি ডলার '||a.usd_rate||
+ ' টাকা হিসেবে সর্বসাকূল্য ভাতা বাবদ দেশীয় মুদ্রায় বিল('
+ ||round(cast(b.rate as numeric) ,2)||'*'||a.usd_rate||'*'||b.quantity||') টাকা '
+else b.details end bill_type,b.total_amount total, a.amount amount
+from 
+FIN_TADA_BILL_MASTER a,
+fin_foreign_tada_bill_details b,
+fin_foreign_salary_wise_tada c
+where 1=1
+and b.tada_bill_master_id = a.id
+and a.foreign_salary_wise_tada_id = c.id
+and a.id = $P{tada_bill_master_id}
+order by b.tour_type , b.foreign_bill_type asc]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<field name="tour_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tour_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="tour_type"/>
+	</field>
+	<field name="bill_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bill_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_type"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_foreign_tada_bill_details"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<group name="Group1">
+		<groupExpression><![CDATA[$F{tour_type}]]></groupExpression>
+		<groupHeader>
+			<band height="13">
+				<textField isBlankWhenNull="true">
+					<reportElement x="400" y="0" width="162" height="13" uuid="fecc7c74-92f1-4e9a-8b91-9d377555f514"/>
+					<textElement>
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{tour_type}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField pattern="#,##0.00;-#,##0.00">
+				<reportElement x="492" y="0" width="70" height="19" uuid="95b7b7f2-8862-4287-82d8-1184ccc59873">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="be6584b0-ff5d-4fbb-814a-9bd49e257b09"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="10" y="0" width="482" height="19" uuid="ec24ab3e-f0e4-493f-9cd3-65aca10d2b5f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bill_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="10" height="19" uuid="22d69e3e-a2e0-49de-a698-b356f920d028"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}+"|"]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

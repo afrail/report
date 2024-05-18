@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="raw_ration_employee_bio_data" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="113b66ac-0b27-484c-8da4-f1bf86db8256">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="bof_common_header_A4_portrait" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="bof_common_footer_A4_portrait" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_RATION_NO" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select a.employee_id, a.employee_name,get_com_lookup_name(a.designation_id) designation, get_com_lookup_name(a.blood_group) blood_group ,a.ration_number,
+to_char(a.joining_date,'dd-MM-yyyy') join_date, to_char(a.lpr_date ,'dd-MM-yyyy') lpr_date,
+case when ration_employee_type_id=17 then
+(select get_com_lookup_name(coalesce(coalesce(coalesce(heoi.shop_id,heoi.group_id), heoi.wing_id),heoi.branch_id)) section_name
+from hrm_employee_official_information heoi , hrm_employee_personal_information hepi 
+where hepi.id=heoi.employee_id 
+and hepi.code=a.employee_id) else 'GE ARMY' end section_name,
+to_char(a.date_of_birth,'dd-MM-yyyy') dob, b.dependent_name, to_char(b.date_of_birth,'dd-MM-yyyy') family_person_dob,get_com_lookup_name(b.relation_id) relation
+from raw_employee_personal_information a 
+left join raw_employee_family_information b on a.id= b.employee_id 
+where 1=1
+and a.ration_number = $P{P_RATION_NO} 
+order by b.date_of_birth]]>
+	</queryString>
+	<field name="employee_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="ration_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ration_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="ration_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="join_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="join_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="join_date"/>
+	</field>
+	<field name="lpr_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="lpr_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="lpr_date"/>
+	</field>
+	<field name="section_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="section_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="section_name"/>
+	</field>
+	<field name="dob" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dob"/>
+		<property name="com.jaspersoft.studio.field.label" value="dob"/>
+	</field>
+	<field name="dependent_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dependent_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="dependent_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_family_information"/>
+	</field>
+	<field name="family_person_dob" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="family_person_dob"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_person_dob"/>
+	</field>
+	<field name="relation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="relation"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="255" splitType="Stretch">
+			<textField>
+				<reportElement x="100" y="110" width="180" height="20" uuid="144cb6b9-062b-4194-9aa3-7ce4d0fd0575"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="110" width="90" height="20" uuid="04207c47-f290-4577-8ee5-7a428fe75499"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[ID No    ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="70" width="595" height="30" uuid="de0e595d-3ded-4b71-9ebc-77c81ab99c66"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ration Card Holder Details]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="110" width="170" height="20" uuid="1be82361-fc99-46de-9b7a-c38a6cb79911"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="110" width="80" height="20" uuid="aea3b8e7-b7de-4ad5-9f71-e7425780e1df"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Name    ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="130" width="180" height="20" uuid="95f476af-5721-499d-acb3-af40510e8691"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CIVIL CARD"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="130" width="90" height="20" uuid="45c51410-bd4f-49c6-aee2-f14797c8f468"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Category ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="130" width="170" height="20" uuid="8d2b462b-c41c-46a3-9b5f-4a4b26fc2cee"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{section_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="130" width="80" height="20" uuid="c2a3daca-c0f7-4a0a-95e7-555bd400a459"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Group]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="150" width="180" height="20" uuid="a7dba356-4175-48d0-9a5a-8302ddfd1d06"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="150" width="90" height="20" uuid="8ac8e90f-902a-43f5-bb7b-55299edff5c1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="150" width="170" height="20" uuid="e12c6552-4163-4c7c-ade0-c85e4e23e6f9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{section_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="150" width="80" height="20" uuid="2accc21b-b6bc-4baf-b30b-9f74d6637ac5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Arms / Dept]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="170" width="180" height="20" uuid="4106f656-caeb-42c4-8491-4a83f5e91778"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ration_number}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="170" width="90" height="20" uuid="0964bc90-b0cd-431d-8316-fb1f16b56fc9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Card No]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="170" width="170" height="20" uuid="3d5e19c3-ce0f-4723-9815-b4b818f7a7ad"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{blood_group}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="170" width="80" height="20" uuid="e1f433f5-c4de-4aa2-ba43-99f36424bb8a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Blood Group]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="190" width="180" height="20" uuid="95bcf83a-0138-4567-8977-723ede1dd01c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dob}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="190" width="90" height="20" uuid="f61bfb5d-5f0c-465f-b4fa-092cbfd5eeea"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Date Of Birth ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="370" y="190" width="170" height="20" uuid="ff9c32ac-0867-4610-9d5b-9f5b1004a6dd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lpr_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="190" width="80" height="20" uuid="28c43fd1-1be5-4288-95b7-c0e32382c2f7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Expire Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="235" width="200" height="20" uuid="888430b2-63f1-453a-923a-7c194ca5ae8c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Family Info]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="110" width="10" height="20" uuid="4f3080e3-f337-47de-95d9-079b5cde4735"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="130" width="10" height="20" uuid="ddbbfeca-6c0b-4c60-b418-555b1d19d804"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="150" width="10" height="20" uuid="83e9bf30-4adb-43fe-b304-ed97895ba882"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="170" width="10" height="20" uuid="c59def02-cd49-41c8-8fbb-5986c10ec8a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="190" width="10" height="20" uuid="2e86071b-761a-4a6c-abe4-def215db44dd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="190" width="10" height="20" uuid="8655e851-e6f1-437a-8abc-8070f6c50da4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="170" width="10" height="20" uuid="8cce472a-2130-41e9-9217-e9844f84edf2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="150" width="10" height="20" uuid="af0f1246-32ab-44a7-bfbc-e5fa4b006a91"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="130" width="10" height="20" uuid="eadf5bbb-70dd-45a9-b66e-ff65a0cc8a3c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="110" width="10" height="20" uuid="061621d9-5833-45fc-ba87-dfff9d77537d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="0" width="595" height="10" uuid="5111b9ff-51df-4221-90cd-83e42c2ee99c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="-20" y="10" width="595" height="55" uuid="387b5ddb-0a77-4729-965f-272cb3675b44">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_header_A4_portrait}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="2" width="200" height="28" uuid="904d67a5-e9da-4159-8f8f-8b905459cd62">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="240" y="2" width="100" height="28" uuid="b54047b7-743d-4b71-8dd5-ef2a0bae26dc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Relation]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="2" width="100" height="28" uuid="a69163d3-2b76-4a79-aa91-830345d86481">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date Of Birth ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="2" width="100" height="28" uuid="0c8bbc79-f415-4da8-8497-3dd02d55544c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Abnormal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="40" height="28" uuid="71721aa4-9dec-47ea-ac9d-8e3e290f5c2d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ser]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement x="40" y="0" width="200" height="28" uuid="e8a02e99-c60c-41db-a35c-11d107bbd65c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dependent_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="240" y="0" width="100" height="28" uuid="44f634ba-e572-4a2f-9cd9-1f5297083ddc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box leftPadding="2">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{relation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="340" y="0" width="100" height="28" uuid="f5451aa8-4acf-4e6c-957f-dc8a19f819f5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_person_dob}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="100" height="28" uuid="332f2b8e-829b-4a97-963f-0619284c95da">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="71f5cfbf-9162-456b-90df-3387a3190350"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["N"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="40" height="28" uuid="85f9cd20-b087-44f0-97e9-22f8aebc1463"/>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="39" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="0" width="595" height="39" uuid="a79d5297-dfb4-4084-936d-f7695543d0f5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_footer_A4_portrait}]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>

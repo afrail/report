@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="foreign_tada_has_advace" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d218e0d6-a0c0-4801-9037-f511578a54d5">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<parameter name="tada_bill_master_id" class="java.lang.Integer"/>
+	<parameter name="2fin_transfer_sub1" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="foreign_tada_bill_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="transfer_bill_sub" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select a.id,
+  case when b.local_bill_type = 1 then b.details||' সড়কপথে '||b.others||' কি.মি প্রতি কি.মি ' 
+ ||b.rate|| ' হিসেবে '||b.quantity||' টি ('||b.rate||'*'||b.quantity||'*'||b.others||') টাকা '
+ when b.local_bill_type = 2 then b.details||' রেল পথে রেল ভাড়া '||b.rate||'
+ টাকা হিসেবে '||b.quantity ||' টি ('||b.rate||'*'||b.quantity||'*'||b.others||') টাকা'
+ when b.local_bill_type = 3 THEN ' বিমান ভাড়া : '
+ when b.local_bill_type = 4 then b.details||' '||b.others||' কি.মি দূরত্বের সড়কপথে '||b.quantity||' কেজি মালামালের পরিবহন ব্যয় বাবদ বিল ('
+ ||b.rate||'*'||b.quantity||'*'||b.others||'/100) টাকা '
+  when b.local_bill_type = 5 then b.details||' '||b.others||'কি. মি  সাধারণমালামালের রেল পথে পরিবহন ব্যয় '||b.rate||' হারে '||b.quantity||' কেজি মালামালের পরিবহন ব্যয় বাবদ বিল ('
+ ||b.rate||'*'||b.quantity||') টাকা '
+ when b.local_bill_type = 6 then b.details||' '||b.others||'কি. মি  ইলেক্ট্রনিকমালামালের রেল পথে পরিবহন ব্যয় হারে'||b.rate||' হারে '||b.quantity||' কেজি মালামালের পরিবহন ব্যয় বাবদ বিল ('
+ ||b.rate||'*'||b.quantity||') টাকা '
+  when b.local_bill_type = 7 then b.details ||'পাকিং চার্জ'
+ else b.details end bill_type,b.total_amount total, a.amount amount
+from 
+FIN_TADA_BILL_MASTER a
+LEFT JOIN fin_local_tada_bill_details b ON  b.tada_bill_master_id = a.id
+where 1=1
+and a.id = $P{tada_bill_master_id}]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<field name="bill_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bill_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="bill_type"/>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_local_tada_bill_details"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fin_tada_bill_master"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="-10" width="1008" height="30" uuid="bcad7289-7ee1-40be-8d7a-62ed560864e2"/>
+				<subreportParameter name="tada_bill_master_id">
+					<subreportParameterExpression><![CDATA[$P{tada_bill_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{foreign_tada_bill_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="337">
+			<staticText>
+				<reportElement x="602" y="34" width="120" height="20" uuid="35f2fbb3-14f2-41ed-8c4e-42eb60dff0ed"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[(ক) পরিবারের বিস্তারিত সংবাদ 
+       স্ত্রী----------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="722" y="44" width="40" height="10" uuid="75a160c1-91b0-4cd9-9729-c67c239ecd0c"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[বয়স]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="580" y="0" width="386" height="31" uuid="56d9def0-caa3-4e71-a45c-f377f0911def"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[অতিরিক্ত সংবাদ 
+(শুধুমাত্র স্থায়ী কাজের জন্য )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="510" y="0" width="70" height="31" uuid="27879ba1-14df-4933-8027-137495150fc4"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[মোট  আদায়ের জন্য]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="50" height="31" uuid="1ef30566-cff9-4c78-9f7f-3a4d28eed40b"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[ফর্ম "ই" ব্যবহার করার করার পেক্ষিতে বিয়োগ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="40" height="31" uuid="38207c36-deff-4be8-acad-87045ccce13e"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[ট্রেন ভাড়া / রাজপথে ভাড়া]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="40" height="31" uuid="3cdb9ecd-5a7b-4529-8cbd-29a78828e7ca"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[অবস্থানের দিন (সংখ্যা)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="0" width="40" height="31" uuid="981437ab-ab29-4a79-8626-923f702d27e7"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[দূরত্ব রাজপথে (মাইল)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="832" y="44" width="40" height="10" uuid="915e4c2f-768c-44f4-838d-283afcf6ddee"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[বয়স]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="59" width="40" height="10" uuid="08a7fe75-263b-4277-aa09-37c289f65e9e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[বৈধ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="672" y="59" width="40" height="10" uuid="bfb878a8-ff3d-48cf-8fa6-caf43d6f2800"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[ছেলে ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="672" y="74" width="40" height="10" uuid="8538565b-d070-45de-969d-c8bbc22daef7"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[মেয়ে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="722" y="59" width="40" height="10" uuid="ee4257a3-e5f8-4537-bb92-b18f6851b191"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[-----------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="722" y="74" width="40" height="10" uuid="58d4f105-561b-4f16-8789-0453bbe91ed6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[-----------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="832" y="59" width="40" height="10" uuid="d2a918c1-c40c-4020-886d-482a849b40e0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[-----------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="832" y="69" width="40" height="10" uuid="bc815350-c2f1-4191-a560-883e3006de69"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[-----------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="892" y="69" width="60" height="10" uuid="beaccbf2-aa31-4c7e-912a-9024d1738a9b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[হইতে-------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="892" y="59" width="40" height="10" uuid="1155560f-1955-4da9-9a84-fb5791e80eea"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[যাত্রা করেছে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="84" width="350" height="12" uuid="df342ee0-e857-4448-a8f7-7fa6aa5f24e0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[বৈথ ভাবে পোষ্য সন্তান-------------------------------------------------------পর্যন্ত----------------------------------------------- ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="96" width="350" height="12" uuid="9863c035-5362-4b4f-be04-b6ff8f443c4f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[সৎ সন্তান ------------------------------------------------কবে------------------------------------------------------------(তারিখ) ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="108" width="70" height="10" uuid="6de9367e-9403-4d96-aa51-333728a9735b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[অনুমোদিত গাড়ি ব্যাবহৃত :-]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="118" width="360" height="10" uuid="1a865ae1-f09f-4372-9a72-cd510ccad699"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="128" width="70" height="10" uuid="e8bc1912-8959-41ea-965d-8d604d466eae"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[----------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="138" width="360" height="10" uuid="b9abc13c-53b9-4ac0-88f6-fe9ae5c32de8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="148" width="70" height="10" uuid="fbb7c9d0-bc7c-4869-8f3e-6746ca27f188"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[----------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="158" width="360" height="10" uuid="57347792-e225-4b12-9608-3115defdce45"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[উপযুক্ত কর্তৃপক্ষের মঞ্জরীপত্রের অনুলিপি সন্নিবিষ্ট হল।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="168" width="360" height="10" uuid="81c8cf73-58cf-4e76-b92f-b33624e61b37"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[ (গ) যাতায়াতের জন্যে অর্থ প্রদত্ত :- ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="642" y="178" width="320" height="10" uuid="adbc25d3-4dc5-460b-b89e-6b88c61980b4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[১।   মোটর গাড়ি -----------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="642" y="188" width="320" height="10" uuid="ae2fcc5f-56ba-4e26-b4bf-59b6eb6367e3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[রেলযোগে টাকা ------------------------------------পথযোগে টাকা --------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="199" width="360" height="10" uuid="4847eda5-63de-46eb-b340-5504d9aa3f64"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[ (গ) যাতায়াতের জন্যে অর্থ প্রদত্ত :- ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="642" y="209" width="320" height="10" uuid="ecd2f63e-4e14-40d6-b8d0-152161b19f1c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[১।   মোটর গাড়ি -----------------------------------------------------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="642" y="219" width="320" height="10" uuid="d5a86db1-f56a-475e-b826-1035ef1c33e2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[রেলযোগে টাকা ------------------------------------পথযোগে টাকা --------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="642" y="229" width="320" height="10" uuid="b1a4f77b-df57-4e07-9f3e-2d28df5fc1f0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[২।        মালপত্র: -                                        টাকা                                             ওজন]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="662" y="239" width="300" height="10" uuid="20c64c03-4a3c-4f3e-9f0a-b53d71dd3ede"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[রাজ পথযোগে                                ----------------                              ----------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="662" y="249" width="300" height="10" uuid="f4285c39-5811-44ab-a19d-c4eb774dc389"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[মালগাড়িতে                                   -----------------                            -----------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="662" y="259" width="300" height="10" uuid="41104a32-93bc-42d9-94ca-2e9d5b97882d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[প্যাসেঞ্জের গাড়িতে                          -----------------                            -----------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="600" y="275" width="300" height="10" uuid="88b65359-b507-4b06-9380-f5de1dc12133"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[পেমেন্টের জন্য রিসিট ও ভাউচার সন্নিবিষ্ট হইল]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="-11" y="20" width="589" height="283" uuid="9840acd4-30fb-4dd1-bf5b-2f3bf21ed98f"/>
+				<subreportParameter name="tada_bill_master_id">
+					<subreportParameterExpression><![CDATA[$P{tada_bill_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2fin_transfer_sub1}]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="580" y="0" width="1" height="335" uuid="6fd3ab53-df11-46a3-964a-d8e963fb7464"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="307" uuid="c421dd3c-2d4f-4d0d-a171-70128c8c6d21"/>
+			</line>
+			<line>
+				<reportElement x="460" y="0" width="1" height="307" uuid="949beb66-1659-4971-9039-7d39d72f97cd"/>
+			</line>
+			<line>
+				<reportElement x="420" y="0" width="1" height="307" uuid="84865532-29df-4154-889e-cf801b139c27"/>
+			</line>
+			<line>
+				<reportElement x="380" y="0" width="1" height="307" uuid="a301b6ce-418c-4193-be00-3e298cfbd16b"/>
+			</line>
+			<line>
+				<reportElement x="339" y="0" width="1" height="307" uuid="aa20cd85-0f9d-4723-9bed-d94c373eb4c6"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="307" width="460" height="30" uuid="f607c5bd-d39e-4371-815c-868394676f8c"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[(ক) বাসা থেকে রেল স্টেশনের দূরত্ব অথবা স্থায়ী/অস্থায়ী ভ্রমণ অনুযায়ী নির্দিষ্ট স্থান এবং রেল স্টেশ দর্শাতে হবে। 
+(খ) স্থায়ী কাজের জবরদস্তি দাড় করার কথাও এখানে উল্লেখ করতে হবে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="461" y="307" width="49" height="30" uuid="d49233d7-6cab-40b0-8efe-2e6a23cdec4f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<text><![CDATA[মোট   =  ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="510" y="306" width="70" height="30" uuid="db12e785-049d-4077-9a0f-e737a0ab025b"/>
+				<box>
+					<pen lineWidth="0.75"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="596" y="307" width="300" height="10" uuid="bdc7f093-fe1c-4655-b04c-4360efd9f7f2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[রেলফ্রাইট রিসিট নং-----------------------------------------------]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="317" width="300" height="10" uuid="f776ac7b-9185-4af6-8c61-a15619bd43fc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[তারিখ-------------------------- ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="578" y="336" width="390" height="1" uuid="06f855ae-75df-4c3b-bd75-aa9433980e2e"/>
+			</line>
+			<line>
+				<reportElement x="510" y="0" width="1" height="335" uuid="ce9d65b5-6d4e-47a8-8ed3-c1a44e7efd76"/>
+			</line>
+			<staticText>
+				<reportElement x="289" y="14" width="50" height="16" uuid="85f37665-29ba-443c-90de-369a4c2594f9"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[সময়]]></text>
+			</staticText>
+			<line>
+				<reportElement x="289" y="14" width="1" height="293" uuid="5757334d-d619-4fd2-99bb-c0e1120b9125"/>
+			</line>
+			<staticText>
+				<reportElement x="229" y="14" width="60" height="16" uuid="1ecbc6e0-938d-477d-8767-a50cdde4bc28"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[সময়]]></text>
+			</staticText>
+			<line>
+				<reportElement x="229" y="14" width="1" height="293" uuid="c113735b-a7d8-43a2-9641-2cc06de49072"/>
+			</line>
+			<staticText>
+				<reportElement x="170" y="14" width="59" height="16" uuid="ea60c36d-0783-4b42-9c69-7d200391c206"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[স্থান]]></text>
+			</staticText>
+			<line>
+				<reportElement x="170" y="0" width="1" height="307" uuid="9e09d4a0-fbba-40d6-ae85-3de573a5aff3"/>
+			</line>
+			<staticText>
+				<reportElement x="120" y="14" width="50" height="16" uuid="b9f52219-5c22-43a6-aa85-9497c4e750b0"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[সময়]]></text>
+			</staticText>
+			<line>
+				<reportElement x="120" y="14" width="1" height="292" uuid="3583ccaa-cbbc-4638-a841-b4ff969b4018"/>
+			</line>
+			<line>
+				<reportElement x="60" y="14" width="1" height="293" uuid="cfff72b6-b6a5-4be3-8149-a7816f2ba4f4"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="0" width="169" height="14" uuid="9ac4a131-dc65-44f7-9ace-f96c9460b9f6"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[হইতে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="14" width="59" height="16" uuid="f3569259-d66d-4dd3-84be-59f38d3e1827"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[স্থান]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="0" width="170" height="14" uuid="de829810-95bf-4343-bbb7-8b76d1bbebd4"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পর্যন্ত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="14" width="60" height="16" uuid="63d259af-3969-439d-b4b3-7bc76b7a340d"/>
+				<box bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[সময়]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="50" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="799" height="50" uuid="9ceef29f-cf23-471d-8d38-9dbe31afce53"/>
+				<subreportParameter name="tada_bill_master_id">
+					<subreportParameterExpression><![CDATA[$P{tada_bill_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{transfer_bill_sub}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

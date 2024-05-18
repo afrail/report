@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="অংশ &apos;ঙ&apos;- অফিসারগনের জনবল্ভিক্তিক তালিকা(১)" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="41ed95d0-2d4f-4c12-b9b3-2d2f9afbdd52">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select a.NAME ||', '|| COALESCE(date(a.COMMISSION_DATE)) COMMISION,b.code,b.EMPLOYEE_NAME,date(c.JOINING_DATE) dated
+
+from HRM_COMMISION_INFORMATION a,
+HRM_EMPLOYEE_PERSONAL_INFORMATION b,
+HRM_EMPLOYEE_OFFICIAL_INFORMATION c
+where 1=1
+and
+c.JOINING_DATE BETWEEN '2020-01-01 ' AND '2021-02-02 ';]]>
+	</queryString>
+	<field name="commision" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="commision"/>
+		<property name="com.jaspersoft.studio.field.label" value="commision"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="code"/>
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="dated" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="dated"/>
+		<property name="com.jaspersoft.studio.field.label" value="dated"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<subreport>
+				<reportElement x="81" y="0" width="720" height="30" uuid="91a48b41-51b9-49ff-9ae9-3c12bdd1ca17">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="26" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="752" y="0" width="50" height="18" uuid="36d70dc1-2974-4bea-b3ba-434b8746ffc4"/>
+				<textElement textAlignment="Left">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="702" y="0" width="50" height="19" uuid="ee7ee4ff-a40b-4428-965b-af5a6d50a548"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="200" y="2" width="330" height="19" uuid="da97867c-9f48-4e34-81be-761566e033e7"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="SolaimanLipi" size="10"/>
+				</textElement>
+				<text><![CDATA[Population List of Officers (Bangla)]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="70" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="32" height="70" uuid="426a52b8-272c-4b7e-b576-3e2df0256ac8"/>
+				<box topPadding="5">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="81" y="0" width="88" height="70" uuid="7fd6774c-3631-498b-8227-9c2009a1000f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0eb69e31-92b3-48af-93c1-0721e9505bfa"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[কমিশনের প্রকার ও তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="239" y="0" width="43" height="70" uuid="fd6ead75-1bd0-4f01-b136-7d46a8f0db7f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a77a2fc-af0b-47ed-9f0a-dd61d1119f4c"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[বিএ নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="282" y="0" width="48" height="70" uuid="0cfd90cf-c86b-4a34-9b62-5c845baa6a70">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[রেজিমেন্ট/
+কোর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="0" width="51" height="70" uuid="46d59222-152e-4d81-840d-6f746b32dcbd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[বর্তমান
+নিযুক্তি/
+নিয়োগ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="421" y="0" width="129" height="70" uuid="97fd52ca-26ae-4122-b4a8-f6c02e89f367">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ইউনিটে না থাকিলে বর্তমান অবস্থানের বিবরণ (ছুটি/প্রশিক্ষণ/অস্থায়ী কর্তব্য ইত্যাদিজানা থাকিলে)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="40" height="70" uuid="3ceb116e-7258-4885-ade5-8f58246f64b2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ইউনিটে 
+আছেন 
+কিনা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="169" y="0" width="70" height="70" uuid="84fb94fe-f8bb-4064-8a47-76e29284c753">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57ff32c-a14a-4913-a369-22eb15945336"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[পূর্ণ নাম এবং কোর্স]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="550" y="0" width="72" height="70" uuid="a0d7c705-dfe3-4af9-955e-7633cb3ed60c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="44f3c162-fb3d-4be6-a686-434dcc72e886"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[বর্তমান নিযুক্তিতে যোগদানের তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="32" y="0" width="49" height="70" uuid="abb6a82d-5a7b-4f46-89ae-e3d7575a17e5"/>
+				<box topPadding="5">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[পদমর্যাদা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="680" y="0" width="70" height="70" uuid="9ad729a8-25ff-4673-8e9b-620e9cceffac">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[বিবাহিত অথবা অবিবাহিত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="622" y="0" width="58" height="70" uuid="ac10ed56-90e3-41b6-aca0-935455e4bdea">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[স্বাস্থগত শ্রেনী বিভাগ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="0" width="50" height="70" uuid="e7398bcd-e293-4e42-b699-0e9ac8a7966f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="5" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[মন্তব্য]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="32" height="39" uuid="50381cd6-4c63-43ba-a5ed-002acac81f17"/>
+				<box topPadding="4" leftPadding="4" bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="81" y="0" width="88" height="39" uuid="9eafd879-b599-4392-897b-f8626593c054">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0eb69e31-92b3-48af-93c1-0721e9505bfa"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{commision}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="239" y="0" width="43" height="39" uuid="6c51f0a4-6ab9-4dca-b959-cd9b655b91b0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7a77a2fc-af0b-47ed-9f0a-dd61d1119f4c"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{code}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="282" y="0" width="48" height="39" uuid="fea1c8e7-ce74-47a5-84b0-ba1b2564ca3c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="370" y="0" width="51" height="39" uuid="b8fcb399-bc46-4639-9a76-6dc7d85db317">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="421" y="0" width="129" height="39" uuid="691060cd-f8cf-4ff3-817c-e3a31f5aaa81">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="330" y="0" width="40" height="39" uuid="b8a3a4ae-5755-4909-8190-48f2e8105f3f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="169" y="0" width="70" height="39" uuid="a0855f63-0644-4e76-ae7f-e93c4eccbe48">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a57ff32c-a14a-4913-a369-22eb15945336"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="32" y="0" width="49" height="39" uuid="0467d66f-545d-47a1-956d-a2b6c822441b"/>
+				<box topPadding="4" leftPadding="4" bottomPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="750" y="0" width="50" height="39" uuid="4bf0922a-5752-4950-819d-7e626b47c1cd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="622" y="0" width="58" height="39" uuid="eff2ef97-2089-4ff1-b0fd-24f4a92a1de3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="680" y="0" width="70" height="39" uuid="d61cf1c2-1baa-462c-8b0e-08ad40699da4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="011021a7-0a88-4d5e-8b51-c15eb44d9ef7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="550" y="0" width="72" height="39" uuid="943bfdf5-3c59-4f75-be17-cc59b237b834">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d283f0f0-745a-4ea2-adf6-e335161ab56b"/>
+				</reportElement>
+				<box topPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dated}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="177" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="0" width="250" height="20" uuid="fafad971-d196-4e52-90c8-5cdab796a33d"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[(১)অতি প্রয়োজনীয় অফিসারদের নাম লাল কালিতে দাগাইতে হইবে]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="10" width="100" height="19" uuid="bbd8fb2f-ac09-49bb-a9ff-135efd738879"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[বিতরণঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="29" width="158" height="19" uuid="da5a0af3-b593-4cc2-baa4-2a26b5bcb19d"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[স্টেশনঃবিওএফ,গাজীপুর সেনানিবাস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="48" width="40" height="19" uuid="8275e051-067c-4939-88bb-681e4973da39"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="42" y="48" width="100" height="19" uuid="bb438c10-af3b-4c23-aa93-553be4ed88dd"/>
+				<textElement>
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="63" width="179" height="19" uuid="002e43bf-6afe-493e-8aa7-6276ea792b76"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[সেনাসদর সামরিক সচিবের শাখা .....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="82" width="179" height="19" uuid="1c232001-5ca2-4434-834b-196818eeac17"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[অর্থ নিয়ন্ত্রক (সেনা)বেতন-১ .....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="120" width="179" height="19" uuid="0f3434ec-177a-456f-99cd-b0819f7a5041"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ডিভিশন সদর দপ্তর .....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="101" width="179" height="19" uuid="14e98ba7-9933-4564-ad82-53adc7336256"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ব্রিগেড সদর দপ্তর .....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="158" width="179" height="19" uuid="89d5657b-4a82-4e51-971a-7d872a1f598e"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[এরিয়া সদর দপ্তর .....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="139" width="179" height="19" uuid="b1ee65ea-7d05-46c8-b134-e6d72548a663"/>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[কোর সদর দপ্তর .....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="30" width="60" height="19" uuid="a8aa3474-f6f4-4179-bad2-ae18e81f2d42"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[ডিভিশন ......]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="29" width="60" height="19" uuid="bb51dd03-5fd0-4a88-a52d-d26c34745586"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[কোর .........]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="30" width="199" height="19" uuid="fa696e39-4f96-4005-9cd2-342e9b4531fd"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[বস্থাপক (চলতি দায়িত্ব)  প্রশাসন পার্সোনেল]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="370" y="49" width="199" height="19" uuid="b4db980f-b255-48e4-bd97-279f088322f7"/>
+				<textElement>
+					<font fontName="SolaimanLipi" isBold="false" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<text><![CDATA[পক্ষে কমান্ডেট]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

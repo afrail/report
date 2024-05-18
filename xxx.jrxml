@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.18.1.final using JasperReports Library version 6.18.1-9d75d1969e774d4f179fb3be8401e98a0e6d1611  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="xxx" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="842" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a8011df1-c761-437e-a240-2e3714795caa">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="94"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="894"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#FBFDFF"/>
+		</conditionalStyle>
+	</style>
+	<subDataset name="liabilities" uuid="10b5d8b2-817f-4be9-a5c6-1aaca36b5203">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+		<parameter name="P_TO_DATE" class="java.util.Date"/>
+		<queryString language="SQL">
+			<![CDATA[select b.name_bangla, sum(amount) amount 
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.welfare_type_id=b.id
+and welfare_type_id not in(175,174)
+and type_id in(11,12,40)
+and date(date)<=  $P{P_TO_DATE} 
+group by b.name_bangla]]>
+		</queryString>
+		<field name="name_bangla" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="name_bangla"/>
+			<property name="com.jaspersoft.studio.field.label" value="name_bangla"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+		</field>
+		<field name="amount" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="amount"/>
+			<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		</field>
+		<variable name="Variable_1" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<subDataset name="assets" uuid="eb596b9b-bec3-4061-bc65-4acc2977291b">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE"/>
+		<parameter name="P_TO_DATE" class="java.util.Date"/>
+		<queryString language="SQL">
+			<![CDATA[select b.name_bangla, sum(amount) amount 
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.bank_or_cash_id=b.id
+and bank_or_cash_id  in(175,174,176)
+and type_id in(11,12,40)
+and date(date)<= $P{P_TO_DATE}  
+group by b.name_bangla]]>
+		</queryString>
+		<field name="name_bangla" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="name_bangla"/>
+			<property name="com.jaspersoft.studio.field.label" value="name_bangla"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="budget_economic_code"/>
+		</field>
+		<field name="amount" class="java.lang.Double">
+			<property name="com.jaspersoft.studio.field.name" value="amount"/>
+			<property name="com.jaspersoft.studio.field.label" value="amount"/>
+		</field>
+		<variable name="Variable_1" class="java.math.BigDecimal" calculation="Sum">
+			<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT ii.cash_amount-xx.cash_amount  cash_amount ,
+ii.bank_amount-xx.bank_amount bank_amount, 
+ii.FDR_amount-xx.FDR_amount FDR_amount, 
+ii.Welfare_Fund-xx.Welfare_Fund  Welfare_Fund, 
+ii.Mess_Fund-xx.Mess_Fund Mess_Fund, 
+ii.Ration_Fund-xx.Ration_Fund Ration_Fund , 
+ii.Sports_Fund-xx.Sports_Fund Sports_Fund
+from 
+(select 
+sum(COALESCE (i.cash_amount,0))   cash_amount,
+sum(COALESCE (i.bank_amount,0)) bank_amount , 
+sum(COALESCE (i.FDR_amount,0)) FDR_amount,
+sum(COALESCE (i.Welfare_Fund,0)) Welfare_Fund, 
+sum(COALESCE (i.Mess_Fund,0)) Mess_Fund , 
+sum(COALESCE (i.Ration_Fund,0)) Ration_Fund,
+sum(COALESCE (i.Sports_Fund,0)) Sports_Fund
+from(
+select 'Income' HEad, '' voucr, '' tr_date, Narration,sum(cash_amount)cash_amount ,SUM(bank_amount) bank_amount,
+SUM(FDR_amount) FDR_amount, SUM(Welfare_Fund) Welfare_Fund,SUM(Mess_Fund) Mess_Fund,
+SUm(Ration_Fund) Ration_Fund,SUM(Sports_Fund) Sports_Fund FROM (
+select 'জের' Narration, case when bank_or_cash_id=175 then sum(amount) end  cash_amount ,
+case when bank_or_cash_id =174 then sum(amount) end bank_amount,
+case when bank_or_cash_id =176 then sum(amount) end FDR_amount,
+case when welfare_type_id =177 then sum(amount) end Welfare_Fund,
+case when welfare_type_id =178 then sum(amount) end Mess_Fund,
+case when welfare_type_id =179 then sum(amount) end Ration_Fund,
+case when welfare_type_id =180 then sum(amount) end Sports_Fund
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.welfare_type_id=b.id
+and type_id in(11,12,40)
+and date< $P{P_FROM_DATE} 
+group by bank_or_cash_id,welfare_type_id) xx
+group by Narration
+union all 
+select 'Income' HEad,'' voucr, to_char(date(date),'dd-mm-yyyy') tr_date,  naration Narration, case when bank_or_cash_id=175 then (amount) end  cash_amount ,
+case when bank_or_cash_id =174 then (amount) end bank_amount,
+case when bank_or_cash_id =176 then (amount) end FDR_amount,
+case when welfare_type_id =177 then (amount) end Welfare_Fund,
+case when welfare_type_id =178 then (amount) end Mess_Fund,
+case when welfare_type_id =179 then (amount) end Ration_Fund,
+case when welfare_type_id =180 then (amount) end Sports_Fund
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.welfare_type_id=b.id
+and bank_or_cash_id=175
+and type_id in(11,12)
+and date(date) between  $P{P_FROM_DATE}  and  $P{P_TO_DATE} 
+union all
+select 'Income' HEad,'' voucr,to_char(date(date),'dd-mm-yyyy') tr_date,  naration Narration, case when bank_or_cash_id=175 then (amount) end  cash_amount ,
+case when bank_or_cash_id =174 then (amount) end bank_amount,
+case when bank_or_cash_id =176 then (amount) end FDR_amount,
+case when welfare_type_id =177 then (amount) end Welfare_Fund,
+case when welfare_type_id =178 then (amount) end Mess_Fund,
+case when welfare_type_id =179 then (amount) end Ration_Fund,
+case when welfare_type_id =180 then (amount) end Sports_Fund
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.welfare_type_id=b.id
+and bank_or_cash_id<>175
+and type_id in(11)
+and date(date) between  $P{P_FROM_DATE}  and  $P{P_TO_DATE}
+)i ) ii, 
+(select 
+sum(COALESCE (x.cash_amount,0)) cash_amount,
+sum(COALESCE (x.bank_amount,0)) bank_amount , 
+sum(COALESCE (x.FDR_amount,0)) FDR_amount,
+sum(COALESCE (x.Welfare_Fund,0)) Welfare_Fund, 
+sum(COALESCE (x.Mess_Fund,0)) Mess_Fund , 
+sum(COALESCE (x.Ration_Fund,0)) Ration_Fund,
+sum(COALESCE (x.Sports_Fund,0)) Sports_Fund
+from(
+select 'Expense' HEad, '' voucr, to_char(date(date),'dd-mm-yyyy') tr_date,  naration Narration, 
+case when welfare_type_id=175 then (amount) end  cash_amount ,
+case when welfare_type_id =174 then (amount) end bank_amount,
+case when bank_or_cash_id =176 then (amount) end FDR_amount,
+case when welfare_type_id =177 then (amount) end Welfare_Fund,
+case when welfare_type_id =178 then (amount) end Mess_Fund,
+case when welfare_type_id =179 then (amount) end Ration_Fund,
+case when welfare_type_id =180 then (amount) end Sports_Fund
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.welfare_type_id=b.id
+and welfare_type_id=174
+and type_id in(12)
+and date(date) between  $P{P_FROM_DATE}  and  $P{P_TO_DATE} 
+union all 
+select 'Expense' HEad, '' voucr, to_char(date(date),'dd-mm-yyyy') tr_date,  naration Narration, case when bank_or_cash_id=175 then (amount) end  cash_amount ,
+case when bank_or_cash_id =174 then (amount) end bank_amount,
+case when bank_or_cash_id =176 then (amount) end FDR_amount,
+case when welfare_type_id =177 then (amount) end Welfare_Fund,
+case when welfare_type_id =178 then (amount) end Mess_Fund,
+case when welfare_type_id =179 then (amount) end Ration_Fund,
+case when welfare_type_id =180 then (amount) end Sports_Fund
+from raw_cash_deposit a, budget_economic_code b
+where 1=1
+and a.welfare_type_id=b.id
+--and bank_or_cash_id<>175
+and type_id in(40)
+and date(date) between $P{P_FROM_DATE}  and  $P{P_TO_DATE}
+) x ) xx]]>
+	</queryString>
+	<field name="cash_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="cash_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="cash_amount"/>
+	</field>
+	<field name="bank_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="bank_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="bank_amount"/>
+	</field>
+	<field name="fdr_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="fdr_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="fdr_amount"/>
+	</field>
+	<field name="welfare_fund" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="welfare_fund"/>
+		<property name="com.jaspersoft.studio.field.label" value="welfare_fund"/>
+	</field>
+	<field name="mess_fund" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="mess_fund"/>
+		<property name="com.jaspersoft.studio.field.label" value="mess_fund"/>
+	</field>
+	<field name="ration_fund" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="ration_fund"/>
+		<property name="com.jaspersoft.studio.field.label" value="ration_fund"/>
+	</field>
+	<field name="sports_fund" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="sports_fund"/>
+		<property name="com.jaspersoft.studio.field.label" value="sports_fund"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField textAdjust="StretchHeight">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="321" height="18" uuid="1b9c9543-bbe3-4b96-9916-5a2ff953c606">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ব্যালেন্স শীট "]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="321" y="0" width="70" height="18" uuid="0d2a0113-eecc-49e6-8b43-3407674b5e46">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3ca6b90b-d17f-49e1-9969-ee8183e8b3f4"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cash_amount}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="391" y="0" width="70" height="18" uuid="2df7056a-adcf-4601-b58d-ebcc351e8ccc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fb58be4d-a524-477f-b39a-22f6746091f8"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bank_amount}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="461" y="0" width="70" height="18" uuid="fb13ed07-dd1e-4857-b183-26e8226319f5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0cc0a61e-5f7e-4904-824f-387f49ce2f42"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fdr_amount}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="531" y="0" width="70" height="18" uuid="70b7556c-a8ab-497c-b4dc-a3b51749c365">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e9b5c463-3f5c-45a7-9a3a-f06553196dfc"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{welfare_fund}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="601" y="0" width="70" height="18" uuid="476845fb-b10b-4324-87a9-aa7bef4d219c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9dae5f25-d9f7-408a-be50-75631b4e2470"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mess_fund}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="671" y="0" width="70" height="18" uuid="a9da2eaf-e235-48e4-a684-40f7141877b3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24e8a7b2-f98e-4ecc-be66-2579b8e717f1"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ration_fund}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="741" y="0" width="58" height="18" uuid="0a230d01-e439-4402-b198-7aef2883c91e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="418d6ced-5464-4ba0-a6ec-1462254b8ada"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sports_fund}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="42">
+			<textField>
+				<reportElement x="0" y="16" width="799" height="20" uuid="3d6c5a2d-d865-4a72-aed0-32404d592377"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled">
+					<font fontName="NikoshBAN" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[ "<style isUnderline='true'>"+"স্থিতিপত্র/ উদ্বৃত্তপত্র Balance Sheet"+ "</style>" 
+]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="200">
+			<componentElement>
+				<reportElement x="20" y="10" width="330" height="56" uuid="32d3e55c-5197-47f9-a324-e187bdc0f57f">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="liabilities" uuid="f7a2a9fc-88ca-4fd0-af68-53cf1ec73c99">
+						<datasetParameter name="P_TO_DATE">
+							<datasetParameterExpression><![CDATA[$P{P_TO_DATE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="170" uuid="489c85a3-2abc-4c4c-98f8-76bd1414c435">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table_TH" height="20">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField>
+								<reportElement x="0" y="0" width="170" height="20" uuid="a938b605-5664-4ee3-879e-c2809ceb391b">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box leftPadding="3"/>
+								<textElement verticalAlignment="Middle" markup="styled">
+									<font fontName="NikoshBAN" size="11" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[ "<style isUnderline='true'>"+"দায়সমূহ (Liabilities) "+ "</style>" ]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnFooter style="Table_CH" height="18">
+							<staticText>
+								<reportElement x="0" y="0" width="170" height="18" uuid="b4bf4e07-c5e7-4dd4-a331-a04f0a2af7b8"/>
+								<box rightPadding="3"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<text><![CDATA[মোট]]></text>
+							</staticText>
+						</jr:columnFooter>
+						<jr:detailCell style="Table_TD" height="18">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField textAdjust="StretchHeight">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="170" height="18" uuid="c86c06fb-46cc-4abc-9781-13c8cdcdb115">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box leftPadding="3"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{name_bangla}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="160" uuid="cf06cd82-96c4-4c64-b96b-124a364dd851">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table_TH" height="20"/>
+						<jr:columnFooter style="Table_CH" height="18">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField>
+								<reportElement x="0" y="0" width="160" height="18" uuid="fbe6f61b-eff5-4abc-9d32-5d2b691809ab">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box rightPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{Variable_1}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell style="Table_TD" height="18">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField>
+								<reportElement x="0" y="0" width="160" height="18" uuid="07a26b87-9472-4d17-a6eb-6a35631e6488">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box rightPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement x="440" y="10" width="330" height="56" uuid="04bb7637-baaf-4e1a-bd85-8cf6c82d8f38">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+					<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+					<property name="com.jaspersoft.studio.components.autoresize.proportional" value="true"/>
+				</reportElement>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="assets" uuid="b769b2b7-649f-42a6-b49f-adc92a5e2275">
+						<datasetParameter name="P_TO_DATE">
+							<datasetParameterExpression><![CDATA[$P{P_TO_DATE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="170" uuid="eaeb1071-868b-43f4-88f5-62632c01ac8d">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+						<jr:tableHeader style="Table_TH" height="20">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField>
+								<reportElement x="0" y="0" width="170" height="20" uuid="4058e62f-0d5c-45d5-bc8d-0cc73e8f442b">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box leftPadding="3"/>
+								<textElement verticalAlignment="Middle" markup="styled">
+									<font fontName="NikoshBAN" size="11" isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[ "<style isUnderline='true'>"+"সম্পদ (Assets) "+ "</style>" ]]></textFieldExpression>
+							</textField>
+						</jr:tableHeader>
+						<jr:columnFooter style="Table_CH" height="18"/>
+						<jr:detailCell style="Table_TD" height="18">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField textAdjust="StretchHeight">
+								<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="170" height="18" uuid="ee0d4ca9-5414-48e7-8814-f91d3a803c3f">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box leftPadding="3"/>
+								<textElement verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{name_bangla}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="160" uuid="0e7ab162-ab2b-405b-a942-cbfc126b6107">
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+						<jr:tableHeader style="Table_TH" height="20"/>
+						<jr:columnFooter style="Table_CH" height="18">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField>
+								<reportElement x="0" y="0" width="160" height="18" uuid="7046fef1-d4ba-407f-81ea-5dd98c338d0a">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box rightPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{Variable_1}]]></textFieldExpression>
+							</textField>
+						</jr:columnFooter>
+						<jr:detailCell style="Table_TD" height="18">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField>
+								<reportElement x="0" y="0" width="160" height="18" uuid="6770c8c8-996c-4d05-8767-283691687439">
+									<property name="com.jaspersoft.studio.unit.height" value="px"/>
+								</reportElement>
+								<box rightPadding="2"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font fontName="NikoshBAN" size="11"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

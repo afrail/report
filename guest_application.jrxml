@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="guest_application" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1e6fd086-5740-454d-9df9-b902d128fee2">
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<summary>
+		<band height="570" splitType="Stretch">
+			<staticText>
+				<reportElement x="50" y="30" width="470" height="540" uuid="9322db15-efb8-4752-9cb2-881ecf8f845f"/>
+				<textElement>
+					<font fontName="NikoshBAN" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[বরাবর
+ব্যবস্থাপক নিরাপত্তা
+বিওএফ, গাজীপুর সেনানিবাস
+
+মাধ্যমঃ যথাযথ কর্তৃপক্ষ
+
+বিষয়ঃ আবাসিক এলাকায় মেহমান প্রবেশের অনুমতি প্রদানের আবেদন।
+
+জনাব 
+	বিনীত নিবেদন এই যে, আমি নিম্নস্বাক্ষরকারী বর্তমানে ……………… বাসার সপরিবারের বসবাস করছি। আগামী …………… তারিখ নিম্নের বিবরণ অনুযায়ী আমার মেহমান/আত্মী-স্বজন আমার বাসায় বেড়াতে আসবেন ( সর্বোচ্চ সাত দিনের জন্য )।
+
+১। মেহমানের নাম, ঠিকানা ও 	:
+    মোবাইল নং
+
+
+
+২। আগমনের উদ্দেশ্য 		:
+
+
+
+
+৩। আবেদনেকারীর সাথে সম্পর্ক 	:
+
+৪। গাড়ী নং ( প্রযোজ্য ক্ষেত্রে ) 	:
+    চালকের নাম ও মোবাইল নং 	:
+
+৫। অবস্থানের সময়কাল		:
+
+৬। প্রবেশের সময় 		:		  	  গেইট হতে ইস্যুকৃত পাশ নং- 
+
+৭। বাহির সময় 		 	:
+
+	অতএব, উপরোক্ত বর্ণনার আলোকে আমার মেহমান-কে আমার বাসাই প্রবেশের অনুমতি দানে বাধিত করবেন । উল্লেখ্য, আমার মেহমান বিওএফ আবাসিক এলাকার নিয়ম শৃংখলা মেনে চলতে বাধ্য থাকিবে ।
+
+								বিনীত নিবেদক 
+								
+								স্বাক্ষর: 
+								নাম:
+								ব্যক্তিগত নং-
+								পদবী:
+								শাখা:
+								বাসা নং- 
+তারিখ: 								মোবাইল নং-
+
+]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pak_jahagikoron" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="57e3eb47-bfec-4971-baff-c7874fc6cb4a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ibcs.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_HRM_TYPE" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select 
+	Q1.VISIT_ID,
+	Q1.hrm_type ,
+	Q1.employee_id,
+	get_emp_name(Q1.employee_id) EMPLOYEE_NAME,
+	coalesce( get_emp_code(Q1.employee_id), '') || ','|| 
+	coalesce(
+	(
+		select
+			GET_COM_LOOKUP_BN_NAME(designation_id)
+		from
+			hrm_employee_official_information heoi,
+			hrm_employee_personal_information personal 
+		where
+			personal.id = heoi.employee_id 
+			and personal.id = Q1.employee_id),'') || ' ' ||
+	
+		coalesce(	(
+		select
+			GET_COM_LOOKUP_BN_NAME(wing_id)
+		from
+			hrm_employee_official_information heoi
+		where
+			heoi.id = Q1.employee_id), '') || ' ' ||
+coalesce(	(
+	select
+	employee_name_bangla
+	from
+	hrm_employee_personal_information hepi
+	where		
+	hepi.id = Q1.employee_id),'') empinformation,
+	to_char(Q1.from_date, 'dd/mm/yyyy') || ' ' || 'হতে' || ' ' ||to_char(Q1.to_date, 'dd/mm/yyyy')  as "গমনের তারিখ",
+	'মোট '|| Q1.duration || ' ' || 'দিন' as "সময়কাল",
+	GET_COM_LOOKUP_BN_NAME(Q1.visit_type_id) tranning_place_name1,
+    Q1.product_name tranning_place_name,
+
+	GET_COM_LOOKUP_BN_NAME(Q1.country_id) country ,
+    Q2.training_type_id,
+    Q1.visit_type_id,
+	Q1.has_training,
+	Q1.product_name VISITED_FOR_PRODUCT,
+	Q2.TRAINING_ID,
+	Q2.training_name,
+	Q2.training_type_id,
+	Q2.visit_information_id
+from
+	(
+	--1. VISIT QUERY
+	select
+		V.ID VISIT_ID,
+		DURATION,
+		country_id,
+		v.employee_id,
+        personal.hrm_type ,
+		has_training,
+		product_name,
+		visit_type_id,
+		V.from_date,
+		V.to_date
+	from
+		hrm_visit_information V ,
+		 common_lookup_details L,
+		 hrm_employee_personal_information personal
+
+	where
+		1 = 1
+		and personal.id = V.employee_id
+		and V.visit_type_id = L.id
+		and L.code = 'VISIT_TYPE_PSI'
+
+) Q1
+full join(
+	--2. TRAINING QUERY
+	select
+		ID TRAINING_ID,
+		institute_name,
+		training_location,
+		employee_id,
+		training_type_id,
+		visit_information_id,
+		training_name
+	from
+		 hrm_employee_training_information T
+	where
+		visit_information_id is not null
+) Q2 on
+	Q1.EMPLOYEE_ID = Q2.EMPLOYEE_ID
+	and Q1.VISIT_ID = Q2.visit_information_id
+	and Q2.training_type_id=20
+
+	where 1=1
+	and Q1.hrm_type  = coalesce($P{P_HRM_TYPE} ,Q1.hrm_type)
+	 and (DATE(Q1.from_date) between coalesce($P{P_FROM_DATE}, DATE(Q1.from_date))and coalesce($P{P_TO_DATE}, DATE(Q1.from_date)))
+	and (DATE(Q1.to_date) between coalesce($P{P_FROM_DATE}, DATE(Q1.to_date))and coalesce($P{P_TO_DATE}, DATE(Q1.to_date)))
+	order by employee_name,from_date]]>
+	</queryString>
+	<field name="visit_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="visit_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="visit_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_visit_information"/>
+	</field>
+	<field name="hrm_type" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="hrm_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="hrm_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="employee_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_visit_information"/>
+	</field>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+	</field>
+	<field name="empinformation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="empinformation"/>
+		<property name="com.jaspersoft.studio.field.label" value="empinformation"/>
+	</field>
+	<field name="গমনের তারিখ" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="গমনের তারিখ"/>
+		<property name="com.jaspersoft.studio.field.label" value="গমনের তারিখ"/>
+	</field>
+	<field name="সময়কাল" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="সময়কাল"/>
+		<property name="com.jaspersoft.studio.field.label" value="সময়কাল"/>
+	</field>
+	<field name="tranning_place_name1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tranning_place_name1"/>
+		<property name="com.jaspersoft.studio.field.label" value="tranning_place_name1"/>
+	</field>
+	<field name="tranning_place_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tranning_place_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="tranning_place_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_visit_information"/>
+	</field>
+	<field name="country" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="country"/>
+		<property name="com.jaspersoft.studio.field.label" value="country"/>
+	</field>
+	<field name="training_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="training_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="visit_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="visit_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="visit_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_visit_information"/>
+	</field>
+	<field name="has_training" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="has_training"/>
+		<property name="com.jaspersoft.studio.field.label" value="has_training"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_visit_information"/>
+	</field>
+	<field name="visited_for_product" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="visited_for_product"/>
+		<property name="com.jaspersoft.studio.field.label" value="visited_for_product"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_visit_information"/>
+	</field>
+	<field name="training_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="training_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="training_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="COLUMN_17" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="training_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<field name="visit_information_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="visit_information_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="visit_information_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_training_information"/>
+	</field>
+	<group name="Group1" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{empinformation}]]></groupExpression>
+		<groupHeader>
+			<band height="60">
+				<staticText>
+					<reportElement x="0" y="0" width="130" height="30" uuid="18278ed4-5563-469f-98e6-7710c0564d69">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+					</reportElement>
+					<box leftPadding="3">
+						<pen lineWidth="1.0" lineStyle="Dotted"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="12" isBold="true" isUnderline="true"/>
+					</textElement>
+					<text><![CDATA[ব্যক্তিগত নম্বর,পদবী, শাখা ও নাম:]]></text>
+				</staticText>
+				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+					<reportElement stretchType="RelativeToTallestObject" x="130" y="0" width="425" height="30" uuid="53c6c41c-4c31-4fbd-b448-8ea10bd63d6c">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+					</reportElement>
+					<box topPadding="0" leftPadding="3" rightPadding="0">
+						<pen lineWidth="1.0" lineStyle="Dotted"/>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.75" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="12" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{empinformation}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="30" width="40" height="30" uuid="22e14528-64cf-4a7d-9ff0-4979e57dd6f2">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ক্রমিক]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="40" y="30" width="160" height="30" uuid="700477c4-f2b9-41ac-9a81-c8be8a5467a3">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<text><![CDATA[প্রাক-জাহাজীকরণ পরিদর্শনের নাম]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="200" y="30" width="180" height="30" uuid="3450c34c-7c19-4cf7-ad8f-591764a38006">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<text><![CDATA[প্রাক-জাহাজীকরণ প্রশিক্ষনের নাম]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="380" y="30" width="100" height="30" uuid="433a57ee-a2ae-4321-8ce0-881c4b26e0b1">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3cc12378-f065-40e9-b358-262760d68ad4"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<text><![CDATA[গমনের তারিখ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="480" y="30" width="75" height="30" uuid="bfce8b08-3c9b-4b99-a510-85fc35479e0b">
+						<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4efd16ac-28c1-4010-a02b-b58d4f7b9309"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ভ্রমনকৃত দেশ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="67" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="550" height="30" uuid="bfb3bc2a-2cd0-4f69-bc9b-42eb586012ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["সীমিত"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="37" width="550" height="30" uuid="ddb6caa5-eb22-456d-aa05-9ca9f9d59152"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="16" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বৈদেশিক প্রশিক্ষণ এবং প্রাক-জাহাজীকরণ পরিদর্শনের জন্য গমনকারী ব্যক্তিগণের নামীয় তালিকা"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="30" splitType="Stretch">
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="232" y="0" width="45" height="30" uuid="b429b6f3-fc91-4487-8528-4a336517c0c1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_FROM_DATE}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/YYYY" isBlankWhenNull="true">
+				<reportElement x="325" y="0" width="45" height="30" uuid="6ed44e90-6ba0-4e6c-8056-44d6f1e855c2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_TO_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="190" y="0" width="45" height="30" uuid="5009a77d-1787-4c52-b326-eaf17e3d5ab8">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["তারিখ হতে"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="45" height="30" uuid="5dc66d8a-3b29-4d20-9cd7-4d42d312138e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["তারিখ পর্যন্ত"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="40" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="380" y="0" width="100" height="40" uuid="1074582b-2403-42ba-becc-c5121f1336c8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3cc12378-f065-40e9-b358-262760d68ad4"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{গমনের তারিখ} + "\n" + $F{সময়কাল}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="480" y="0" width="75" height="40" uuid="10538fcc-b103-4d9b-997a-eb4da2749168">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4efd16ac-28c1-4010-a02b-b58d4f7b9309"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" rightPadding="2">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{country}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="40" printWhenGroupChanges="Group1" uuid="75567358-b005-4f8d-a676-2b1e79567572"/>
+				<box topPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Group1_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="160" height="40" uuid="a6f7fa8c-0a12-4304-9b6b-3dcfd169d7e8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" rightPadding="3">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tranning_place_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="200" y="0" width="180" height="40" uuid="40c3d403-cf9c-4697-a718-2f36732d25d0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f23ee803-4bf6-4ef7-abdc-6f5ddec08632"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="3" rightPadding="0">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rec_newspaper_list" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="0f09ae35-c673-4400-aa8b-a036bb9113ce">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-live-server"/>
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[cmVjX25ld3NwYXBlcl9saXN0ICwxNSw2Niw4NjhiOTlmNS0yZTNmLTQyMzYtYmM0Zi0xOGNkNjRl
+MmFmNDM7cmVjX3JlY3J1aXRtZW50X3JlZmVyZW5jZV90eXBlICwyMDYsMTUsY2FhMTQzOTQtNzc5
+Ni00MzEzLTljYzctODY5ZGU2MTRlZDM0Ow==]]>
+	</property>
+	<parameter name="P_REC_REFERENCE_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT newpaper.id,
+	reference.reference_name,
+	get_com_lookup_name( newpaper.newspaper_id) "news_paper",
+	newpaper.publication_date
+FROM rec_newspaper_list newpaper,
+	rec_recruitment_reference_type reference
+WHERE 
+	 1 = 1 
+	 AND newpaper.recruitment_ref_id = reference.id 
+	 AND newpaper.recruitment_ref_id = $P{P_REC_REFERENCE_ID} 
+ORDER BY newpaper.id DESC]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_newspaper_list"/>
+	</field>
+	<field name="reference_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="reference_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="reference_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_recruitment_reference_type"/>
+	</field>
+	<field name="news_paper" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="news_paper"/>
+		<property name="com.jaspersoft.studio.field.label" value="news_paper"/>
+	</field>
+	<field name="publication_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="publication_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="publication_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_newspaper_list"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="560" height="54" uuid="343ef5bc-2e57-45a8-8699-0c334a768cb0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bangladesh Ordnance Factory
+Gazipur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="560" height="20" uuid="d1188a94-468a-4889-9315-5e0dddad56c7"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Newspaper List]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="50" height="20" uuid="b3c2a26f-9b28-422a-ab7a-8880dd9483cf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ref No:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="50" y="0" width="510" height="20" uuid="52d652f0-aaee-48e4-a89a-e251b99903f0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reference_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement x="40" y="2" width="340" height="20" uuid="3dea1930-7bb1-431e-b662-5d00eb338682">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1cd8a25b-75c3-47b8-8ac1-8b8fda14611f"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Newspaper Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="2" width="177" height="20" uuid="62511320-4522-4d5e-ad5a-973a7c5f64fd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5f5446d3-da48-4f9f-9e55-d0f472b248bf"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Publication Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="40" height="20" uuid="88a98d61-ed99-45f9-8ab9-320330e8bdd5"/>
+				<box>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="40" height="30" uuid="3983374c-9c25-4831-b368-f056ae3aa275"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="340" height="30" uuid="3864ce0c-2a4b-4c80-bad0-41d8d5b82f06">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1cd8a25b-75c3-47b8-8ac1-8b8fda14611f"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{news_paper}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="M/d/yy" isBlankWhenNull="true">
+				<reportElement x="380" y="0" width="177" height="30" uuid="13e57be7-0267-40d7-b2d0-29573702ae38">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5f5446d3-da48-4f9f-9e55-d0f472b248bf"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{publication_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

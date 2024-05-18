@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rec_training_latter_training_center" pageWidth="595" pageHeight="1000" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="73e4566c-cb6d-4272-b69e-915bfc0443df">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="bof-live-server"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="658"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="328"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="165"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="823"/>
+	<parameter name="p_training_ref" class="java.lang.String"/>
+	<parameter name="p_training_center_id" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select A.training_center_id, A.training_reference ,
+	E.CODE ||', '||E.EMPLOYEE_NAME_BANGLA ||',' 
+	||GET_COM_LOOKUP_NAME(DESIGNATION_ID) ||','||
+	GET_COM_LOOKUP_NAME(B.SHOP_ID) SHOP_NAME,
+	A.TRAINING_DATE_FROM,
+	A.TRAINING_DATE_TO,
+	A.TRAINING_DURATION,
+	A.TRAINING_FEE,
+	A.TAX_AMOUNT,
+    A.VAT_AMOUNT,
+    (A.TRAINING_FEE + A.TAX_AMOUNT + A.VAT_AMOUNT) amount,
+	GET_COM_LOOKUP_NAME(A.TRAINING_ID) AS TRAINING_NAME,
+	GET_TRAINING_TYPE_NAME(A.TRAINING_ID) TRAINING_TYPE,
+	C.BANGLA_NAME, C.ADDRESS,
+	C.BANGLA_NAME||''||C.ADDRESS center_address,
+	(
+	select count(s.TRAINING_ID) 
+	from REC_TRAINING_INFORMATION_MASTER s
+	where 1=1 
+	and training_reference=A.training_reference  and training_center_id=A.training_center_id 
+	) Training_Count,
+	(
+	select string_agg(DISTINCT to_char((date(TRAINING_DATE_FROM) ),'YYYY-MM-DD'),  ' ,')  
+	from REC_TRAINING_INFORMATION_MASTER
+	where 1=1 
+	and training_reference=A.training_reference  and training_center_id=A.training_center_id
+	)||
+	'প্রশিক্ষণের জন্য নির্ধারিত সময়ে'||C.BANGLA_NAME||''||C.ADDRESS || 'উপস্থিত থাকবেন' Traing_date,
+	'প্রশিক্ষণের জন্য মনোনীত কর্মচারী বিশোয়ক্তি প্রশিক্ষণ কোর্সে অংশগ্রহণের জন্য প্রশিক্ষণের জন্য নির্ধারিত সময়ে '||C.BANGLA_NAME||''||C.ADDRESS||'উপস্থিত থাকবেন' center_address1,
+	'বরাত পত্রের প্রেক্ষিতে '||C.ADDRESS||' কর্তৃক আয়োজিত বিশোয়ক্তি একটি প্রশিক্ষণে অংশগ্রহণের জন্য বাংলাদেশ সমরাস্ত্র নিম্নবর্তীত কারখানা  কর্মচারীকে মনোনীত করা হয়েছে' application,
+	(
+	select y.bangla_name|| ' আয়োজিত ' ||
+		(
+		select string_agg(DISTINCT GET_COM_LOOKUP_NAME (TRAINING_ID),' ,')|| ' কোর্সে অংশগ্রহণের জন্য কর্মচারী মনোয়ন প্রসঙ্গে' 
+		FROM REC_TRAINING_INFORMATION_MASTER 
+		where 1=1 
+		and id=a.id
+		)subject 
+	from REC_TRAINING_INFORMATION_MASTER x, rec_trainin_center y
+ 	where 1=1
+ 	and x.training_center_id=y.id
+  	and x.id=a.id
+ 	)
+FROM
+	REC_TRAINING_INFORMATION_MASTER A ,
+	REC_TRAINING_INFORMATION_DETAILS B,
+	HRM_EMPLOYEE_PERSONAL_INFORMATION E,
+	REC_TRAININ_CENTER C
+WHERE 1=1 AND
+	A.ID = B.TRAINING_INFORMATION_MASTER_ID 
+	AND E.ID=B.EMPLOYEE_ID
+    AND C.ID=A.TRAINING_CENTER_ID
+    and a.training_reference =$P{p_training_ref}
+    and a.training_center_id =COALESCE( $P{p_training_center_id} ,a.training_center_id)]]>
+	</queryString>
+	<field name="training_center_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="training_center_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_center_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="training_reference" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_reference"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_reference"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="shop_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="shop_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="shop_name"/>
+	</field>
+	<field name="training_date_from" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="training_date_from"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_date_from"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="training_date_to" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="training_date_to"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_date_to"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="training_duration" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_duration"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_duration"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="training_fee" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="training_fee"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_fee"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="tax_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="tax_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="tax_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="vat_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="vat_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="vat_amount"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_training_information_master"/>
+	</field>
+	<field name="amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount"/>
+	</field>
+	<field name="training_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_name"/>
+	</field>
+	<field name="training_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="training_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_type"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_trainin_center"/>
+	</field>
+	<field name="address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="address"/>
+		<property name="com.jaspersoft.studio.field.label" value="address"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_trainin_center"/>
+	</field>
+	<field name="center_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="center_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="center_address"/>
+	</field>
+	<field name="training_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="training_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="training_count"/>
+	</field>
+	<field name="traing_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="traing_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="traing_date"/>
+	</field>
+	<field name="center_address1" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="center_address1"/>
+		<property name="com.jaspersoft.studio.field.label" value="center_address1"/>
+	</field>
+	<field name="application" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="application"/>
+		<property name="com.jaspersoft.studio.field.label" value="application"/>
+	</field>
+	<field name="subject" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="subject"/>
+		<property name="com.jaspersoft.studio.field.label" value="subject"/>
+	</field>
+	<variable name="total" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{amount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="84" splitType="Stretch">
+			<subreport>
+				<reportElement x="2" y="0" width="551" height="30" uuid="07b30d94-20c8-4ce6-bf1c-f593ddedc834"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="130" y="60" width="298" height="20" uuid="1fda1ea5-023e-4bba-aff5-50734f95589f"/>
+				<textElement textAlignment="Center">
+					<font fontName="Nirmala UI" size="14"/>
+				</textElement>
+				<text><![CDATA[প্রশিক্ষণ কেন্দ্র]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="60" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="548" height="30" isRemoveLineWhenBlank="true" uuid="6f1fb19d-69b1-40df-81d1-de16f866afe8"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subject}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="29" width="550" height="30" uuid="0034ea90-809a-4d0e-a115-73acfe1f899d"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<text><![CDATA[ইঞ্জিনিয়ারিং স্টাফ কলেজ বাংলাদেশ কি এসবিসি পত্র নম্বর এস সি 2018]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="42" y="31" width="130" height="30" uuid="fa4ff56a-495e-459c-8cd9-24cb5b2f5021">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3de343df-4db7-4f4f-ac47-f1cfa26aba44"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[প্রশিক্ষণার্থী বিবরণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="31" width="40" height="30" uuid="bb9eda08-0e52-4991-afb7-495d01f85e34"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="31" width="100" height="30" uuid="6859721c-ad59-4fa4-ba6d-f15f59637d25">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="183f978b-2b45-48a6-a623-7a657207e6b3"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[কোর্সের নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="272" y="31" width="100" height="30" uuid="68999ae0-e469-423b-98a4-677c188169ff">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="fba53ba2-9b8f-41e1-9d4b-2e259dce0061"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[স্থিতিকাল]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="372" y="31" width="90" height="30" uuid="eb4831f7-b02c-4716-ae89-f538e777474b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f0d08417-0452-4635-a062-aee9f3af9938"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[প্রশিক্ষণ ফি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="462" y="31" width="91" height="30" uuid="551185e4-e8fa-4328-b56f-333c621c1bad">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5e49fda0-9914-4990-9f5f-d2a2657926e8"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[প্রশিক্ষণ স্থান]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="550" height="30" isRemoveLineWhenBlank="true" uuid="b2a5a9fe-a992-462f-8cd8-e218ae2dc390"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{application}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="91" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField>
+				<reportElement x="2" y="0" width="40" height="91" uuid="a1a02686-8830-47b5-aaba-7be1a6a7723a"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="42" y="0" width="130" height="91" isRemoveLineWhenBlank="true" uuid="0aaf1e42-9612-46b2-9d88-97f0cc3d1491">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d1215755-a5b2-4829-8f2a-3fbf4bca53d1"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{shop_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="172" y="0" width="100" height="91" isRemoveLineWhenBlank="true" uuid="b1b4ae38-d06e-40fc-be15-32c473a92d59">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a492279c-79f9-42ca-9681-14c0f8187e8e"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="272" y="0" width="100" height="91" isRemoveLineWhenBlank="true" uuid="ace47480-883c-4823-9527-dae2f271a382">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f32f2892-3125-4d65-a2d6-4cee57e2b715"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_duration}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="372" y="0" width="90" height="91" isRemoveLineWhenBlank="true" uuid="67c12bba-1033-4891-9fd2-5561bd6cea02">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6e5ef67a-fb2c-45af-ba56-d70f92a0b832"/>
+				</reportElement>
+				<box rightPadding="3">
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_fee}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="462" y="0" width="91" height="91" isRemoveLineWhenBlank="true" uuid="13476374-8fd9-4e64-8294-676789cc43ec">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f56a72f3-f8a6-4017-8d0f-f056b0cfc065"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{center_address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="10" width="30" height="20" isRemoveLineWhenBlank="true" uuid="d8826cc4-78d9-46e1-93b7-17556bc8f43b"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[ভ্যাট]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="30" width="30" height="20" isRemoveLineWhenBlank="true" uuid="a5b5a901-90c4-48e6-b34c-363b5bd69fef"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[কর]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="10" width="52" height="20" isRemoveLineWhenBlank="true" uuid="d2862a98-02c9-4b26-8bde-3d42a8801600"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vat_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="410" y="30" width="52" height="20" isRemoveLineWhenBlank="true" uuid="7a91d59c-cc3d-4904-8f80-663deb65138a"/>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tax_amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="380" y="50" width="82" height="20" isRemoveLineWhenBlank="true" uuid="26eff561-76ab-4aa2-a762-19d90cc02c5c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9c736ce2-cb5a-44a0-be0f-fe2a2bfe2faa"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="256">
+			<staticText>
+				<reportElement x="2" y="98" width="100" height="30" uuid="c320748b-06ca-4bbe-8f07-f79f2e8a2e2a"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[বিবরণ : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="128" width="100" height="30" uuid="69bc8e38-7894-4367-970e-5d09a7c0893c"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[বহির্গমন:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="158" width="100" height="30" isRemoveLineWhenBlank="true" uuid="4a0b2e99-935e-404e-a546-0225668f7546"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="188" width="100" height="30" isRemoveLineWhenBlank="true" uuid="a85c4dec-4267-4471-9b03-c62fa570c3a6"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="2" y="60" width="553" height="30" isRemoveLineWhenBlank="true" uuid="5ee18546-34fa-4ff8-b887-51e1a5d5a651"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{traing_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="30" width="8" height="28" uuid="bfa6a2b6-9d34-4827-b843-cc3674858f57"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="30" width="78" height="28" uuid="50f416e1-2be1-4281-b842-fd687e40fe4c"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[প্রশিক্ষণের জন্য মনোনীত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="88" y="30" width="74" height="28" uuid="c16bd6ba-7a38-447c-8b41-ea7772172836"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[জন কর্মচারী বিশোয়ক্তি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="172" y="30" width="118" height="28" uuid="80136127-5404-45bf-922b-b6a777d7cefc"/>
+				<textElement>
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[টি প্রশিক্ষণ কোর্সে অংশগ্রহণের জন্য]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="162" y="30" width="10" height="28" uuid="f58dff4f-49e5-43e6-81cb-bf8ede08ac86"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{training_count}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="0" width="551" height="20" uuid="24d3f4aa-30f8-4676-9ed1-7d3e1790ace9"/>
+				<box topPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[                                                          মোট]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="372" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="957dfa1e-e2af-4ee7-b5e0-da9d99ba8dc3"/>
+				<box>
+					<pen lineWidth="0.75"/>
+					<topPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.75" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

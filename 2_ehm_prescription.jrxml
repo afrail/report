@@ -1,0 +1,837 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prescription" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aacd3974-7b8d-4157-910d-6dcd96009551">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<parameter name="prescription_master_id" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2prescription_investigation_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2prescription_disease_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="chief_complaint" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2prescription_medicin_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="2prescription_advice_sub" class="java.lang.String" isForPrompting="false"/>
+	<queryString>
+		<![CDATA[select id,patient_code,patient_name,rank_name,DOB,name,special_for,patin_age,gender,blood_group,prescription_date,
+coalesce(height,'')||'<br>'||coalesce(weight,'')||'<br>'||coalesce(spo2,'')||'<br>'||coalesce(ofc,'')  patint_condition, 
+'Patient In Time: '||patient_in_time||' & Out Time: '||to_char(prescription_date,'DD/MM/yyyy HH:MI:SSAM') patient_in_time   ,
+coalesce(Pulse,'')||'<br>'|| coalesce(BP,'')||'<br>'||coalesce(Pat_temp,'')||'<br>'||coalesce(rr,'') Illness,prescription_no,token_number token_register_no,
+case when length(section_name)>2 then section_name else only_patient_code end only_patient_code,section_name,
+only_patient_code only_patient_code_ch,
+followup_date,follow_up_visit_duration,follow_up_comment,cheif_complain, disease,advice,disposal_name,
+case when complain_count>0 then 'Chief Complain:' end cheif_complain_display,investigation,
+case when disease_count>0 then 'Diseases:' end Diseases_display,others_advice,'<b>'||referred_doctor_dis||'</b>'||referd_doctor referd_doctor,referred_doctor_dis,
+case when investigation_count>0 then 'Investigation:' end inv_disp,
+case when advice_count>0 then 'Advice:' end Advice_disp,
+case when inv_finding_count>0 then 'Investigation Finding:' end Inv_finding,
+case when illness_history_count>0 then 'Past Illness:' end illness_history_disp,
+illness_history,
+investigation_finding,
+follow_up_visit,followup_disp from(
+select eppm.id,epi.patient_code, case when epi.relation_type>0 then trim(epi.patient_name)||chr(10)||
+get_com_lookup_name(epi.relation_type)||' of '||get_patient_name_with_rank(epi.patient_id)
+ else get_patient_name_with_rank(epi.id) end patient_name ,others_advice, date(epi.date_of_birth) DOB, a.name, a.special_for,
+case when epi.date_of_birth>'1930-01-01' then get_age_as_date(date(epi.date_of_birth),date(eppm.prescription_date)) else '' end patin_age, get_com_lookup_name(epi.gender_id) gender ,
+get_com_lookup_name(epi.blood_group_id) blood_group, 
+eppm.referred_doctor referd_doctor, coalesce(get_com_lookup_name(epi.designation_id),epi.designation_name) rank_name,
+eppm.prescription_date prescription_date,
+(select to_char(entry_date,'DD/MM/yyyy HH:MI:SS AM') from ehm_token_register etr 
+where id=token_register_id) patient_in_time,
+(select token_number from ehm_token_register etr 
+where id=token_register_id)  token_number,
+case when length(eppm.referred_doctor)>0 then 'Referred Doctor/Hospital: ' end referred_doctor_dis,
+case when length("temp")>0 then '<b>'||'Temp:'||'</b>'||"temp"||'°F,' end Pat_temp,
+case when length(height)>0 then '<b>'||' Height: '||'</b>'||height||'",' end height,
+case when length(weight)>0 then '<b>'||' Weight: '||'</b>'||weight||'Kg,' end weight,
+case when length(ofc)>0 then  '<b>'||' OFC: '||'</b>'||ofc  end ofc, 
+case when length(spo2)>0 then '<b>'||' SPO2: '||'</b>'||spo2||'%,' end spo2,
+case when length(illness)>0 then '<b>'||'Illness: '||'</b>'||illness||',' end Illness,
+case when length(pulse)>0 then '<b>'||' Pulse: '||'</b>'||pulse||'/min,' end Pulse,
+case when length(bp)>0 then '<b>'||' BP: '||'</b>'||bp||'mmhg,' end BP,
+case when length(rr)>0 then '<b>'||' R/R: '||'</b>'||rr end rr,
+eppm.prescription_no,
+eppm.disposal_date,eppm.token_register_no, 
+translate(epi.patient_code,'0123456789-()!@#$%^&*_','') only_patient_code,
+(select get_com_lookup_name(coalesce(coalesce(coalesce(heoi.shop_id,heoi.group_id), heoi.wing_id),heoi.branch_id)) section_name
+from hrm_employee_official_information heoi , hrm_employee_personal_information hepi 
+where hepi.id=heoi.employee_id 
+and hepi.code=epi.emp_code) section_name,
+eppm.disposal_duration,
+case when disposal_duration=1 and  disposal_dwmy=1 then 'Day' 
+when disposal_duration>1 and  disposal_dwmy=1 then 'Days'
+when disposal_duration=1 and  disposal_dwmy=7 then 'Week'
+when disposal_duration>1 and  disposal_dwmy=7 then 'Weeks'
+when disposal_duration=1 and  disposal_dwmy=30 then 'Month'
+when disposal_duration>1 and  disposal_dwmy=30 then 'Months' end  disposal_duration_name,
+ (eppm.follow_up_visit_duration+1)  followup_date ,
+eppm.follow_up_visit_duration,eppm.follow_up_comment ,
+	 (select string_agg(cheif_complain,'<br>'  order by id) as cheif_complain from (
+	 select id, chief_complaint||' '||coalesce (cast(duration as varchar),'') ||' '||
+	 coalesce((case when duration=1 and  dwmy=1 then 'Day'
+	 when duration=1 and  dwmy=1 then 'Day'
+	 when duration>1 and  dwmy=1 then 'Days'
+	 when duration=1 and  dwmy=7 then 'Week'
+	 when duration>1 and  dwmy=7 then 'Weeks'
+	 when duration=1 and  dwmy=30 then 'Month'
+	 when duration>1 and  dwmy=30 then 'Months'
+	 when duration=1 and  dwmy=365 then 'Year'
+	 	 when duration>1 and  dwmy=365 then 'Years' end),'')  cheif_complain
+	 from ehm_pat_pres_chief_complaint
+	 where  pat_pres_master_id=$P{prescription_master_id}) ch) cheif_complain,
+	 (SELECT  count(*)  cheif_complain_count
+FROM ehm_pat_pres_master eppm,
+	ehm_pat_pres_chief_complaint eppcc
+WHERE 
+	 1 = 1 
+	 AND eppm.id = eppcc.pat_pres_master_id 
+	 AND eppm.id =$P{prescription_master_id}) complain_count,
+	 (select  string_agg( get_ehm_com_lookup_name(disease_id)||coalesce(case when length(on_examination)>0
+	 then '-'||on_examination end,''),'<br>' order by id) as disease
+from ehm_pat_pres_disease
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}
+group by pat_pres_master_id) disease,
+(select  count(*) disease_count
+from ehm_pat_pres_disease
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}) disease_count,
+(select  count(*) inv_finding_count
+from ehm_pat_pres_investigation_finding
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}) inv_finding_count,
+(select string_agg(investigation,'<br>' order by id) as investigation 
+from ehm_pat_pres_investigation
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}
+group by pat_pres_master_id) investigation,
+(select string_agg(investigation||' '||finding,'<br>' order by id) as investigation_finding 
+from ehm_pat_pres_investigation_finding
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}
+group by pat_pres_master_id) investigation_finding,
+(select string_agg( illness_history,'<br>'  order by id) as cheif_complain from (
+ select get_ehm_loopup_name(illness_name_id)||'  '||coalesce (disposal,'')  illness_history,
+ epih.id id
+ from ehm_patient_illness_history epih , ehm_pat_pres_master m
+ where epih.patient_info_id=m.patient_info_id 
+ and m.id=$P{prescription_master_id}) eh ) illness_history, 
+ (select count(*)  illness_history_count
+ from ehm_patient_illness_history epih , ehm_pat_pres_master m
+ where epih.patient_info_id=m.patient_info_id 
+ and m.id=$P{prescription_master_id}) illness_history_count,
+(select count(*) investigation_count 
+from ehm_pat_pres_investigation
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}) investigation_count,
+(select  string_agg(coalesce(get_ehm_com_lookup_name(advice_id),''),'<br>' order by id) as  advice
+from ehm_pat_pres_advice 
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}
+group by pat_pres_master_id) advice,
+(select  count(*) advice_count
+from ehm_pat_pres_advice 
+where 1=1
+and pat_pres_master_id= $P{prescription_master_id}) advice_count,
+(select string_agg(disposal_name,'<br>'  order by id) as disposal_name from (
+ select id, a.disposal_name||' '||
+ coalesce((case when a.disposal_duration =1 and  a.disposal_dwmy=1 then 'Day'
+ when a.disposal_duration =1 and  a.disposal_dwmy=1 then 'Day'
+ when a.disposal_duration>1 and  a.disposal_dwmy=1 then 'Days'
+ when a.disposal_duration=1 and  a.disposal_dwmy=7 then 'Week'
+ when a.disposal_duration>1 and  a.disposal_dwmy=7 then 'Weeks'
+ when a.disposal_duration=1 and  a.disposal_dwmy=30 then 'Month'
+ when a.disposal_duration>1 and  a.disposal_dwmy=30 then 'Months'
+ when a.disposal_duration=1 and  a.disposal_dwmy=365 then 'Year'
+ when a.disposal_duration>1 and  a.disposal_dwmy=365 then 'Years' end),'')||''||to_char(a.disposal_date,'dd-MM-yyyy')  disposal_name
+ from ehm_pat_pres_disposal a
+ where  pat_pres_master_id=$P{prescription_master_id}) dis) disposal_name,
+case when follow_up_visit_duration>0 then 
+'Followup:' end followup_disp,
+case when follow_up_visit_duration>0 then 
+'After '||follow_up_visit_duration||' day/days your followup date '||to_char(date(prescription_date)+follow_up_visit_duration,'dd-mm-yyyy') end follow_up_visit
+from ehm_pat_pres_master eppm
+left join ehm_patient_info epi on eppm.patient_info_id=epi.id 
+left join ehm_doctor_and_staff_information a on eppm.doctor_info_id = a.id
+where 1=1
+and eppm.id= $P{prescription_master_id}) g]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="patient_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patient_info"/>
+	</field>
+	<field name="patient_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patient_info"/>
+	</field>
+	<field name="rank_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank_name"/>
+	</field>
+	<field name="dob" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="dob"/>
+		<property name="com.jaspersoft.studio.field.label" value="dob"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_doctor_and_staff_information"/>
+	</field>
+	<field name="special_for" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="special_for"/>
+		<property name="com.jaspersoft.studio.field.label" value="special_for"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_doctor_and_staff_information"/>
+	</field>
+	<field name="patin_age" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patin_age"/>
+		<property name="com.jaspersoft.studio.field.label" value="patin_age"/>
+	</field>
+	<field name="gender" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="gender"/>
+		<property name="com.jaspersoft.studio.field.label" value="gender"/>
+	</field>
+	<field name="blood_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="blood_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="blood_group"/>
+	</field>
+	<field name="prescription_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="prescription_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="prescription_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="patint_condition" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patint_condition"/>
+		<property name="com.jaspersoft.studio.field.label" value="patint_condition"/>
+	</field>
+	<field name="patient_in_time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_in_time"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_in_time"/>
+	</field>
+	<field name="illness" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="illness"/>
+		<property name="com.jaspersoft.studio.field.label" value="illness"/>
+	</field>
+	<field name="prescription_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="prescription_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="prescription_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="token_register_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="token_register_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="token_register_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="only_patient_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="only_patient_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="only_patient_code"/>
+	</field>
+	<field name="section_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="section_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="section_name"/>
+	</field>
+	<field name="only_patient_code_ch" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="only_patient_code_ch"/>
+		<property name="com.jaspersoft.studio.field.label" value="only_patient_code_ch"/>
+	</field>
+	<field name="followup_date" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="followup_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="followup_date"/>
+	</field>
+	<field name="follow_up_visit_duration" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="follow_up_visit_duration"/>
+		<property name="com.jaspersoft.studio.field.label" value="follow_up_visit_duration"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="follow_up_comment" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="follow_up_comment"/>
+		<property name="com.jaspersoft.studio.field.label" value="follow_up_comment"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="cheif_complain" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cheif_complain"/>
+		<property name="com.jaspersoft.studio.field.label" value="cheif_complain"/>
+	</field>
+	<field name="disease" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="disease"/>
+		<property name="com.jaspersoft.studio.field.label" value="disease"/>
+	</field>
+	<field name="advice" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="advice"/>
+		<property name="com.jaspersoft.studio.field.label" value="advice"/>
+	</field>
+	<field name="disposal_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="disposal_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="disposal_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="cheif_complain_display" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cheif_complain_display"/>
+		<property name="com.jaspersoft.studio.field.label" value="cheif_complain_display"/>
+	</field>
+	<field name="investigation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="investigation"/>
+		<property name="com.jaspersoft.studio.field.label" value="investigation"/>
+	</field>
+	<field name="diseases_display" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="diseases_display"/>
+		<property name="com.jaspersoft.studio.field.label" value="diseases_display"/>
+	</field>
+	<field name="others_advice" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="others_advice"/>
+		<property name="com.jaspersoft.studio.field.label" value="others_advice"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="referd_doctor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="referd_doctor"/>
+		<property name="com.jaspersoft.studio.field.label" value="referd_doctor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_pat_pres_master"/>
+	</field>
+	<field name="referred_doctor_dis" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="referred_doctor_dis"/>
+		<property name="com.jaspersoft.studio.field.label" value="referred_doctor_dis"/>
+	</field>
+	<field name="inv_disp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inv_disp"/>
+		<property name="com.jaspersoft.studio.field.label" value="inv_disp"/>
+	</field>
+	<field name="advice_disp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="advice_disp"/>
+		<property name="com.jaspersoft.studio.field.label" value="advice_disp"/>
+	</field>
+	<field name="inv_finding" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inv_finding"/>
+		<property name="com.jaspersoft.studio.field.label" value="inv_finding"/>
+	</field>
+	<field name="illness_history_disp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="illness_history_disp"/>
+		<property name="com.jaspersoft.studio.field.label" value="illness_history_disp"/>
+	</field>
+	<field name="illness_history" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="illness_history"/>
+		<property name="com.jaspersoft.studio.field.label" value="illness_history"/>
+	</field>
+	<field name="investigation_finding" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="investigation_finding"/>
+		<property name="com.jaspersoft.studio.field.label" value="investigation_finding"/>
+	</field>
+	<field name="follow_up_visit" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="follow_up_visit"/>
+		<property name="com.jaspersoft.studio.field.label" value="follow_up_visit"/>
+	</field>
+	<field name="followup_disp" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="followup_disp"/>
+		<property name="com.jaspersoft.studio.field.label" value="followup_disp"/>
+	</field>
+	<background>
+		<band height="700">
+			<image vAlign="Bottom">
+				<reportElement x="111" y="260" width="323" height="360" uuid="4db61683-86a3-4760-9a4d-e34289c0ad7f"/>
+				<imageExpression><![CDATA["/bof/data/report/images/water_mark.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="146" splitType="Stretch">
+			<textField>
+				<reportElement x="111" y="81" width="136" height="18" uuid="e1f8af29-87d6-4dc3-9dc4-18f6580b0499">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="80" width="60" height="19" uuid="78285c5b-9f82-4794-9dfe-9be300854027">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Personal ID]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="102" width="240" height="26" uuid="f193041d-bd89-45bc-baf7-b129f85c8153">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e47d414-f66e-42f3-be63-5867db4b49fb"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="102" width="60" height="25" uuid="846b99c3-9dee-4191-b5d3-cfb72486aa89">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3e47d414-f66e-42f3-be63-5867db4b49fb"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="108" y="128" width="200" height="17" uuid="11973e28-810c-4366-984c-47ac879ea315">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1a6e339d-acc6-4054-8428-23c26dd23258"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patin_age}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="127" width="30" height="18" uuid="bdcac70b-1e48-4c1c-9c09-31f3c44c369c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1a6e339d-acc6-4054-8428-23c26dd23258"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Age]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="444" y="82" width="95" height="14" uuid="9c9cc8e3-aee0-4089-8935-1dee22de1f9b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="14fd67b4-6cb6-4b40-9c2d-726abe0b1a46"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{gender}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="349" y="82" width="81" height="14" uuid="cce04617-4c3a-4d1a-98a5-cb5c06c2b3a2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="14fd67b4-6cb6-4b40-9c2d-726abe0b1a46"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gender]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="445" y="68" width="93" height="14" uuid="011a1b6d-0860-4060-b8e8-d67834a9e703">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="78202a63-cdac-4944-8dc9-5a5f6def8876"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prescription_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="349" y="68" width="84" height="14" uuid="799099f8-5acb-4d58-9a7d-dba40fd93b52">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="78202a63-cdac-4944-8dc9-5a5f6def8876"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Prescription ID]]></text>
+			</staticText>
+			<textField pattern="d MMM yyyy h:mm:ss a">
+				<reportElement x="444" y="125" width="116" height="14" uuid="e1385009-1e44-4b99-8189-733cd0916b25">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="891f0a36-8287-4e42-af69-767dafe7f6eb"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{prescription_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="349" y="125" width="84" height="14" uuid="4b49fde6-c472-40b1-b9f1-f9e5ba38fa6a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="891f0a36-8287-4e42-af69-767dafe7f6eb"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Visit Date & Time]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="81" width="11" height="18" uuid="d312a74a-1601-488e-a360-ae18ef1fc1b9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="102" width="10" height="25" uuid="1c5766ec-be0f-48ed-880d-fb4801a8013c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="125" width="8" height="14" uuid="06a465b6-2599-469d-bb09-751065711cd1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="68" width="8" height="14" uuid="34b19c34-3340-4808-ad8b-4c501719da82">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="42" y="145" width="500" height="1" uuid="0710da2c-ed74-4fa0-b2d8-5c82a30bfd98"/>
+			</line>
+			<staticText>
+				<reportElement x="70" y="2" width="440" height="30" forecolor="#009966" uuid="e54472bc-cc91-4710-b117-5eb42118126a"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bangladesh Ordnance Factories Hospital]]></text>
+			</staticText>
+			<image scaleImage="RetainShape">
+				<reportElement x="20" y="2" width="50" height="48" uuid="159be5fd-94c3-4a0d-9e66-029bbf99373e"/>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+			<componentElement>
+				<reportElement x="430" y="30" width="120" height="30" uuid="a7c8b655-8fd8-4074-8ad3-7f7dc36f005b">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<jr:Code39 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<jr:codeExpression><![CDATA[$F{prescription_no}]]></jr:codeExpression>
+				</jr:Code39>
+			</componentElement>
+			<staticText>
+				<reportElement x="100" y="128" width="10" height="17" uuid="a9cd7c6a-bdbe-4e3c-9f97-f2e3e746b6ef">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="82" width="8" height="14" uuid="f7647f5a-dc68-4a8b-bc94-6137e4fdd443">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="31" width="280" height="19" uuid="128fc49f-3ee9-4e85-9394-d40035457471"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Gazipur Contonment, Gazipur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="50" width="280" height="18" uuid="1bd8f973-6b6a-40de-8dc5-8386eed4200e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Tel: 9204613/ Ext:4710]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="65" width="200" height="18" uuid="37a3efe2-1376-4eda-b172-eb1330b1bf3f"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Mob: 01769044166]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="349" y="99" width="83" height="13" uuid="be11027b-894e-4fcc-9217-532ff33ae811"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rank]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="98" width="8" height="14" uuid="c2bbd8c3-292c-4bdc-b72a-c2457f50c3a3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="445" y="98" width="115" height="14" uuid="41270dfa-e4c4-4ba9-acea-30ecd1f6848f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rank_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="40" y="68" width="60" height="13" uuid="c449a68b-5112-4e1f-a1f8-f353f68c5cdc"/>
+				<textElement>
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Token No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="68" width="11" height="13" uuid="348eb0af-204a-4ee4-82fb-7acd02013cbc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="68" width="69" height="13" uuid="bed8181e-bfb5-4e63-9d50-8186b28dd80c"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{token_register_no}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="349" y="112" width="85" height="12" uuid="696075c0-82f1-455f-9873-6bf3cb184d80"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Section]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="112" width="8" height="13" uuid="f06d85fb-8510-43a6-b28b-a0f888e681cb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="77abcf2e-a6de-465f-9426-f8f6fdccff43"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="444" y="112" width="126" height="12" uuid="c9ee7d3e-ab8e-4633-8f29-77585fa21302"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{only_patient_code}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="5">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.spreadsheet.SpreadsheetLayout"/>
+		</band>
+	</detail>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="628" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.spreadsheet.SpreadsheetLayout"/>
+			<line>
+				<reportElement x="277" y="0" width="1" height="390" uuid="4da819f4-30fa-4d67-a03f-11a4600bd2e6"/>
+			</line>
+			<subreport>
+				<reportElement positionType="Float" x="290" y="0" width="260" height="390" uuid="7b3ef6a0-37e2-4df6-b9e3-a78c38302251"/>
+				<subreportParameter name="prescription_master_id">
+					<subreportParameterExpression><![CDATA[$P{prescription_master_id}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{2prescription_medicin_sub}]]></subreportExpression>
+			</subreport>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="560" width="231" height="20" uuid="86dbc9ab-38d8-4b86-9305-da1e385355d1">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="42" y="580" width="205" height="48" uuid="1563c568-d62d-4536-b65b-3bfd76fbafcd">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{special_for}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="14" width="230" height="42" uuid="aefc5531-cb75-4574-aaff-33c2a16305cd"/>
+				<textElement verticalAlignment="Top" markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheif_complain}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="56" width="230" height="24" uuid="32666c5a-df24-4ac3-92cc-c46df79f4fd4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{illness}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="41" y="80" width="230" height="20" uuid="c23b7251-ab26-47d0-a625-fcc38ad11f1f"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patint_condition}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="182" width="231" height="40" uuid="4e689731-2c79-41e8-8a8c-dd366cad6683"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disease}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="300" width="222" height="80" uuid="c72139b3-96d5-4a22-b34e-14a33b2abbd4"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{investigation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="380" width="232" height="34" uuid="090c8d3b-4a36-4709-a967-4d2698dd3d5a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{disposal_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="38" y="430" width="231" height="44" uuid="fb5b3860-2a78-4edd-bb94-d44c2f7efc96"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{advice}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="509" width="444" height="20" uuid="04198639-8993-4d13-9f85-87e3b4fc7e23"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{follow_up_visit}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="414" width="218" height="15" uuid="fc369e7b-2757-4c9b-b971-7c01535efa7a">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{advice_disp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="41" y="288" width="221" height="12" uuid="6507c3f1-e8b8-42b0-851a-bc9f8cb1bc9d"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_disp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="41" y="163" width="218" height="19" uuid="768e89ea-0ebb-4bda-a0b8-bbae9566c583"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{diseases_display}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="220" height="14" uuid="bef3f049-f8ee-41df-bb90-af3a6c86bdcd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cheif_complain_display}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="222" width="219" height="18" uuid="42cac00a-c37f-4633-82c7-edb039eb332e"/>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inv_finding}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="240" width="230" height="48" uuid="c98770e4-c806-4213-93ea-974df8876128"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{investigation_finding}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="474" width="444" height="20" uuid="2c71f74d-0803-4180-b409-36e27f374ef6"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{others_advice}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="530" width="444" height="15" uuid="9dc0fbfe-ad00-4d8c-b992-0b6b42c2c9fd"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{referd_doctor}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="42" y="112" width="230" height="18" uuid="ee117108-a04a-4efc-8f88-20dc49971ece">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{illness_history_disp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="42" y="130" width="229" height="33" uuid="30701c68-2633-4d42-a759-2dfcd82f4bc2"/>
+				<textElement markup="html">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{illness_history}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="616" width="330" height="12" uuid="81940d11-27c4-46b4-b2fb-a0d5b155357e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_in_time}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="494" width="140" height="15" uuid="1d6a1b72-beb8-4d47-8526-0da62c8b0444">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{followup_disp}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="359" y="510" width="192" height="18" uuid="ab043187-d4bb-4777-9fad-9f22997b13be"/>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{follow_up_comment}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

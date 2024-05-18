@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_death_bio-data" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="afb7120f-c95f-4996-8fcc-49db9f30d4f3">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="302"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="690"/>
+	<parameter name="P_EMPLOYEE_CODE" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select a.code||','||get_com_lookup_bn_name(b.designation_id)||','||coalesce (get_com_lookup_bn_name(b.shop_id),'') employee_code
+,a.employee_name_bangla, a.father_name_bangla, a.death_date||' ,'||a.death_time||' '||a.death_place dath_info, death_reason, a.date_of_birth,
+b.joining_date, a.present_village_house||', '||a.present_post_office||','
+||get_com_lookup_bn_name(a.present_upazila)||','||get_com_lookup_bn_name(a.present_district) present_address,
+a.permanent_village_house||', '||a.permanent_post_office||','||get_com_lookup_bn_name(a.permanent_upazila)||',' 
+||get_com_lookup_bn_name(a.permanent_district) permanent_address, get_com_lookup_bn_name(c.relation)||' : '||c.dependent_name_bangla family_info
+from hrm_employee_personal_information a
+left join hrm_employee_official_information b on b.employee_id = a.id
+left join hrm_employee_family_information c on c.employee_id = a.id
+and a.code = $P{P_EMPLOYEE_CODE}]]>
+	</queryString>
+	<field name="employee_code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_code"/>
+	</field>
+	<field name="employee_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="father_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="father_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="father_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="dath_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="dath_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="dath_info"/>
+	</field>
+	<field name="death_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="death_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="death_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="date_of_birth" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.label" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_personal_information"/>
+	</field>
+	<field name="joining_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_employee_official_information"/>
+	</field>
+	<field name="present_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="present_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="present_address"/>
+	</field>
+	<field name="permanent_address" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="permanent_address"/>
+		<property name="com.jaspersoft.studio.field.label" value="permanent_address"/>
+	</field>
+	<field name="family_info" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="family_info"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_info"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="245" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="25" width="110" height="20" uuid="8c4ded13-15f1-4f2b-8afd-675d2f5a0dc7"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[ব্যাক্তিগত নম্বর, পদবি ও শাখা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="25" width="19" height="20" uuid="3f1a8ba8-f8a4-41e1-b684-df1deaa046f9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="25" width="379" height="20" uuid="a5245499-bfa3-4072-9554-6023223afa08"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_code}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="45" width="110" height="20" uuid="a790f0d2-4648-4439-ae23-8d2ddd20b1a1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="45" width="19" height="20" uuid="eeb6d07e-653f-46fa-bda1-0ff484b61793"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="45" width="379" height="20" uuid="4d56c52f-8061-46d8-aaa5-27cc800f8954"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name_bangla}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="25" width="20" height="20" uuid="f63b3058-7f5d-4c76-ae69-7730717f3085"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[১।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="45" width="20" height="20" uuid="715ce4a7-948e-42cd-9461-7d3595196d1e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[২।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="65" width="110" height="20" uuid="85c56ff6-1fed-4c03-a98e-ed3b5a9d708e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[পিতার নাম]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="65" width="19" height="20" uuid="296e0643-3426-4a40-9cb2-64f1e8bbd573"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="65" width="379" height="20" uuid="e3a787d6-1eed-4b4f-9031-a24dcaed7388"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{father_name_bangla}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="65" width="20" height="20" uuid="eda62a59-2f1c-4ca6-8fc4-230d652a601f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[3।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="85" width="110" height="20" uuid="856012d2-d592-481f-b88b-c2992bdaeca6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[মৃত্যুর তারিখ, সময় ও স্থান]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="85" width="19" height="20" uuid="e22afa16-4773-4d9d-974c-9f1165e23ec4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="85" width="379" height="20" uuid="196e62d9-b9bb-4d23-9d72-47531f593734"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dath_info}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="85" width="20" height="20" uuid="761bcea7-9f87-4856-85e0-f9cdb7ae0f75"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[4।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="105" width="110" height="20" uuid="1766f543-480b-4b35-a315-0108a5f16495"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[মৃত্যুর কারণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="105" width="19" height="20" uuid="0b8bf0ef-46bc-455b-ba7c-166a3fee0a53"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="105" width="379" height="20" uuid="bac63bde-d269-4acd-b7e2-8ab04f1f2071"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{death_reason}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="105" width="20" height="20" uuid="04803a0b-a23e-4021-8da8-bb2af77e4f8e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[5।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="145" width="110" height="20" uuid="0fa8bbc0-88a3-42d3-acb3-28232605f1e2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[জন্ম তারিখ ও বর্তমান বয়স]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="145" width="19" height="20" uuid="58057e0a-4041-4e39-b9a3-da58ec88ba93"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="dd - MM - YYYY" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="145" width="379" height="20" uuid="96a631ae-201d-43b4-8b43-5463f13d874f"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_birth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="145" width="20" height="20" uuid="8a41e798-aee5-44a5-9782-a528384dcc0f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[6।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="165" width="110" height="20" uuid="ff7808d1-43b6-4b79-9009-36270dc11d13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[ভর্তির তারিখ ও চাকরির মেয়াদ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="165" width="19" height="20" uuid="88e7af29-620f-4b6c-9c04-b55f144edc55"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField pattern="dd - MM - YYYY" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="165" width="379" height="20" uuid="eaf9d2ad-5141-4749-942e-7fd3b595f7a4"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{joining_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="165" width="20" height="20" uuid="d2475c18-7d92-4da4-af84-c53737e6763a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[7।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="225" width="19" height="20" uuid="cd12f6c6-9bee-4e6e-8712-7802abfca018"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="185" width="379" height="20" uuid="2efc0b3a-73bc-418a-889c-1745af5b55d7"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{present_address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="225" width="110" height="20" uuid="cad25107-fbc1-4d0e-a422-2c4ed211e30b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[পরিবারের সদস্য সংখ্যাপরিবারের সদস্য সংখ্যা]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="205" width="379" height="20" uuid="a56cdeb4-bb27-4293-8626-76144fca7cf7"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{permanent_address}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="225" width="20" height="20" uuid="3ec32454-acca-45e2-b484-fb8d9a694c9c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[10।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="185" width="20" height="20" uuid="a540ac8d-1913-4508-9ee3-47379a603314"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[8।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="185" width="19" height="20" uuid="42c8e3d7-5835-4e74-aad5-7ac9a121f5e1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="205" width="110" height="20" uuid="06e455c9-fd3d-400d-a134-ee613e6bb8d1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[স্থায়ী ঠিকানাস্থায়ী ঠিকানা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="50" y="185" width="110" height="20" uuid="dd8b7c17-755a-4cee-b17d-767f42420f10"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[বর্তমান ঠিকানাবর্তমান ঠিকানা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="205" width="20" height="20" uuid="cf9c2168-833e-4144-9656-dc9461689b5e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[9।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="160" y="205" width="19" height="20" uuid="d1eeed7b-df5f-4c81-a6fb-980a4edd2b8f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="120" height="20" uuid="689347f9-4d21-405b-9923-87e75f947dba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[জীবন বৃত্তান্ত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="125" width="379" height="20" uuid="06a01c94-f6e9-41fa-becf-4610a1e4fff4"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[(ইন্না লিল্লাহে ......................................... রাজেউন )]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="179" y="0" width="379" height="20" uuid="71062595-6cd0-4688-a8a7-de0c8a51ae7e"/>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_info}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

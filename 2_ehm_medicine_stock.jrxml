@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="medicine_stock" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="10" bottomMargin="0" uuid="97783203-9d44-4a85-957d-220bd083544c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF.jrdax"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="292"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="697"/>
+	<parameter name="bof_common_footer_portrait" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_MEDICINE_GROUP" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select
+get_ehm_com_lookup_name(a.medicine_group_id) medicine_group,a.medicine_name,
+ a.available_stock main_stock,a.available_stock_sub sub_stock,
+ (coalesce(a.available_stock)+coalesce(a.available_stock_sub)+coalesce(a.available_stock_emergency)+
+ coalesce(available_stock_pathology,0)+coalesce(available_stock_dental,0)
+ ) TOTAL_STOCK,
+ a.available_stock_emergency  emergency_stock,
+ coalesce(available_stock_pathology,0) available_stock_pathology, coalesce(available_stock_dental,0) available_stock_dental
+from
+ehm_medicine_master a
+where
+1 = 1
+and a.medicine_group_id=coalesce( $P{P_MEDICINE_GROUP},a.medicine_group_id)
+and coalesce(a.available_stock)+coalesce(a.available_stock_sub)+coalesce(a.available_stock_emergency)
++coalesce(available_stock_pathology,0)+ coalesce(available_stock_dental,0) > 0
+order by a.medicine_group_id,a.medicine_name asc]]>
+	</queryString>
+	<field name="medicine_group" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_group"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_group"/>
+	</field>
+	<field name="medicine_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_master"/>
+	</field>
+	<field name="main_stock" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="main_stock"/>
+		<property name="com.jaspersoft.studio.field.label" value="main_stock"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_master"/>
+	</field>
+	<field name="sub_stock" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="sub_stock"/>
+		<property name="com.jaspersoft.studio.field.label" value="sub_stock"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_master"/>
+	</field>
+	<field name="total_stock" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_stock"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_stock"/>
+	</field>
+	<field name="emergency_stock" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="emergency_stock"/>
+		<property name="com.jaspersoft.studio.field.label" value="emergency_stock"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_medicine_master"/>
+	</field>
+	<field name="available_stock_pathology" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="available_stock_pathology"/>
+		<property name="com.jaspersoft.studio.field.label" value="available_stock_pathology"/>
+	</field>
+	<field name="available_stock_dental" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="available_stock_dental"/>
+		<property name="com.jaspersoft.studio.field.label" value="available_stock_dental"/>
+	</field>
+	<group name="Medicine_group">
+		<groupExpression><![CDATA[$F{medicine_group}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField isBlankWhenNull="true">
+					<reportElement x="120" y="0" width="432" height="20" uuid="418dedea-4d40-40fa-a81e-468b98b832f7"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{medicine_group}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="1" y="0" width="119" height="20" uuid="4d197dbb-1a90-4341-9c9c-e11773a7eac1"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="Arial" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Medicine Group:]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<image hAlign="Center" vAlign="Middle">
+				<reportElement x="483" y="1" width="50" height="50" uuid="77a84ef6-6143-40a4-8448-f115f78ca3fd"/>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="33" width="595" height="16" uuid="63fb7419-f674-480e-a7c4-3cb3af222f97">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" Gazipur-1703, Bangladesh"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="17" width="595" height="16" uuid="65cc3fc9-b33e-4f6d-bf39-53e3fe8801c0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Gazipur Cantonment"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="1" width="595" height="16" uuid="c4d770f3-d262-4df5-9e9f-bcbd8a6f6027">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["BANGALDESH ORDNANCE FACTORIES"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="552" height="20" uuid="84387a0e-54c8-43e8-9575-4f981745f5cb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medicine Stock Position]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="1" width="57" height="18" uuid="8e9ec9a0-68ca-4493-8540-a3fa1c0d6f23"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Print Date :]]></text>
+			</staticText>
+			<textField pattern="dd/MM/ yyyy">
+				<reportElement x="489" y="4" width="65" height="13" uuid="4e06d3cb-7eb9-461c-94ed-8c6d78233906"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="39" y="0" width="171" height="30" uuid="18dba09b-aed8-421f-a790-198a263f23a3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ab091baa-2bf7-40ca-be29-363e9e1af583"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medicine Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="490" y="0" width="62" height="30" uuid="4b3d83e0-93e7-44f5-88c5-25dfda29ff57">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb971b06-40c3-42ee-9d00-590ce6de58f9"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Stock Quantity]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="38" height="30" uuid="8c471685-d91e-439a-b378-1219a1cb2abd"/>
+				<box topPadding="1" leftPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ser]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="0" width="70" height="30" uuid="6517fcc4-4ebb-494a-8c19-8171136b899e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7d3a1b1d-ca4d-41bd-8b4f-9ed1b84505f8"/>
+				</reportElement>
+				<box topPadding="2" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Main Store]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="280" y="0" width="50" height="30" uuid="1ee8e430-d886-47f0-aade-2ea18ed72084"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sub Store]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="330" y="0" width="60" height="30" uuid="78eceb13-802c-4ab0-ad0a-9c1d367a8c84"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Emergency  Stock]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="0" width="50" height="30" uuid="8aa623d2-9614-453e-a8bf-0320907f1b4b"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Pathelogy]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="50" height="30" uuid="61e95539-b8f5-41b7-b9a8-2158e0a224b9"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dental]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="39" y="0" width="171" height="20" uuid="5205ed7a-1aa3-43de-b9c2-e7c5303e2e3d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ab091baa-2bf7-40ca-be29-363e9e1af583"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicine_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="210" y="0" width="70" height="20" uuid="8152cf2b-2a6f-4578-af07-dab34f9d417d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb971b06-40c3-42ee-9d00-590ce6de58f9"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{main_stock}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="1" y="0" width="38" height="20" uuid="10021896-f8dd-4a20-9ae1-b18511f80c0d"/>
+				<box topPadding="1" leftPadding="2">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="280" y="0" width="50" height="20" uuid="c0f956ad-ee49-48de-8333-ce148885d426">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb971b06-40c3-42ee-9d00-590ce6de58f9"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sub_stock}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="330" y="0" width="60" height="20" uuid="daaa6426-9d41-48e4-a83e-2c2c61b6f835">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb971b06-40c3-42ee-9d00-590ce6de58f9"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emergency_stock}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="490" y="0" width="62" height="20" uuid="f779b027-d5c4-45b1-a176-3f7534e28c0c"/>
+				<box leftPadding="0" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_stock}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="390" y="0" width="50" height="20" uuid="5edda027-e2aa-470c-90f4-e2f37e9605d6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb971b06-40c3-42ee-9d00-590ce6de58f9"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{available_stock_dental}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.###;(#,##0)" isBlankWhenNull="true">
+				<reportElement x="440" y="0" width="50" height="20" uuid="8ae63189-a3d3-472b-8f33-e898126ca120">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb971b06-40c3-42ee-9d00-590ce6de58f9"/>
+				</reportElement>
+				<box topPadding="1" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{available_stock_pathology}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="40">
+			<subreport>
+				<reportElement x="1" y="0" width="551" height="40" uuid="3ea1f0c0-6804-4ac6-8c3a-d489345eb41d"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_footer_portrait}]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>

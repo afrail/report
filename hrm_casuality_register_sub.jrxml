@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_casuality_register_sub" pageWidth="250" pageHeight="842" columnWidth="210" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b1129a77-41ed-43c5-919d-a787c98d1bd5">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[aHJtX2Nhc3VhbGl0eV93cml0dGVuX2Rpc3RyaWJ1dGlvbiAsMTUsMTUsZjJlMjRiMGUtYTVlYS00
+M2QwLTllYzItYzEyNGQ4MmMxN2I4Ow==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_REGISTER_ID" class="java.lang.Integer"/> 
+	<queryString language="SQL">
+		<![CDATA[SELECT DESCRIPTION FROM HRM_CASUALITY_WRITTEN_DISTRIBUTION
+WHERE CASUALITY_REGI_ID||''= $P{P_REGISTER_ID}||'']]>
+	</queryString>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="description"/>
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_casuality_written_distribution"/>
+	</field>
+	<group name="description">
+		<groupExpression><![CDATA[$F{description}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true" >
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="210" height="20" uuid="4b6f4d58-fd99-41ba-bb63-0776ce9ac59b"/>
+				<box leftPadding="3" rightPadding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bnc_previous_budget_from_army" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="8f6f8b1d-fe87-41b0-8db5-a3912863af9b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="0"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="1000"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_LIVE_Server"/>
+	<parameter name="P_FINANCIAL_YEAR" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[with 
+demand as
+( 
+	select
+		 get_financial_year_by_id(m.financial_year_id) financial_year,	
+		 get_amount_in_crore(sum(coalesce(d.approved_army_amount, 0.0))) approved_army_amount 
+	from budget_demand_master m,
+		 budget_demand_details d 
+	where 1=1 
+	and   d.budget_demand_master_id = m.id 
+	and   m.approval_status 		= 'A' 
+	group by m.financial_year_id
+)
+select 
+	financial_year,	
+	approved_army_amount
+from demand
+where 1=1
+and cast(substring( financial_year, 1, 4) as numeric) < cast(substring( $P{P_FINANCIAL_YEAR}, 1, 4) as numeric) + 1
+and cast(substring( financial_year, 6, 2) as numeric) < cast(substring( $P{P_FINANCIAL_YEAR}, 6, 2) as numeric) + 1
+order by financial_year asc]]>
+	</queryString>
+	<field name="financial_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="financial_year"/>
+	</field>
+	<field name="approved_army_amount" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="approved_army_amount"/>
+		<property name="com.jaspersoft.studio.field.label" value="approved_army_amount"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="115" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="10" uuid="ffbc374c-4cc7-4259-be5d-4e144183ed50">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="75" width="594" height="20" uuid="2c8e4c57-013a-4469-8c4e-0086464289e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="16" isBold="false" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[সেনাবাহিনী হতে প্রাপ্ত বাজেট বিবরণী]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="15" width="595" height="22" uuid="b3a9833e-c40f-42ac-910b-43027933691e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom" markup="none">
+					<font fontName="NikoshBAN" size="17" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বাংলাদেশ সমরাস্ত্র কারখানা"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="32" width="595" height="20" uuid="a234f700-2053-4b7c-9662-ff67b708cf93">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["গাজীপুর সেনানিবাস"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="-20" y="49" width="595" height="20" uuid="3f26e74b-7f53-4a15-9ef2-510edd4b84f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box bottomPadding="2">
+					<bottomPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["গাজীপুর-1703, বাংলাদেশ"]]></textFieldExpression>
+			</textField>
+			<image hAlign="Center" vAlign="Middle" onErrorType="Blank" evaluationTime="Auto">
+				<reportElement x="479" y="14" width="61" height="55" uuid="3b2a9b14-f893-407d-ad45-2508ce256ac1">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["/bof/data/report/images/bof_logo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="380" y="95" width="143" height="20" uuid="7a12a59b-7d18-4f02-af3c-67a7125ea8d2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[(অংক সমূহ কোটি টাকায়)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="17" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} >1]]></printWhenExpression>
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="10" uuid="ae1f035a-04b1-475f-b3c1-2809d2ef6b54">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} >1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="8"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="46" splitType="Stretch">
+			<staticText>
+				<reportElement x="50" y="0" width="50" height="46" uuid="65cfd2a5-e8e8-47c6-9c98-d73fd7ffb142">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="39a9d7bb-d968-4c4e-b889-de6ee75bcd1b"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="80" height="46" uuid="dbe75ed6-3313-4663-ab6c-d7b4605ee40a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bf614770-3f0c-4bf9-b14f-c706fedc6823"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[অর্থ বৎসর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="140" height="46" uuid="c47f1f1e-6c3a-494b-b7e8-e8118db83310">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b7b978bf-9e37-4531-8c7c-26bf6b9e9348"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[সেনাবাহিনী 
+বরাদ্দ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="204" height="46" uuid="d26e4602-c68f-4214-9df7-c351cce5b8c6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc6e58bd-7197-429d-9e61-99db43facae3"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[মন্তব্য]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="50" y="0" width="50" height="30" uuid="305aed18-8f16-46d9-a2c1-0032510d3596">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="39a9d7bb-d968-4c4e-b889-de6ee75bcd1b"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT} +"."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="100" y="0" width="80" height="30" uuid="d1586abb-279a-4a37-a317-845ce1b697f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bf614770-3f0c-4bf9-b14f-c706fedc6823"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{financial_year}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="180" y="0" width="140" height="30" uuid="e4f7a6b6-279f-4e1d-86ae-f0ea6a62b7ad">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b7b978bf-9e37-4531-8c7c-26bf6b9e9348"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{approved_army_amount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="ContainerHeight" x="320" y="0" width="204" height="30" uuid="5ba0c8ca-374e-4b48-8d9f-b25f46194370">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc6e58bd-7197-429d-9e61-99db43facae3"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<textField pattern="MMM d, yyyy h:mm:ss a" isBlankWhenNull="true">
+				<reportElement x="102" y="12" width="180" height="15" uuid="05589c69-c065-4b28-83a8-8a74d54bbbd2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-16" y="12" width="120" height="15" uuid="48dce2ad-9b66-4011-9845-5c8b20b0727d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="6"/>
+				</textElement>
+				<text><![CDATA[This report is generated from BOF-ERP on]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="15" width="120" height="12" uuid="4d62089a-4dbd-4136-9d9f-93f1520dccac">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="1" width="120" height="12" uuid="7325ca62-6057-4755-a228-3490ce098ec1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["("+$V{PAGE_NUMBER} +")"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

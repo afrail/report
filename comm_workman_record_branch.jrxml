@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comm_workman_record_branch" pageWidth="600" pageHeight="595" orientation="Landscape" columnWidth="560" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b5786a65-cac4-4cf1-96e9-5d66864d54db">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="report_header_common_bangla_landscape" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT DATE(BOARD_DET.ENTRY_DATE)ENTRY_DATE,SUBJECT,DESCRIPTION,REFERENCE REF_NO,
+'কর্মকর্তা/তদন্ত পর্ষদ রেজিস্টার '||'-'||TO_CHAR(BOARD_DET.ENTRY_DATE,'YYYY') AS ENTRY_YEAR,
+GET_COM_LOOKUP_NAME(BOARD_DET.DESIGNATION_ID)AS DESIG,
+GET_COM_LOOKUP_NAME(BOARD_DET.EMPLOYEE_ID)AS EMP_NAME
+FROM HRM_OFFICER_BOARD_MST BOARD_MAS,HRM_OFFICER_DETAILS BOARD_DET
+WHERE BOARD_MAS.ID=BOARD_DET.HRM_OFFICER_BOARD_MST_ID  
+ORDER BY BOARD_DET.ENTRY_DATE ASC]]>
+	</queryString>
+	<field name="entry_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="entry_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="entry_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="common_note_sheet"/>
+	</field>
+	<field name="subject" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="subject"/>
+		<property name="com.jaspersoft.studio.field.label" value="subject"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_officer_board_mst"/>
+	</field>
+	<field name="description" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="description"/>
+		<property name="com.jaspersoft.studio.field.label" value="description"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_officer_board_mst"/>
+	</field>
+	<field name="ref_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ref_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="ref_no"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_officer_board_mst"/>
+	</field>
+	<field name="entry_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="entry_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="entry_year"/>
+	</field>
+	<field name="desig" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="desig"/>
+		<property name="com.jaspersoft.studio.field.label" value="desig"/>
+	</field>
+	<field name="emp_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_name"/>
+	</field>
+	<group name="ref_no">
+		<groupExpression><![CDATA[$F{ref_no}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="40" splitType="Stretch">
+			<subreport>
+				<reportElement x="2" y="0" width="558" height="40" uuid="1f8252fb-939f-4794-b70f-f3dcd56951be"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla_landscape}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="41" splitType="Stretch">
+			<textField>
+				<reportElement x="181" y="21" width="200" height="20" uuid="ca16506a-ed8b-4be4-a134-a5be119e5cfc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entry_year}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="1" width="201" height="19" uuid="598014bb-ccd5-4ba8-a313-6f2f4d4795cc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="16"/>
+				</textElement>
+				<text><![CDATA[ওয়ার্কম্যান রেকর্ড শাখা ]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="30" uuid="6dabb616-637a-4180-a9df-4d787d8f01b5"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="140" height="30" uuid="81045182-82ef-4811-beb4-2074b578c920"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[দৈনিক আদেশনামা ১ম খণ্ড নম্বর ও তারিখ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="180" y="0" width="180" height="30" uuid="36298eae-f8da-4d3d-94ca-c0a3876c83fd"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[কর্মকর্তা/তদন্ত পর্ষদের বিষয় 
+(সংক্ষিপ্ত বিবরণ )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="360" y="0" width="100" height="30" uuid="474e0044-a744-4b74-8c1c-d1a5b85fb54c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[পর্ষদ প্রতিবেদন জমার তারিখ ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToTallestObject" x="460" y="0" width="100" height="30" uuid="16fffc45-ca82-4673-9b9e-8da01aad01ab"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="11"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<textField isStretchWithOverflow="true"  pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="140" height="20" isPrintWhenDetailOverflows="true" uuid="ac95197c-4a5e-4146-8eba-600c2bc4f92a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="14b61fbf-d33d-49af-84eb-45a01f70ab80"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{entry_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="180" y="0" width="180" height="20" isPrintWhenDetailOverflows="true" uuid="88c27853-5471-4da4-90b7-3699c557603f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="24c8e082-9624-4177-bed0-a9283f15e61b"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd-MM-yyyy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="360" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="19075c7f-7aab-48fa-b7c1-ef25c38d68bf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e9672eae-8a7a-45ea-86a5-54fa17045f55"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="20" isPrintWhenDetailOverflows="true" uuid="2ddc6377-bdd4-4b5d-b0c0-7d714d340479">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="14b61fbf-d33d-49af-84eb-45a01f70ab80"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="460" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="0238a904-ec8d-46f1-b146-6474281e2f3a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e9672eae-8a7a-45ea-86a5-54fa17045f55"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

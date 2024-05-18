@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="abc1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d018cd9c-9b6e-4604-bde7-d6c2d5b6601d">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.xml"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+	GET_COM_LOOKUP_bn_NAME(g.DESIGNATION_ID) DESIGNATION,
+	D.ROOM_NUMBER,
+	D.bangla_name room_name,
+	A.START_ROLL ||' FROM '|| A.END_ROLL AS ROLL_NO,
+	'পরীক্ষার তারিখ ও সময়'||' : '||DATE(G.EXAM_DATE) as date,''||','||G.EXAM_TIME AS time,'পরীক্ষার স্থান:'||' : '||B.BANGLA_NAME place,H.BANGLA_NAME exam_type,
+	A.TOTAL_SEAT,
+	B.NAME AS EXAM_PLACE
+FROM
+	REC_EXAM_SEAT_SETUP A ,
+	REC_EXAM_CENTER_MASTER B,
+	REC_EXAM_SETUP G,
+	REC_EXAM_CENTER_ROOM D,
+	REC_EXAM_TYPE H
+WHERE
+	A.CENTER_ID = B.ID
+	AND A.ROOM_ID = D.ID
+AND	G.exam_type_id=H.ID]]>
+	</queryString>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="room_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_center_room"/>
+	</field>
+	<field name="room_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="room_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="room_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_center_room"/>
+	</field>
+	<field name="roll_no" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="roll_no"/>
+		<property name="com.jaspersoft.studio.field.label" value="roll_no"/>
+	</field>
+	<field name="date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+	</field>
+	<field name="time" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="time"/>
+		<property name="com.jaspersoft.studio.field.label" value="time"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_setup"/>
+	</field>
+	<field name="place" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="place"/>
+		<property name="com.jaspersoft.studio.field.label" value="place"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_center_master"/>
+	</field>
+	<field name="exam_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exam_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_type"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_type"/>
+	</field>
+	<field name="total_seat" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_seat"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_seat"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_seat_setup"/>
+	</field>
+	<field name="exam_place" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exam_place"/>
+		<property name="com.jaspersoft.studio.field.label" value="exam_place"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_exam_center_master"/>
+	</field>
+	<variable name="Total" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{total_seat}]]></variableExpression>
+		<initialValueExpression><![CDATA[$F{total_seat}]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<textField>
+				<reportElement x="256" y="66" width="150" height="19" uuid="1c4d3d52-7dbe-41ea-90c3-e26faf92d2cf"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{exam_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="86" width="205" height="20" uuid="f6d72f1c-fae0-4f50-ad1f-e46632cd8999"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{place}]]></textFieldExpression>
+			</textField>
+			<textField pattern="h:mm a" isBlankWhenNull="true">
+				<reportElement x="344" y="112" width="68" height="14" uuid="1c95f432-01dc-46de-9ef4-76f579296d91"/>
+				<textElement>
+					<font fontName="SolaimanLipi" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="199" y="112" width="145" height="14" uuid="411c1424-0bfa-4a95-b593-b36013107f84"/>
+				<textElement>
+					<font fontName="SolaimanLipi"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="-11" y="0" width="571" height="30" uuid="440d37e7-ebaf-4a80-9e7b-787f642ebfa6"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+				
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="27" splitType="Stretch">
+			<textField>
+				<reportElement x="460" y="0" width="69" height="16" uuid="f7c2d4b3-5645-484c-84b9-d3b8f0d5e7c5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="530" y="0" width="40" height="16" uuid="cd0ca87e-5a79-4c5a-9487-13da90bbacaa"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="70" y="0" width="60" height="20" uuid="c6c67e41-a7a5-4c1e-9633-f5621fc8f45a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40fa9c18-5749-4ee2-b191-68612c327676"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[কক্ষ নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="160" height="20" uuid="aa0db7e7-ec2f-4061-b8ee-e03e5fa5ee07">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="21412705-b315-4901-9319-ff39f06ae5f9"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[রোল নং]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="74" height="20" uuid="cc4b73f6-309e-46f9-a763-bf45cd5e3390">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[মোট পরীক্ষার্থী সংখ্যা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="130" y="0" width="90" height="20" uuid="0c35fc8f-78c4-4c05-bab1-b1c5f8b0bccd">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37dca204-66d6-4798-8026-8717753d7ab3"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অবস্থান]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="0" width="56" height="20" uuid="b17dbf0b-2b39-4cdf-ade2-7b0495db35fc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40fa9c18-5749-4ee2-b191-68612c327676"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নম্বর]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="0" width="44" height="20" uuid="eea4a2a2-02a5-454d-8b98-3f175e0f9dab">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[উপস্থিত]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="0" width="44" height="20" uuid="e08ed99a-4403-4e07-97dd-4680cf9b60db">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SolaimanLipi" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[অনুপস্থিত]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19" splitType="Stretch">
+			<textField>
+				<reportElement x="14" y="0" width="56" height="19" uuid="7d15a747-e811-4c70-b344-5e2ad1e2c50d"/>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="0" width="60" height="19" uuid="9ed9b1d1-6389-41a0-8c6b-9b74dcd741d4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="40fa9c18-5749-4ee2-b191-68612c327676"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{room_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="498" y="0" width="44" height="19" uuid="f6525daf-8854-4aa4-a365-5dfd3f1e7662">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+			</textField>
+			<textField>
+				<reportElement x="380" y="0" width="74" height="19" forecolor="#000000" uuid="63ff1c00-0909-4f6d-83ef-998a5bcb6cfa">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_seat}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="0" width="90" height="19" uuid="eab181a8-1c80-4e64-ba01-1cb7b7a1b3bc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="37dca204-66d6-4798-8026-8717753d7ab3"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SolaimanLipi" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{room_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="454" y="0" width="44" height="19" uuid="5bfa62d1-a317-46e2-bb5a-c34ad5f91465">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c8837644-1dcc-4df7-b4da-8fbfe2b343d8"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font fontName="Arial" size="10"/>
+				</textElement>
+			</textField>
+			<textField>
+				<reportElement x="220" y="0" width="160" height="19" uuid="157d1a80-7377-4f4f-a8c5-515eb305c6ed">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="21412705-b315-4901-9319-ff39f06ae5f9"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="0">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{roll_no}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="25" splitType="Stretch">
+			<textField>
+				<reportElement x="380" y="0" width="74" height="20" uuid="538a163d-ae9e-4083-b6b0-36d7581eff70"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<leftPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{Total}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="14" y="0" width="366" height="20" uuid="a99b5aa8-df79-4de9-a687-1ce42dfeb410"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="SolaimanLipi" size="11"/>
+				</textElement>
+				<text><![CDATA[মোট:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="0" width="44" height="20" uuid="5af4df74-0a7f-4d13-bb20-89c223690a6c"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[0]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="498" y="0" width="44" height="20" uuid="41a68919-28cd-4fc8-ba9d-6ba968efead2"/>
+				<box topPadding="3" leftPadding="0" rightPadding="3">
+					<pen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[0]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

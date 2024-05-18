@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="modcLeaveRegister" pageWidth="1008" pageHeight="612" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c5e0e51e-ebde-4a63-afec-dcffb82eeff9">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<parameter name="P_LEAVE_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT LEAVE.ID,LEAVE.LEAVE_TYPE_ID,
+EMP.MODC_EMPLOYEE_ID EMP_ID, EMP.BANGLA_NAME,(DATE(LEAVE.TO_DATE)-DATE(LEAVE.FROM_DATE)+1)TOTAL_DAYS,
+coalesce(get_sec_com_lookup_bn_name(LEAVE.LEAVE_TYPE_ID),'') LEAVE_TYPE, DATE(LEAVE.FROM_DATE) FROM_DATE, DATE(LEAVE.TO_DATE) TO_DATE, 
+LEAVE.LEAVE_REASON, LEAVE.LEAVE_LOCATION, LEAVE.REMARKS 
+FROM ACC_MODC_LEAVE_REGISTER LEAVE ,
+ACC_MODC_EMPLOYEE_PROFILE EMP 
+WHERE 1=1
+and EMP.ID = LEAVE.MODC_EMP_ID 
+AND DATE(LEAVE.FROM_DATE) BETWEEN   $P{P_FROM_DATE} AND  $P{P_TO_DATE} 
+AND LEAVE.LEAVE_TYPE_ID=COALESCE($P{P_LEAVE_ID},LEAVE.LEAVE_TYPE_ID  )
+ORDER BY LEAVE.FROM_DATE]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="leave_type_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="leave_type_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_type_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="emp_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="emp_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_employee_profile"/>
+	</field>
+	<field name="total_days" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="total_days"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_days"/>
+	</field>
+	<field name="leave_type" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_type"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_type"/>
+	</field>
+	<field name="from_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="from_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_date"/>
+	</field>
+	<field name="to_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="to_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_date"/>
+	</field>
+	<field name="leave_reason" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_reason"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="leave_location" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.label" value="leave_location"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<field name="remarks" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.label" value="remarks"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="acc_modc_leave_register"/>
+	</field>
+	<group name="leave_type">
+		<groupExpression><![CDATA[$F{leave_type}]]></groupExpression>
+		<groupHeader>
+			<band height="60">
+				<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+					<reportElement x="0" y="5" width="366" height="25" printWhenGroupChanges="leave_type" uuid="95e19c18-bbd1-4cb0-bf08-312fb2727b3d"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle" markup="styled">
+						<font fontName="NikoshBAN" size="11" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["ছুটি রেজিস্টার   "+"("+$F{leave_type}+")"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="30" width="40" height="30" uuid="3eccf8fd-d8f7-4b0d-8fca-c26c649f8c57"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ক্র/নং ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="40" y="30" width="60" height="30" uuid="1ac24ebc-2715-4733-b3db-5292370a59bb"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[সেনা নং]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="100" y="30" width="146" height="30" uuid="a2b00f94-23f2-4622-be47-effeb0ecc9d9"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[নাম   ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="246" y="30" width="64" height="30" uuid="6bd83af0-acd9-47bf-9ec5-16d307f4b869"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[হতে ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="310" y="30" width="56" height="30" uuid="6b2913e3-6de9-48de-ad38-9e9539b8840d"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[পর্যন্ত ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="366" y="30" width="54" height="30" uuid="7acfc0d6-c899-4897-83fc-d75753a41e28"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[মোট দিন ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="420" y="30" width="80" height="30" uuid="91d4d823-426d-4c46-80a4-d377e59ac362"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ছুটির কারণ ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="575" y="30" width="115" height="30" uuid="6bfe57d8-8dfe-498f-8009-23be949f9167"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[সিএসএম এর স্বাক্ষর ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="690" y="30" width="120" height="30" uuid="09ebc813-e804-49f3-a8a3-7da919781e60"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[কোম্পানী কমান্ডারের স্বাক্ষর ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="900" y="30" width="66" height="30" uuid="a1de696b-cc70-43eb-9327-1c4a91f964b0"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[মন্তব্য ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="500" y="30" width="75" height="30" uuid="e063622b-de9a-4c08-bd79-c9c444fff035"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[গন্তব্য স্থান ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="810" y="30" width="90" height="30" uuid="37f83126-ad6a-4626-ae99-d953c8a2f156"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="11" isBold="true"/>
+					</textElement>
+					<text><![CDATA[ব্যবস্থাপক নিরাপত্তা এর স্বাক্ষর ]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="77" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="0" y="7" width="966" height="30" uuid="a672b4e4-2362-47ae-b493-92354d6e2b0b"/>
+				<textElement textAlignment="Center" markup="styled">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<style isUnderline='true'>"+"ছুটির  রেজিস্টার "+"</style>"
++"\n"+"<style isUnderline='true'>"+"এমওডিসি বিওএফ কোম্পানী"+"</style>"]]></textFieldExpression>
+			</textField>
+			<textField pattern="d-MMM-yyyy" isBlankWhenNull="true">
+				<reportElement x="0" y="50" width="966" height="27" uuid="4810581f-2495-4fb3-a66f-362447fadd0a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11" isBold="false" isItalic="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($P{P_FROM_DATE} == $P{P_TO_DATE}) ? " "+new SimpleDateFormat("dd-MM-yyyy").format($P{P_FROM_DATE}) : "  তারিখ হইতে: "+new SimpleDateFormat("dd-MM-yyyy").format($P{P_FROM_DATE}) + "  তারিখ পর্যন্ত: "+new SimpleDateFormat("dd-MM-yyyy").format($P{P_TO_DATE})]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="40" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="e7a92ad5-acbb-4deb-884b-8f579e6b5560"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{leave_type_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="60" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="0261accd-5e2c-4664-aa1d-1d75e638626d"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{emp_id}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="100" y="0" width="146" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="585a48b3-911e-4dad-85fd-1e04958232f5"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="246" y="0" width="64" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="87f7a22b-2e50-4c96-aad7-beb07dc086ca"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{from_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  pattern="dd/MM/yy" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="310" y="0" width="56" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="90ab8088-e8b8-4d28-89c7-bc1fd39ffedb"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{to_date}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="366" y="0" width="54" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="ff9aaf40-1d4a-4d28-a6e6-aa1bbab8682d"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_days}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="420" y="0" width="80" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="74d41c22-9790-46e0-9d6e-c8812fa845ee"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{leave_reason}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="575" y="0" width="115" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="4932acb1-295b-470e-927f-55fed2352870"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="690" y="0" width="120" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="67efb2ca-b637-4e54-9b24-0aeb1bbc10b8"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="900" y="0" width="66" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="7dd33107-8961-4b20-a21d-7bda98597415"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remarks}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="500" y="0" width="75" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="578cb5ec-38b8-42a6-96d5-31c5b7e5e722"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{leave_location}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true"  isBlankWhenNull="true">
+				<reportElement x="810" y="0" width="90" height="16" isPrintWhenDetailOverflows="true" printWhenGroupChanges="leave_type" uuid="f099690f-aed3-4f9e-876d-3fc77132afdc"/>
+				<box leftPadding="3" rightPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="11"/>
+				</textElement>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="16" splitType="Stretch">
+			<textField>
+				<reportElement x="857" y="0" width="69" height="16" uuid="0b5c218b-13fa-4a19-81bf-c54c6dc4fda0"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="926" y="0" width="40" height="16" uuid="00a8b574-483e-4a9e-b37e-5633258f7ca2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

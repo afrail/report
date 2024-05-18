@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_common_sub" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="409ebaef-4aea-490e-9353-40b71af87059">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Bof-Ibcs-Server"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="P_PART2_REGISTER_ID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select order_number,date(order_date),bangla_date, bof_number,
+case when hptr.order_number>1 then hptr.order_number-1 else 0  end old_number,
+(select date(order_date) from hrm_part_two_register
+where order_number=(case when hptr.order_number>1 then hptr.order_number-1 else 0  end)
+and "year"=hptr."year") old_eng_date,
+(select bangla_date from hrm_part_two_register
+where order_number=(case when hptr.order_number>1 then hptr.order_number-1 else 0  end)
+and "year"=hptr."year") old_bangla_date
+from hrm_part_two_register hptr
+where id= $P{P_PART2_REGISTER_ID}]]>
+	</queryString>
+	<field name="order_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="order_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="order_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_part_two_register"/>
+	</field>
+	<field name="date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date"/>
+		<property name="com.jaspersoft.studio.field.label" value="date"/>
+	</field>
+	<field name="bangla_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_date"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_part_two_register"/>
+	</field>
+	<field name="bof_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="bof_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="bof_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="hrm_part_two_register"/>
+	</field>
+	<field name="old_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="old_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="old_number"/>
+	</field>
+	<field name="old_eng_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="old_eng_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="old_eng_date"/>
+	</field>
+	<field name="old_bangla_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="old_bangla_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="old_bangla_date"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="78">
+			<staticText>
+				<reportElement x="420" y="1" width="47" height="19" uuid="6b95b002-0bea-4e3e-b46b-72af1d779e3d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[বিওএফ নম্বর - ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="180" height="22" uuid="41004e78-3187-4d8e-ab35-c27cc8323579">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ইউনিটঃ বাংলাদেশ সমরাস্ত্র কারখানা]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="1" width="107" height="30" uuid="c5d9d60f-ced9-429f-9678-b3ba5a03dea2">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[দৈনিক আদেশনামা ২য় খন্ড]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="20" width="139" height="21" uuid="234995ca-0a9d-40ab-b31e-4176c1aeb352">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[স্থানঃ গাজীপুর সেনানিবাস]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="29" width="50" height="25" uuid="a79d5e2c-7374-47f7-b39a-07125dedc11e">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নম্বরঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="54" width="152" height="24" uuid="b121a1bc-451b-40b3-b40d-e9390e8f98ae">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পূর্বে প্রকাশিত দৈনিক আদেশনামা ২য় খন্ড নম্বরঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="38" width="51" height="21" uuid="145ba8c3-cc30-405e-b39f-19d1d85d154f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="56" width="51" height="21" uuid="b0f94639-cb31-4320-b1e8-a3a63981b506">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[তারিখঃ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="467" y="0" width="51" height="21" uuid="e32e735d-fead-4b76-900f-f642b180c890">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bof_number}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="264" y="-20" width="36" height="30" uuid="beeed862-85a5-41ee-b98b-b95c666a1567">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[সীমিত]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="62" y="29" width="128" height="25" uuid="9b6279e5-6c4e-4458-ae31-ca839651dba1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{order_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="162" y="54" width="100" height="24" uuid="c44cccaf-694c-4582-9cd4-14247e27650d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{old_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="391" y="38" width="88" height="18" uuid="329abe14-1918-4b0b-8f2f-6a9da1341688"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="479" y="38" width="86" height="18" uuid="b153c784-6584-45f5-9d6e-102484f6e81b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="391" y="56" width="88" height="18" uuid="80f9ba86-cc02-46a9-87fb-48d64e599033"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{old_bangla_date}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement x="479" y="56" width="86" height="18" uuid="f15815c1-0611-47a1-9910-b4d405af745c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{old_eng_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

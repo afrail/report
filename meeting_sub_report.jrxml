@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="meeting_sub_report" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2d416781-922f-4ea1-9aef-8defd9256841">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_MEETING_ID" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select case when employee_designation_id is null then designation else get_com_lookup_bn_name(employee_designation_id)
+end ||' '||case when LENGTH (CAST(inform_employee_designation AS TEXT))>3  
+then '-'|| inform_employee_designation|| ' মহোদয়ের অবগতির জন্য ' else ' ' end  inform_designation
+from rec_meeting_invitation
+where meeting_id = $P{P_MEETING_ID}
+order by serial_no asc]]>
+	</queryString>
+	<field name="inform_designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="inform_designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="inform_designation"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="28">
+			<staticText>
+				<reportElement x="10" y="0" width="50" height="20" uuid="1c69f0af-3d46-4201-9c93-342e9782fbaf"/>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<text><![CDATA[প্রতি]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="0" width="534" height="20" uuid="147af404-9c3c-44a0-9d7d-d5bbf7cb1470">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a61117cc-598a-4205-a237-14ca2fb7e3e6"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Nirmala UI"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inform_designation}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

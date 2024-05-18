@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2raw_new_maridlist_employee" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ac9140e1-158c-4477-8b17-c127d004a601">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[select id,employee_id, employee_id||', '||get_com_lookup_bn_name(designation_id)||'<br>'||
+'জিই(আর্মি ) বিওএফ'||'<br>'||
+employee_name_bangla family_name,repi.inactive_reason family_date,repi.inactive_date
+from raw_employee_personal_information repi 
+where 1=1
+and repi.inactive_date  between $P{P_FROM_DATE}  and $P{P_TO_DATE} 
+union all
+select repi.id id, repi.employee_id, get_com_lookup_bn_name(relation_id)||':'||case when length(dependent_name_bangla)>3 then dependent_name_bangla
+else dependent_name end family_name, refi.inactive_reason  family_date,refi.inactive_date
+from raw_employee_family_information refi ,raw_employee_personal_information repi 
+where 1=1
+and repi.id=refi.employee_id
+and repi.is_confirm=true 
+and refi.inactive_date  between  $P{P_FROM_DATE}  and $P{P_TO_DATE} 
+and relation_id not in(41,1682,1683)
+order by inactive_date asc]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="employee_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="family_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="family_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_name"/>
+	</field>
+	<field name="family_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="family_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_date"/>
+	</field>
+	<field name="inactive_date" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="inactive_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="inactive_date"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="379" height="49" uuid="907c5b53-86fd-4b5e-9524-759ec107a32f"/>
+				<textElement>
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ঘ।     বিওএফ এর ১ জন কর্মচারী মেয়ের বিবাহ (সন্তান পূর্ণ ইউনিট -০১ ), ০১ জন কর্মচারীর ছেলে সন্তান মৃত্যু বরণ(সন্তান পূর্ণ ইউনিট -০১), ০২ জন কর্মচারী স্বামীর রেশন ইউনিটে সংযোজন হওয়ায় (নিজ - ০২),০১ জন কর্মচারী বিওএফ হতে বদলী হওয়ায় (নিজ -০১ ও স্ত্রী ০১ ), ০৪ জন পিআরএল শেষ এবং ০১ কর্মচারী চাকুরী হতে অব্যাহতি প্রদান করায় (নিজ -০৫, স্ত্রী -০৪, সন্তান -পূর্ণ ইউনিট -০১) রেশন ইউনিট হতে রেশন বাতিল করা হলো।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="159" height="12" uuid="3571766e-ea2e-45a0-b2db-d5b882de51e9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[নিজ                          -০৮ টি ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="12" width="159" height="12" uuid="cc51af99-30c4-446c-98df-c47d37d5f437">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[স্বামী/স্ত্রী                     -০৫ টি]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="25" width="159" height="12" uuid="171cd626-7a49-46c0-aff6-d4f97f9dfb81">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true"/>
+				</textElement>
+				<text><![CDATA[সন্তান -পূর্ণ ইউনিট        -০৩ টি]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="39" y="0" width="180" height="30" uuid="bf4d362d-eeb3-4b1d-b258-ce39d804c2a2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="65226f8a-a963-471d-b0d4-3541f0f4f59d"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement markup="html">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="219" y="0" width="160" height="30" uuid="0c5cb5f3-b3c2-46f6-b67e-2ae6533c7623">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="65226f8a-a963-471d-b0d4-3541f0f4f59d"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement markup="html">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="0" width="170" height="30" uuid="c9c351d1-f17b-4d2a-8264-7dc4b0876ca8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="65226f8a-a963-471d-b0d4-3541f0f4f59d"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement markup="html">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="39" height="30" uuid="eb8c5775-94da-4b9d-8456-51529bc535d7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

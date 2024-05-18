@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReceivedVoucherReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="acf309a7-d0d3-45bb-9e9a-28a09da5c973">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[aW52X2l0ZW1faXNzdWVfbWFzdGVyICwxNSwxNSxjMTJjMjcwYi1mNWFjLTQxMTEtYTU2Zi0xOTM3
+NTk1ZWJiMzg7]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_IBCS"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="244"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="746"/>
+	<parameter name="P_II_MS_ID" class="java.lang.Integer"/>
+	<parameter name="Item_Issue_Report_1st_Page" class="java.lang.String"/>
+	<parameter name="Item_Issue_Report_2nd_Page" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT iiim.id
+FROM inv_item_issue_master iiim
+WHERE 
+	 iiim.id = $P{P_II_MS_ID} 
+ORDER BY iiim.id DESC]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="inv_item_issue_master"/>
+	</field>
+	<variable name="SUM" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<summary>
+		<band height="80">
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="30" uuid="c7d82ce2-0c3b-46a7-9d78-e3caaac07752"/>
+				<subreportParameter name="P_II_MS_ID">
+					<subreportParameterExpression><![CDATA[$P{P_II_MS_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{Item_Issue_Report_1st_Page}]]></subreportExpression>
+			</subreport>
+			<break>
+				<reportElement x="0" y="40" width="99" height="1" uuid="4de264f1-6189-4e49-a96f-c21e668af0d4"/>
+			</break>
+			<subreport>
+				<reportElement x="0" y="50" width="550" height="30" uuid="b719e253-359d-49d4-a62f-0d7a40739b1a"/>
+				<subreportParameter name="P_II_MS_ID">
+					<subreportParameterExpression><![CDATA[$P{P_II_MS_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{Item_Issue_Report_2nd_Page}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

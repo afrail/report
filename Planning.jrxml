@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Planning" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="acb162d8-3471-4bcb-a60d-e0cdab074ae2">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[bWNfcHJvZHVjdCAsMjg2LDE1LDBmY2MzOWM1LWRmN2QtNDdmZC1iN2ZmLWU5Mzk4MjZkZTA4ODtt
+Y19pdGVtX3VuaXQgLDI4Niw1OTIsNDBhZDkwYzYtN2JiZi00NThlLWIwNTUtZThhM2ViYWE3OTRi
+O3BwX2NsaWVudF9pbmZvcm1hdGlvbiAsMTMzNCwzNzYsODVjMGRhZTctMzkwMi00ZTNlLWEzYzUt
+MzFlMzEyMTc3NmEyO2J1ZGdldF9maW5hbmNhaWxfeWVhciAsMTA0MCwyNDIsMWFmOWM4YTYtZDk4
+NS00YjYyLWJjNDYtYWQyZTY2MjNjYWZhO3BwX3RhcmdldF9lbnRyeV9tYXN0ZXIgLDc2MCwyNjAs
+MDg4NWMyYjEtY2Y5NS00NTQ4LTgyY2QtNmE0YmUxM2QzNjFiO3BwX2FocV9kZW1hbmRfbWFzdGVy
+ICwxMDQwLDc0NywyYTRmNmFhOC1mOGEzLTQzOGUtODJhYS03MDE1ZGEwMWZkNTM7cHBfdGFyZ2V0
+X2VudHJ5ICw0OTgsMjA2LDY4YzI1NmExLTI5MzYtNGVjZi1hZmI1LWJhYjBlMDI2Y2I4NTtwcF9w
+cm9kdWN0X2RlbWFuZF91bml0ICwxNTgxLDgzNyw2MzVmNGI3ZS0yNjM3LTQ3OGUtOTFmYy0zMDc0
+MTFlN2M2NTM7cHBfYWhxX2RlbWFuZCAsMTUsNTU2LDk3Mzk4MDhiLThmYmQtNGU5Yy1iYzZkLWYy
+NDAyMjNkZDcyMjs=]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_IBCS"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="628"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="361"/>
+	<style name="Crosstab_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CG" mode="Opaque" backcolor="#FAFBFC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CT" mode="Opaque" backcolor="#FCFCFC">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CG" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 1_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CH" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CG" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CT" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Crosstab 2_CD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="PP_PRODUCT_ID" class="java.lang.Integer"/>
+	<parameter name="P_FROM_YEAR_INT" class="java.lang.Integer"/>
+	<parameter name="P_TO_YEAR_INT" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT mcp.id product_id,
+	mcp.name_en product_name_en,
+	mcp.name_bn product_name_bn,
+	ppadm.id year_id,
+	ppadm.from_year,
+	ppadm.to_year,
+	pppdu.id demand_id,
+	pppdu.name_en demand_unit_en,
+	pppdu.name_bn demand_unit_bn,
+	bfy.id financial_id,
+	bfy.financial_year,
+	ppad.demand_qty
+FROM pp_ahq_demand ppad
+	left join pp_ahq_demand_master ppadm ON 
+	 ppad.ahq_demand_master_id = ppadm.id 
+	left join mc_product mcp ON 
+	 ppad.product_id = mcp.id 
+	left join pp_target_entry ppte ON 
+	 mcp.id = ppte.product_id 
+	left join pp_target_entry_master pptem ON 
+	 ppte.target_entry_master_id = pptem.id 
+	left join budget_financail_year bfy ON 
+	 pptem.target_year_id = bfy.id 
+	left join mc_item_unit miu ON 
+	 ppad.unit_id = miu.id 
+	left join pp_client_information ppci ON 
+	 ppadm.client_id = ppci.id 
+	left join pp_product_demand_unit pppdu ON 
+	 ppadm.demand_unit_id = pppdu.id 
+WHERE 
+	 1 = 1 
+and mcp.id = COALESCE ( $P{PP_PRODUCT_ID} , mcp.id) 
+and ppadm.from_year >= COALESCE ( $P{P_FROM_YEAR_INT} , ppadm.from_year) 
+and ppadm.to_year <= COALESCE ( $P{P_TO_YEAR_INT} , ppadm.to_year) 
+ORDER BY mcp.id DESC,
+	ppadm.id DESC,
+	pppdu.id DESC,
+	bfy.id DESC]]>
+	</queryString>
+	<field name="product_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="product_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="product_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mc_product"/>
+	</field>
+	<field name="product_name_en" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="product_name_en"/>
+		<property name="com.jaspersoft.studio.field.label" value="product_name_en"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mc_product"/>
+	</field>
+	<field name="product_name_bn" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="product_name_bn"/>
+		<property name="com.jaspersoft.studio.field.label" value="product_name_bn"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="mc_product"/>
+	</field>
+	<field name="year_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="year_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="year_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_ahq_demand_master"/>
+	</field>
+	<field name="from_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="from_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="from_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_ahq_demand_master"/>
+	</field>
+	<field name="to_year" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="to_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="to_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_ahq_demand_master"/>
+	</field>
+	<field name="demand_id" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="demand_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="demand_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_product_demand_unit"/>
+	</field>
+	<field name="demand_unit_en" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="demand_unit_en"/>
+		<property name="com.jaspersoft.studio.field.label" value="demand_unit_en"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_product_demand_unit"/>
+	</field>
+	<field name="demand_unit_bn" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="demand_unit_bn"/>
+		<property name="com.jaspersoft.studio.field.label" value="demand_unit_bn"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_product_demand_unit"/>
+	</field>
+	<field name="financial_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="financial_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="financial_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_financail_year"/>
+	</field>
+	<field name="financial_year" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.label" value="financial_year"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="budget_financail_year"/>
+	</field>
+	<field name="demand_qty" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="demand_qty"/>
+		<property name="com.jaspersoft.studio.field.label" value="demand_qty"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="pp_ahq_demand"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="800" height="20" uuid="57b830f6-5828-4095-8d97-ac5548da213f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["গাজীপুর সেনানিবাস, গাজীপুর ।"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="800" height="20" uuid="f8f66c3e-f8e7-4fb6-affe-5c614aef138a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["তারালাপনীঃ ৯২০৪৬১৩ বর্ধিত ৪৮১০"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="800" height="20" uuid="89497030-97a1-461f-bad2-d5d055626762"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["বাংলাদেশ সমরাস্ত্র কারখানা (বিওএফ)"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="75">
+			<textField>
+				<reportElement x="0" y="3" width="800" height="30" uuid="514d6498-fc55-4cf2-ab20-adedab4ceead"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product_name_bn}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="33" width="800" height="30" uuid="d6a1462e-d20f-4770-9a04-82db8ce45912"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(চাহিদা "+($P{P_FROM_YEAR_INT} != null ? $P{P_FROM_YEAR_INT}:"" )+ "-" +($P{P_TO_YEAR_INT} != null ? $P{P_TO_YEAR_INT}:"")+" )"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="60" splitType="Stretch">
+			<crosstab>
+				<reportElement x="140" y="0" width="660" height="60" uuid="b08b7128-ddda-45a7-9ddb-ccb06e7ea758">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab 2_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab 2_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab 2_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab 2_CD"/>
+				</reportElement>
+				<crosstabDataset>
+					<dataset resetType="Report"/>
+				</crosstabDataset>
+				<crosstabHeaderCell>
+					<cellContents>
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="daa9fd80-1800-4dd2-b82b-72e1e0487e77"/>
+							<box>
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font fontName="NikoshBAN"/>
+							</textElement>
+							<textFieldExpression><![CDATA["ফর্মেশন/ইউনিট"]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabHeaderCell>
+				<rowGroup name="demand_unit_bn" width="60" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{demand_unit_bn}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque" style="Crosstab 2_CH">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" uuid="990cc5d1-8ebe-4fcc-ab67-d1ddaf24b586"/>
+								<box>
+									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{demand_unit_bn}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque" style="Crosstab 2_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="08290d3b-c51b-41bc-a408-49b27f4f9852"/>
+								<box>
+									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<text><![CDATA[মোট]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="financial_year" height="20" totalPosition="End">
+					<bucket class="java.lang.String">
+						<bucketExpression><![CDATA[$F{financial_year}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab 2_CH">
+							<textField>
+								<reportElement x="0" y="0" width="60" height="20" uuid="0a2e79c6-6a4b-416b-bc31-fa18f00f9da3"/>
+								<box>
+									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{financial_year}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Opaque" style="Crosstab 2_CT">
+							<staticText>
+								<reportElement x="0" y="0" width="60" height="20" uuid="0eef50a0-be11-4569-860d-854481a9a66a"/>
+								<box>
+									<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+									<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								</box>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font fontName="NikoshBAN"/>
+								</textElement>
+								<text><![CDATA[মোট]]></text>
+							</staticText>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="demand_qty_MEASURE" class="java.lang.Double" calculation="Sum">
+					<measureExpression><![CDATA[$F{demand_qty}]]></measureExpression>
+				</measure>
+				<crosstabCell width="60" height="20">
+					<cellContents mode="Opaque" style="Crosstab 2_CD">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="263203ba-8e54-4627-ba74-c4c2e8cb262a"/>
+							<box leftPadding="2" rightPadding="2">
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="NikoshBAN"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{demand_qty_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" columnTotalGroup="financial_year">
+					<cellContents mode="Opaque" style="Crosstab 2_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="ba47bc02-ec23-4ce9-8713-ce9db89c29ca"/>
+							<box leftPadding="2" rightPadding="2">
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="NikoshBAN" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{demand_qty_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="demand_unit_bn">
+					<cellContents mode="Opaque" style="Crosstab 2_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="ccb9915c-3774-450a-a2e1-31f13e119c2a"/>
+							<box leftPadding="2" rightPadding="2">
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="NikoshBAN" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{demand_qty_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="60" height="20" rowTotalGroup="demand_unit_bn" columnTotalGroup="financial_year">
+					<cellContents mode="Opaque" style="Crosstab 2_CT">
+						<textField>
+							<reportElement x="0" y="0" width="60" height="20" uuid="4cbc893f-e2fe-41b6-882b-3d0183fda939"/>
+							<box leftPadding="2" rightPadding="2">
+								<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Right" verticalAlignment="Middle">
+								<font fontName="NikoshBAN" isBold="true"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{demand_qty_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+</jasperReport>

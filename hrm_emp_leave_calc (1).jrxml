@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="hrm_emp_leave_calc" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c0d6de1c-3587-4933-b895-ab6e205b5f40">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="P_EMPLOYEE_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common_bangla" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="hrm_emp_leave_sub" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="hrm_emp_leave_sub1" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select ep.code||','|| ep.employee_name_bangla employee_name_bangla , get_com_lookup_bn_name(eo.designation_id) 
+||', '||get_com_lookup_bn_name(coalesce(coalesce(eo.shop_id,eo.wing_id),eo.branch_id))||' '||coalesce(get_com_lookup_bn_name(eo.line_id),'')  designation_name,
+date(eo.joining_date)  joining_date, date(ep.date_of_birth)date_of_birth, date(ep.retired_date )  lpr_date 
+from hrm_employee_personal_information ep, hrm_employee_official_information eo 
+where 1=1
+and ep.id=eo.employee_id
+and ep.id= $P{P_EMPLOYEE_ID}]]>
+	</queryString>
+	<field name="employee_name_bangla" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name_bangla"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name_bangla"/>
+	</field>
+	<field name="designation_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation_name"/>
+	</field>
+	<field name="joining_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="joining_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="joining_date"/>
+	</field>
+	<field name="date_of_birth" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="date_of_birth"/>
+		<property name="com.jaspersoft.studio.field.label" value="date_of_birth"/>
+	</field>
+	<field name="lpr_date" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="lpr_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="lpr_date"/>
+	</field>
+	<group name="designation_name">
+		<groupExpression><![CDATA[$F{designation_name}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="179" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="44" width="520" height="24" uuid="cc9c7ae0-8ba9-40ac-915a-7ab274dc750a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Nirmala UI" size="14"/>
+				</textElement>
+				<text><![CDATA[ছুটির হিসাব]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="74" width="500" height="25" uuid="9bc1f6aa-e453-438a-ae3e-f406a05c093a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ba685bce-e57d-4794-be04-911433b56767"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name_bangla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="99" width="500" height="20" uuid="4dcd58c6-b06f-4839-8d81-d93701e4f6c1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="692c4e28-f05a-4c51-a0d3-942fd8e2f8c0"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="120" y="119" width="140" height="20" uuid="7885c48a-ef79-42fc-8670-2f0186e25542">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6ea7752-13cf-40f8-a773-6c28b8ddf323"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{joining_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="119" width="80" height="20" uuid="3120d160-49c9-42bc-b6fc-c9e8c94e48cb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6ea7752-13cf-40f8-a773-6c28b8ddf323"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[নিয়োগ ]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="120" y="139" width="140" height="20" uuid="641a11ff-7dc1-4278-8f84-9024df5307e6">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2a1ed0b7-bdf9-4b82-850a-9d77d5b67ff6"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_of_birth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="139" width="80" height="20" uuid="ca21a230-ebb8-4709-a29a-8cacabc42840">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2a1ed0b7-bdf9-4b82-850a-9d77d5b67ff6"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[জন্ম তারিখ]]></text>
+			</staticText>
+			<textField pattern="dd-MM-yyyy">
+				<reportElement x="120" y="159" width="140" height="20" uuid="fe66931a-54f4-4f30-acbc-1a88ad7cb449">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5431f25-553a-41bd-9595-459dc531fb76"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lpr_date}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="159" width="80" height="20" uuid="ea077f91-255c-40d1-8d4c-3b18b56f25e8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d5431f25-553a-41bd-9595-459dc531fb76"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[শেষ কর্ম দিবস ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="119" width="20" height="20" uuid="f721d9bc-3b8c-45fd-822e-d964333c009f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6ea7752-13cf-40f8-a773-6c28b8ddf323"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="139" width="20" height="20" uuid="a5ec4a95-e89c-49bb-a417-767b6842394a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6ea7752-13cf-40f8-a773-6c28b8ddf323"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="159" width="20" height="20" uuid="0a95775e-9dfc-4d1e-a236-c3e0b7bc0e1b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b6ea7752-13cf-40f8-a773-6c28b8ddf323"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<subreport>
+				<reportElement x="0" y="0" width="550" height="30" uuid="e4e53196-8299-45e3-822f-78e9498bcdaf"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common_bangla}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="50">
+			<staticText>
+				<reportElement x="20" y="27" width="320" height="20" uuid="169eea1d-d21d-4a5c-aeed-4ab8836c0d77"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[This report generated from BOF ERP]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="49" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="200" height="49" uuid="834e4350-9f29-4cc3-907d-37e97187bbc0"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrm_emp_leave_sub}]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="220" y="0" width="330" height="49" uuid="25269027-20c8-4a9f-9d87-57a09bf98676"/>
+				<subreportParameter name="P_EMPLOYEE_ID">
+					<subreportParameterExpression><![CDATA[$P{P_EMPLOYEE_ID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{hrm_emp_leave_sub1}]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

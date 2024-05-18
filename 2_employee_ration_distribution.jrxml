@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_employee_ration_distribution" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0" uuid="dfd827ac-9694-4160-bf54-12c70356ef52">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="441"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="545"/>
+	<parameter name="bof_common_header_A4_portrait" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="bof_common_footer_A4_portrait" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_EMPLOYEE_TYPE" class="java.lang.Integer"/>
+	<parameter name="P_RATION_STATUS" class="java.lang.Integer"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[select employee_name,designation, mobile_number, ration_number,employee_id,employee_setion,
+case when is_ration=2 then 'Ration Drawn' else 'Ration not Drawn' end ration_status from(
+SELECT e.mobile_number, (select count(1) + 1 from raw_ration_voucher_master
+where to_char(date(voucher_date),'MMYYYY')= to_char(date($P{P_TO_DATE}),'MMYYYY')  and  ration_no=e.ration_number) is_ration,
+	e.employee_name,
+	e.employee_id,
+	case when ration_employee_type_id=17 then 
+	get_employee_brach_wing_shop_line_full(get_emp_id(employee_id)) else 
+'MES EMPLOYEE' end employee_setion,
+	get_raw_com_lookup_name( e.ration_employee_type_id) AS employeetype,
+	get_com_lookup_name( e.designation_id) AS designation,
+	e.ration_number
+FROM    raw_employee_personal_information e
+where active=true
+AND e.ration_employee_type_id = $P{P_EMPLOYEE_TYPE}) a
+where 1=1
+and is_ration=coalesce( $P{P_RATION_STATUS},is_ration )
+order by employee_id asc]]>
+	</queryString>
+	<field name="employee_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="designation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="designation"/>
+		<property name="com.jaspersoft.studio.field.label" value="designation"/>
+	</field>
+	<field name="mobile_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="mobile_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="mobile_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="ration_number" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ration_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="ration_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="employee_id" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_employee_personal_information"/>
+	</field>
+	<field name="employee_setion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="employee_setion"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_setion"/>
+	</field>
+	<field name="ration_status" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="ration_status"/>
+		<property name="com.jaspersoft.studio.field.label" value="ration_status"/>
+	</field>
+	<group name="employee_setion">
+		<groupExpression><![CDATA[$F{employee_setion}]]></groupExpression>
+		<groupHeader>
+			<band height="20">
+				<textField isBlankWhenNull="true">
+					<reportElement x="90" y="0" width="464" height="20" uuid="617a4ae7-6cd0-4cf2-9697-d4cea61895c4"/>
+					<box leftPadding="3">
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font fontName="NikoshBAN" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{employee_setion}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="0" y="0" width="90" height="20" uuid="27dd2bad-95ca-4ad0-a3f7-a2317bcf1025"/>
+					<box>
+						<pen lineWidth="0.25"/>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Section/Shop Name]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="114" splitType="Stretch">
+			<subreport>
+				<reportElement x="-20" y="15" width="595" height="44" uuid="3e9d1b5e-b988-493a-85d0-b3c30b04b659"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_header_A4_portrait}]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="-20" y="60" width="593" height="30" uuid="40d9fde8-b3ff-45f7-89e2-ca8520068682"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Ration Distribution Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-20" y="2" width="594" height="12" uuid="e3c4abdf-013e-4e93-b929-4704aa06649e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="42" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="14" width="50" height="28" uuid="c979cc1a-983f-41b3-aa26-2eb1daf29507"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Till Date:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="50" y="14" width="70" height="28" uuid="e9ea2e85-4163-422d-86a1-b69749ec66fe"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{P_TO_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-20" y="0" width="594" height="12" printWhenGroupChanges="employee_setion" uuid="73ef5b34-2d0f-45cb-8283-ec93f2539d8a">
+					<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial"/>
+				</textElement>
+				<text><![CDATA[Restricted]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="90" y="0" width="50" height="30" uuid="ed570b58-738c-4f3c-9277-778f63a10816">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="de57b212-6116-40d8-9094-c5aceb95dff7"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Card No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="50" height="30" uuid="5478a9ca-7673-4a1b-8104-79ffd555eb4f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a39da3b5-f750-4f11-9cdd-4bbcd92dece6"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="0" width="130" height="30" uuid="a554cbc7-90ea-410d-98bc-b4a94de349dc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2c9a8544-4b7e-4b6c-b743-fdd722443f09"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Employee Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="460" y="0" width="94" height="30" uuid="bdf91ce7-6604-43d7-9b0f-c31ccfb99617">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36a6a7d1-e55e-4661-8501-3e8bbf275925"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ration Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="0" width="80" height="30" uuid="cf129150-218c-4b88-9801-7bdca3f79b6b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36a6a7d1-e55e-4661-8501-3e8bbf275925"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mobile Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="30" uuid="7b1a6290-4bb5-4ba0-a8c4-08a4007509c5"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[SER#]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="110" height="30" uuid="c98db88f-50af-472e-b3dc-22299dc35f03">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="36a6a7d1-e55e-4661-8501-3e8bbf275925"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="90" y="0" width="50" height="15" isPrintWhenDetailOverflows="true" uuid="3c0a719a-8c4e-416e-bd65-16b01bfb1222">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="de57b212-6116-40d8-9094-c5aceb95dff7"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ration_number}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="140" y="0" width="130" height="15" isPrintWhenDetailOverflows="true" uuid="c9574ec2-1897-402b-bbd1-c7b13a84c63e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2c9a8544-4b7e-4b6c-b743-fdd722443f09"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="15" isPrintWhenDetailOverflows="true" uuid="289d4435-8176-4e3f-bc56-a436885d256e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="50" height="15" isPrintWhenDetailOverflows="true" uuid="954edad2-f0b3-4b21-93a7-844226fd2845">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a39da3b5-f750-4f11-9cdd-4bbcd92dece6"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="3" leftPadding="3">
+					<pen lineWidth="0.25"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="270" y="0" width="110" height="15" isPrintWhenDetailOverflows="true" uuid="22cae63b-d3f4-49f0-b76c-f074da27c36c"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{designation}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="460" y="0" width="94" height="15" isPrintWhenDetailOverflows="true" uuid="cc89f73e-fe48-49b8-86e8-b69c8362ae20"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ration_status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="380" y="0" width="80" height="15" isPrintWhenDetailOverflows="true" uuid="26148479-89aa-4da6-8a7e-211deab5c159"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mobile_number}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="46">
+			<subreport>
+				<reportElement x="-20" y="6" width="594" height="40" uuid="f16b8ee2-9fa1-4844-9ed0-c4a299dd9fc2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{bof_common_footer_A4_portrait}]]></subreportExpression>
+			</subreport>
+		</band>
+	</pageFooter>
+</jasperReport>

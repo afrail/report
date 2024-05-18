@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rec_exam_seat_level_setup" columnCount="2" pageWidth="720" pageHeight="800" columnWidth="332" columnSpacing="15" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c549128a-fecf-4f0e-b4b4-6e57fc6aa704">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_REC_REFERENCE_ID" class="java.lang.Integer"/>
+	<parameter name="P_REC_DESIG_ID" class="java.lang.Integer"/>
+	<parameter name="report_header_common" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[select (select 'BOF RECRUITMENT EXAM -'|| to_char(exam_date,'YYYY') from rec_exam_setup
+where 1=1
+and designation_id =a.designation_id
+and recruitment_reference_id =a.recruitment_reference_id) Heading,
+a.application_number, a.recruitment_reference_id,
+(select name from rec_exam_center_master where id=(
+select center_id 
+ from rec_exam_seat_setup b
+where b.recruitment_ref_id =a.recruitment_reference_id
+and a.application_number between b.start_roll  and b.end_roll)) Center_name,
+get_com_lookup_name(a.designation_id) degination
+from rec_application_information a
+where 1=1
+and recruitment_reference_id =coalesce( $P{P_REC_REFERENCE_ID},recruitment_reference_id )
+and a.designation_id=coalesce(  $P{P_REC_DESIG_ID} ,designation_id )
+--and a.application_number%2<>0
+order by  a.application_number asc]]>
+	</queryString>
+	<field name="heading" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="heading"/>
+		<property name="com.jaspersoft.studio.field.label" value="heading"/>
+	</field>
+	<field name="application_number" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="application_number"/>
+		<property name="com.jaspersoft.studio.field.label" value="application_number"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="recruitment_reference_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="recruitment_reference_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="recruitment_reference_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rec_application_information"/>
+	</field>
+	<field name="center_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="center_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="center_name"/>
+	</field>
+	<field name="degination" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="degination"/>
+		<property name="com.jaspersoft.studio.field.label" value="degination"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30">
+			<subreport>
+				<reportElement x="10" y="0" width="369" height="30" uuid="e0c75ba5-3afa-4e27-87e3-62797f861f06"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{report_header_common}]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<detail>
+		<band height="153">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="28" y="15" width="267" height="24" uuid="0a55bca1-7c5a-45d6-9c5b-4320de377fa6"/>
+				<box leftPadding="4"/>
+				<textElement>
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{heading}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="115" y="42" width="166" height="20" uuid="685f783c-1118-4d4d-8b3e-60eace76c112"/>
+				<box leftPadding="4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{center_name}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="28" y="43" width="48" height="17" uuid="95c5639f-b326-4bd8-a4ec-0e5a74e271c9"/>
+				<box leftPadding="3">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Center                                   ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="43" width="25" height="18" uuid="3db63063-4ba5-4ccb-8d76-3a33593096ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="false"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="90" y="67" width="25" height="18" uuid="690a2f11-1a77-471d-8c2d-c3b015194357"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="87" y="94" width="30" height="18" uuid="ece70048-4e62-4993-b8ca-ee85e0139cbd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="93" width="68" height="20" uuid="c06c89a7-ff01-4d40-9b22-fbf1c358ef06"/>
+				<box leftPadding="3">
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="16" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Roll No                                 ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="28" y="67" width="67" height="19" uuid="bf97639d-ebee-42b0-bd39-145178e1c26c"/>
+				<box leftPadding="3">
+					<pen lineColor="#000000"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Post Name                           ]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="115" y="66" width="166" height="19" uuid="33c3b39a-5e0d-450e-ad87-d7332d6a4ff0"/>
+				<box leftPadding="4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{degination}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="114" y="93" width="104" height="17" uuid="6db2674c-51d0-4dc7-9bbf-1acfbe5f91fc"/>
+				<box leftPadding="4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{application_number}]]></textFieldExpression>
+			</textField>
+			<frame>
+				<reportElement x="20" y="0" width="310" height="128" uuid="b9401adb-c007-49bf-8fe6-f3e38a454d64"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</frame>
+			<line>
+				<reportElement x="29" y="39" width="233" height="1" uuid="f4499ca1-a445-42cf-af2f-80cc69f6354b"/>
+				<graphicElement>
+					<pen lineColor="#000000"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="33">
+			<staticText>
+				<reportElement x="0" y="15" width="377" height="17" isPrintWhenDetailOverflows="true" uuid="5b641c21-9331-44ce-99e7-00e352478821"/>
+				<text><![CDATA[Powered by: IBCS-PRIMAX Software Bangladesh LTD.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="14" width="90" height="18" isPrintWhenDetailOverflows="true" uuid="83ab152d-e415-44f0-a688-5d72bf809c7b"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Report Date:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="498" y="14" width="79" height="18" uuid="4eae08ef-1bb9-41c9-b1c1-1c304316357e"/>
+				<textFieldExpression><![CDATA[new Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

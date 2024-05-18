@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2prescription_medicin_sub" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e642e6fa-93d7-4581-ba0c-a271d72b078f">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<parameter name="prescription_master_id" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[select ROW_NUMBER () OVER (
+           ORDER BY eppt.id
+        ) ||'. '||emm.medicine_name||chr(10)||'   '||coalesce (eppt.dose,'') ||' ['||coalesce(eppt.duration,0)||case when duration=1 and  dwmy=1 then 'Day ]' 
+when duration>1 and  dwmy=1 then ' Days ]'
+when duration=1 and  dwmy=7 then ' Week ]'
+when duration>1 and  dwmy=7 then ' Weeks ]'
+when duration=1 and  dwmy=30 then ' Month ]'
+when duration>1 and  dwmy=30 then ' Months ] ' else ' Days ]'  end||
+case when eppt.is_continue = true then 'Continue' else ' ' end||' (Qty:- '||coalesce (eppt.qty,0)||') ' ||instruction medicine_name
+from ehm_pat_pres_treatment eppt, ehm_medicine_master emm ,ehm_common_lookup_details ecld
+where 1=1
+and eppt.medicine_master_id=emm.id
+and emm.unit_measurement =ecld.id
+and pat_pres_master_id= $P{prescription_master_id}
+order by eppt.id asc]]>
+	</queryString>
+	<field name="medicine_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="medicine_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="medicine_name"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="0" width="10" height="20" uuid="f9b0a82b-eab2-4a44-8e78-e81ff2611a82">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="872066f1-357d-4977-b83a-4f3c7cde62a9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="11"/>
+				</textElement>
+				<text><![CDATA[R]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-11" y="4" width="10" height="12" uuid="1e7fa902-cd7d-453e-9fff-738664ab1033">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="872066f1-357d-4977-b83a-4f3c7cde62a9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[x]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="380" height="30" uuid="fcce4129-18f9-4e3d-862b-9a4527fc9d33">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="872066f1-357d-4977-b83a-4f3c7cde62a9"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{medicine_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

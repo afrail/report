@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_monthly_sells_and_remaining_retaion_details" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7782fcbb-fc73-4401-b9ff-d0241e78d772">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="report_header_common_bangla_landscape" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[with 
+itemdata as (
+select id,name,bangla_name, available_stock from raw_item_master rim where active=true
+),
+item_issue_bf as (
+select sum(total) total_issue,  item_master_id from raw_ration_voucher_summary rrvs, raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvs.ration_voucher_master_id 
+and date(rrvm.voucher_date)< $P{P_FROM_DATE} 
+group by item_master_id
+),
+item_receive_bf as (
+select sum(receive_quantity) total_receive, item_master_id from raw_ration_receive_details rrrd,raw_ration_receive_master rrrm 
+where 1=1
+and rrrm.id=rrrd.ration_receive_master_id 
+and date(rrrm.receive_date) <$P{P_FROM_DATE} 
+group by item_master_id 
+),
+item_issue_af as (
+select sum(total) total_issue_af,  item_master_id , SUM(rrvs.amount) amount_af 
+from raw_ration_voucher_summary rrvs, raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvs.ration_voucher_master_id 
+and date(rrvm.voucher_date) between $P{P_FROM_DATE}  and $P{P_TO_DATE} 
+group by item_master_id
+),
+item_receive_af as (
+select sum(receive_quantity) total_receive_af, item_master_id from raw_ration_receive_details rrrd,raw_ration_receive_master rrrm 
+where 1=1
+and rrrm.id=rrrd.ration_receive_master_id 
+and date(rrrm.receive_date) between $P{P_FROM_DATE}  and $P{P_TO_DATE} 
+group by item_master_id 
+),
+item_opening as (
+select itemdata.bangla_name,itemdata.name, item_receive_bf.item_master_id item_master_id, SUM(coalesce (total_receive,0)-coalesce (total_issue,0)) Opening_balne
+from item_receive_bf full join item_issue_bf on item_receive_bf.item_master_id = item_issue_bf.item_master_id
+join itemdata  itemdata on item_receive_bf.item_master_id = itemdata.id
+group by item_receive_bf.item_master_id,itemdata.bangla_name,itemdata.name
+)
+select
+io.item_master_id, io.name, Opening_balne,
+total_receive_af, 
+	io.bangla_name,
+coalesce(Opening_balne,0)+coalesce(total_receive_af,0) total_balance,
+coalesce (total_issue_af,0) total_issue_af, coalesce(amount_af,0)  amount_af,
+coalesce(Opening_balne,0)+coalesce(total_receive_af,0)-coalesce (total_issue_af,0) closing_balance
+from item_opening io full outer join  item_receive_af af on  io.item_master_id=af.item_master_id 
+full outer join  item_issue_af iif on io.item_master_id=iif.item_master_id]]>
+	</queryString>
+	<field name="item_master_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="item_master_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="item_master_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_ration_receive_details"/>
+	</field>
+	<field name="name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="name"/>
+		<property name="com.jaspersoft.studio.field.label" value="name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_item_master"/>
+	</field>
+	<field name="opening_balne" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="opening_balne"/>
+		<property name="com.jaspersoft.studio.field.label" value="opening_balne"/>
+	</field>
+	<field name="total_receive_af" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_receive_af"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_receive_af"/>
+	</field>
+	<field name="bangla_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="bangla_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="raw_item_master"/>
+	</field>
+	<field name="total_balance" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_balance"/>
+	</field>
+	<field name="total_issue_af" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="total_issue_af"/>
+		<property name="com.jaspersoft.studio.field.label" value="total_issue_af"/>
+	</field>
+	<field name="amount_af" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="amount_af"/>
+		<property name="com.jaspersoft.studio.field.label" value="amount_af"/>
+	</field>
+	<field name="closing_balance" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="closing_balance"/>
+		<property name="com.jaspersoft.studio.field.label" value="closing_balance"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="-20" y="12" width="842" height="18" uuid="c2c51a8a-5585-49a9-8dbb-f9cfea99d5ef"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বাংলাদেশ সমরাস্ত্র কারখানা]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="289" y="11" width="241" height="23" uuid="44240db2-610a-4bc7-9d2f-c01c516d831f"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<text><![CDATA[পর্যন্ত  বিক্রিত ও অবিক্রিত রেশন সামগ্রীর বিবরণ]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="113" y="13" width="77" height="21" uuid="95c02655-6ff6-43c7-8da1-201d718b0ba5">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_FROM_DATE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="13" width="30" height="21" uuid="b5ccbc5d-5367-4948-a498-9b7567bce7a5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<text><![CDATA[হতে ]]></text>
+			</staticText>
+			<textField pattern="d/M/yyyy">
+				<reportElement x="220" y="13" width="70" height="21" uuid="804a81fe-687c-42e3-ae7a-ea95f53ce6ee"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{P_TO_DATE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="50" splitType="Stretch">
+			<staticText>
+				<reportElement x="30" y="0" width="40" height="50" uuid="3f0f3631-0ab9-4350-b8c6-080050f89c17">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c4de5234-5f37-4827-8275-d37ab77090f6"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[দ্রব্যের বিবরণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="0" width="150" height="50" uuid="20b78ae6-4918-4efb-9f3a-520c67c6947e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e9cb2f01-6f67-4e9e-be4c-25b6dae05920"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ গত ২০.......... মাসের অবিক্রিত রেশন সামগ্রীর পরিমান (কেজি )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="0" width="100" height="50" uuid="f5043650-a4f2-406e-8365-5e6cb34d9bcf">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b81889a2-fb05-4c2c-b05e-06315267870b"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[২০.......... মাসের জন্য সংগ্রহের পরিমান (কেজি )]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="110" height="50" uuid="4efc5df5-d6f8-4c73-82f3-41b4fa0a74ee">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c736c5a4-5431-44cc-bf82-d27556342448"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৩ ও ৪ নম্বর কলামের যোগফল (কেজি)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="430" y="0" width="130" height="50" uuid="0f30b799-d0a0-442e-b115-367f613b28db">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07942b16-f82c-4bed-a871-d9cc905a5e2f"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[  ২০.......... মাসে বিক্রিত রেশন সামগ্রীর পরিমান(কেজি)
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="560" y="0" width="122" height="50" uuid="7b0aab0a-6dc2-4594-9413-e72772f53aba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2f322d1b-497d-44f5-a57f-49abc26dd238"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[মূল্য ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="682" y="0" width="120" height="50" uuid="0c162d8b-6b46-4749-ac4b-f01ecada155f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="96aaef3f-e314-4472-97c2-3781fbbfd470"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[৫ ও ৬ নম্বর কালামের বিয়োগফল ..................২০ মাসের অবিক্রিত রেশন সামগ্রীর পরিমান (কেজি)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="50" uuid="f8ad8545-0375-4d61-a682-cb84eb64d6da"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক নম্বর]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="40" height="30" uuid="92671885-8fdf-4dbe-a883-12cb012867a8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c4de5234-5f37-4827-8275-d37ab77090f6"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bangla_name}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00" isBlankWhenNull="true">
+				<reportElement x="70" y="0" width="150" height="30" uuid="5b03c134-4af7-45d9-a1b1-deb1e23cc0e9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e9cb2f01-6f67-4e9e-be4c-25b6dae05920"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{opening_balne}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00" isBlankWhenNull="true">
+				<reportElement x="220" y="0" width="100" height="30" uuid="05166273-8a66-4b53-8abf-49ea5b17e106">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b81889a2-fb05-4c2c-b05e-06315267870b"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_receive_af}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00" isBlankWhenNull="true">
+				<reportElement x="320" y="0" width="110" height="30" uuid="d784903b-53e6-447b-9fa9-1d2aa9bbc76b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c736c5a4-5431-44cc-bf82-d27556342448"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_balance}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00" isBlankWhenNull="true">
+				<reportElement x="430" y="0" width="130" height="30" uuid="a0ccc4c7-fa7f-43ff-ae5d-53ebc073c87b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="07942b16-f82c-4bed-a871-d9cc905a5e2f"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total_issue_af}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00" isBlankWhenNull="true">
+				<reportElement x="560" y="0" width="122" height="30" uuid="32b4694f-34d6-40f3-be5e-257f0b36d886">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2f322d1b-497d-44f5-a57f-49abc26dd238"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{amount_af}]]></textFieldExpression>
+			</textField>
+			<textField pattern="0.00" isBlankWhenNull="true">
+				<reportElement x="682" y="0" width="120" height="30" uuid="e095d81e-7d20-485f-9cfa-cbbf4803ef94">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="96aaef3f-e314-4472-97c2-3781fbbfd470"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{closing_balance}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="30" height="30" uuid="459cac71-41f5-4cc3-bc08-e31814d03d2a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="135">
+			<staticText>
+				<reportElement x="5" y="41" width="180" height="20" uuid="61a3e2da-80ec-4d7c-a20f-80d179ff3222">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[...................... তারিখ.....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="627" y="86" width="180" height="37" uuid="7d8297e4-64d0-4e3e-8af5-63f3714c4be2"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[পরিচালক প্রশাসন এবং উপকরণ     
+  বিওএফ                          ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="86" width="180" height="37" uuid="3a51f3c1-e1d2-445e-a3f0-158a4fd12ab6"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ব্যাবস্থাপক প্রশাসন সাধারণ   
+  বিওএফ                          ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="41" width="180" height="20" uuid="19dfb63c-fd41-4acf-aa30-d32561a395c3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[...................... তারিখ.....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="86" width="180" height="37" uuid="4966cd1e-0608-4b3c-ac55-c9bac5f644ce"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ উপ-পরিচালক প্রশাসন এবং উপকরণ     
+  বিওএফ                          ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="627" y="41" width="180" height="20" uuid="a29e2235-cb8c-4ebd-a994-0c0cb619d4e7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[...................... তারিখ.....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="41" width="180" height="20" uuid="e901a574-ceeb-41b2-a373-010aa343d326">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[...................... তারিখ.....................]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="217" y="86" width="180" height="37" uuid="3ceacc76-f273-4ca9-bddc-07d4b7b17d81"/>
+				<textElement textAlignment="Center">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[ উপ-পরিচালক প্রশাসন    
+  বিওএফ                          ]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="105" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="20" width="802" height="60" uuid="0bc1d6a3-45fb-4901-ba54-d131b9597215"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[বর্ণিত রেশন বিবরণ প্রাপ্ত অর্থ সর্বমোট টাকা ................................................................................................টি আর নম্বর ....................
+
+তারিখ....................................... এবং টি আর নম্বর.................... তারিখ.................এর মাধ্যমে যথারীতি সকারী কোষাগারে জমা করা হয়েছে | অবিক্রিত রেশন সামগ্রী আগামী ................. মাসে মজুদ হিসেবে গণ্য করার জন্য সংরক্ষিত আছে |
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="802" height="20" uuid="052fa304-7190-486d-a263-006128d707a0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<text><![CDATA[প্রাধিকার যথাক্রমে গেইট পাশ নম্বর]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

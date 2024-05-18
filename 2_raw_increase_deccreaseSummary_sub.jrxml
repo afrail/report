@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="2_raw_increase&amp;deccreaseSummary_sub" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="0d94c137-1eb4-41a8-a1f7-95b038ac7a47">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_ERP"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="P_FROM_DATE" class="java.util.Date"/>
+	<parameter name="P_TO_DATE" class="java.util.Date"/>
+	<queryString language="SQL">
+		<![CDATA[with self as (select 1 id ,count(*)
+ self from raw_ration_voucher_details rrvd , raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvd.ration_voucher_master_id
+and  relation='Self'
+and date(rrvm.voucher_date) between  $P{P_FROM_DATE}  and   $P{P_TO_DATE} ),
+spouse as(
+ select 1 id ,count(*)
+ spouse from raw_ration_voucher_details rrvd , raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvd.ration_voucher_master_id
+and  relation in('Spouse','Husband','Wife')
+and date(rrvm.voucher_date) between  $P{P_FROM_DATE}  and   $P{P_TO_DATE}),
+ child_12 as (select 1 id ,count(*)
+ child_12 from raw_ration_voucher_details rrvd , raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvd.ration_voucher_master_id
+and  relation in ('Daughter','Son')
+and age>=12
+and date(rrvm.voucher_date) between  $P{P_FROM_DATE}  and   $P{P_TO_DATE}), 
+child_9 as(
+ select 1 id ,count(*)
+ child_9 from raw_ration_voucher_details rrvd , raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvd.ration_voucher_master_id
+and  relation in ('Daughter','Son')
+and age between 3 and 12
+and date(rrvm.voucher_date) between  $P{P_FROM_DATE}  and   $P{P_TO_DATE} ),
+child_3 as(
+ select 1 id ,count(*)
+ child_3 from raw_ration_voucher_details rrvd , raw_ration_voucher_master rrvm 
+where 1=1
+and rrvm.id=rrvd.ration_voucher_master_id
+and  relation in ('Daughter','Son')
+and age <3
+and date(rrvm.voucher_date) between $P{P_FROM_DATE}  and   $P{P_TO_DATE})
+select self.self, spouse.spouse,child_12.child_12,child_9.child_9, child_3.child_3,
+self_count,family_count,above_12_count,bellow_12_count,bellow_3_count,
+x_self_count,x_family_count,x_above_12_count,x_bellow_12_count,x_bellow_3_count,
+'২।  অতএব, '||get_eng_month_bangla(cast(to_char(date($P{P_TO_DATE}),'mm')  as integer) )||to_char(date($P{P_TO_DATE}),' yyyy')|| ' মাসে নিম্নবর্ণিত রেশন ইউনিট হ্রাস, বৃদ্ধি ও সংযোজন করা হবে :'
+head_5, get_eng_month_bangla(cast(to_char(date(current_date),'mm')  as integer) )||to_char(date(current_date),' yyyy') signature_date
+from self,spouse, child_12,child_9,child_3,rw_new_ration_holder,rw_xx_ration_holder
+where self.id=child_12.id
+and self.id=child_9.id
+and self.id=child_3.id]]>
+	</queryString>
+	<field name="self" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="self"/>
+		<property name="com.jaspersoft.studio.field.label" value="self"/>
+	</field>
+	<field name="spouse" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="spouse"/>
+		<property name="com.jaspersoft.studio.field.label" value="spouse"/>
+	</field>
+	<field name="child_12" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="child_12"/>
+		<property name="com.jaspersoft.studio.field.label" value="child_12"/>
+	</field>
+	<field name="child_9" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="child_9"/>
+		<property name="com.jaspersoft.studio.field.label" value="child_9"/>
+	</field>
+	<field name="child_3" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="child_3"/>
+		<property name="com.jaspersoft.studio.field.label" value="child_3"/>
+	</field>
+	<field name="self_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="self_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="self_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_new_ration_holder"/>
+	</field>
+	<field name="family_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="family_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="family_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_new_ration_holder"/>
+	</field>
+	<field name="above_12_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="above_12_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="above_12_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_new_ration_holder"/>
+	</field>
+	<field name="bellow_12_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="bellow_12_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="bellow_12_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_new_ration_holder"/>
+	</field>
+	<field name="bellow_3_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="bellow_3_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="bellow_3_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_new_ration_holder"/>
+	</field>
+	<field name="x_self_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="x_self_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="x_self_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_xx_ration_holder"/>
+	</field>
+	<field name="x_family_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="x_family_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="x_family_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_xx_ration_holder"/>
+	</field>
+	<field name="x_above_12_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="x_above_12_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="x_above_12_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_xx_ration_holder"/>
+	</field>
+	<field name="x_bellow_12_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="x_bellow_12_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="x_bellow_12_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_xx_ration_holder"/>
+	</field>
+	<field name="x_bellow_3_count" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.name" value="x_bellow_3_count"/>
+		<property name="com.jaspersoft.studio.field.label" value="x_bellow_3_count"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="rw_xx_ration_holder"/>
+	</field>
+	<field name="head_5" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="head_5"/>
+		<property name="com.jaspersoft.studio.field.label" value="head_5"/>
+	</field>
+	<field name="signature_date" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="signature_date"/>
+		<property name="com.jaspersoft.studio.field.label" value="signature_date"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch"/>
+	</title>
+	<detail>
+		<band height="247" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="20" width="20" height="20" uuid="24e87440-78e7-473c-a33a-7fa2bce205bb"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[ক্রমিক]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="20" width="190" height="20" uuid="011a035c-a325-490d-84d0-9a1705e782d3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[বিবরণ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="230" y="20" width="60" height="20" uuid="d2af88e4-beda-47d2-a0f7-9b7a1d7f3e84"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[নিজ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="290" y="20" width="64" height="20" uuid="feb75531-2464-4572-995a-dea662b245da"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[স্ত্রী/স্বামী]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="354" y="20" width="70" height="20" uuid="623a3cdc-aceb-4666-b474-4da609badfed"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[১২ ব: ঊ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="424" y="20" width="70" height="20" uuid="5d7b7d44-9f2e-4f83-b387-5b687a0582a6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[ ১২ ব: নি:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="494" y="20" width="70" height="20" uuid="d8633ef1-0816-47b9-ba93-381111c568b7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[৩ ব: নি:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="20" y="40" width="20" height="20" uuid="b1ae81d5-bd37-4339-b751-0892b90271db"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(1)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="40" width="190" height="20" uuid="403e684d-f196-46cf-8283-28344085dab8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" রেশন বিতরণকৃত রেশন ইউনিট"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="40" width="60" height="20" uuid="5362b58b-31c4-4591-add9-67b84a7ca446"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{self}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="40" width="64" height="20" uuid="a369b47a-306e-4504-980f-44ac00f25399"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{spouse}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="424" y="40" width="70" height="20" uuid="bf27a965-f1ad-44a6-bb03-618cf895cc0e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child_9}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="40" width="70" height="20" uuid="f796d8e8-db1a-438e-b907-d5168e5efbd2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child_12}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="40" width="70" height="20" uuid="7a6d7bb1-6a90-412a-9f4f-4b66f7539d8b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child_3}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="60" width="20" height="20" uuid="2f9dd2f6-d7c5-4dde-b770-5d5528c953de"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(2)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="60" width="190" height="20" uuid="cac405c5-2a83-4126-86d0-77980059e881"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" সংযোজন ইউনিট (+)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="60" width="60" height="20" uuid="702df5a2-c67a-4a81-a58d-8f50c00c0d4d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{self_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="60" width="64" height="20" uuid="4e63f6c0-dd20-45c1-8d48-097bcdc1e0d7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{family_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="424" y="60" width="70" height="20" uuid="40fa9d9c-7f5d-4b25-958b-482d16dd3714"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bellow_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="60" width="70" height="20" uuid="2e11e026-5fa2-4ce8-9f87-8f7f8a4a2a8e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{above_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="60" width="70" height="20" uuid="2e903e1d-7c14-4f94-88fb-6c8ef41e166f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bellow_3_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="80" width="20" height="20" uuid="0839689f-8677-4819-a194-a25c8a23a6d5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(3)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="80" width="190" height="20" uuid="a8b10a7a-79e1-49a7-b6be-75f9e1ed0ea7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" মোট ইউনিট "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="80" width="60" height="20" uuid="65d1e5ad-0987-40bd-b108-2bd20c10e970"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{self}+$F{self_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="80" width="64" height="20" uuid="1be73935-453f-4c83-9ac8-f1d3221e2e29"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{spouse}+$F{family_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="424" y="80" width="70" height="20" uuid="faf758cc-d8fd-472f-8c22-fad3ecc1ffe7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child_9}+$F{bellow_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="80" width="70" height="20" uuid="1bbf19e2-6e23-4cc3-ad3d-fa3a202cfa43"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child_12}+$F{above_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="80" width="70" height="20" uuid="d6b76212-9470-47ec-8cca-df64c3f04c6a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{child_3}+$F{bellow_3_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="100" width="20" height="20" uuid="0baa2467-bdfe-482f-a2e3-3ec1862865ca"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(4)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="100" width="190" height="20" uuid="1a685d62-d68e-4c87-ae65-969eb72b7fb2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" বিয়োজন ইউনিট (-)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="100" width="60" height="20" uuid="7431694c-a89d-4ecf-82b7-e1c191b10d17"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{x_self_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="100" width="64" height="20" uuid="241a0ea7-7178-4480-8104-6ba4b31a80e5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{x_family_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="424" y="100" width="70" height="20" uuid="0efcfdd6-ce50-416e-8963-af046ebfd170"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{x_bellow_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="100" width="70" height="20" uuid="f8077ce8-aa7e-4a30-b66d-f9a5c5171865"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{x_above_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="100" width="70" height="20" uuid="6fe42bc5-9ddc-4e0f-bb3c-b156370c509b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{x_bellow_3_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="120" width="20" height="20" uuid="49d153f1-9d7e-4f58-ac69-5c5e6980b0f1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(5)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="120" width="190" height="20" uuid="c03bd5d0-ea87-4a42-8d57-db626c473507"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" বর্তমান মোট রেশন ইউনিট"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="120" width="60" height="20" uuid="e58fadd9-f24c-46f5-ad32-60488257b95c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{self}+$F{self_count})-$F{x_self_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="290" y="120" width="64" height="20" uuid="c5fd2cd9-700a-4e5c-99f8-5fd2b3802f1a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{spouse}+$F{family_count})-$F{x_family_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="424" y="120" width="70" height="20" uuid="a64bdaf5-f1d9-4371-bf68-c7d294e19cdd"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{child_9}+$F{bellow_12_count})-$F{x_bellow_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="354" y="120" width="70" height="20" uuid="63d9fa8c-5a36-4b9d-8d1e-9c91557f53f6"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{child_12}+$F{above_12_count})+$F{x_above_12_count}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="494" y="120" width="70" height="20" uuid="45950084-d789-40a2-97b2-4a23710e37d1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{child_3}+$F{bellow_3_count})-$F{x_bellow_3_count}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="154" width="544" height="27" uuid="42b2da60-de87-443d-bbef-9c2d86e6d7c2"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[৩।  উপরোক্ত বর্ণনার আলোকে সংশ্লিষ্ট কর্মচারী/কারিগরদের রেশন ইউনিট হ্রাস,বৃদ্ধি ও সংযোজন বাস্তবে কার্যকরী করার লক্ষে এতদ বিষয়ে প্রস্তুতকৃত খসড়া দৈনিক আদেশনামা (বিপরীদে পার্শে রাখা) পরিচালক এবং উপকরণ মহোদয়ের সদয় অনুমোদন/ স্বাক্ষরের জন্য নথি উপস্থাপন করা হলো।]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="464" y="197" width="100" height="14" uuid="c3acc5c6-4bc4-4290-a3d3-285a720ed5e0"/>
+				<textElement>
+					<font fontName="NikoshBAN" size="10"/>
+				</textElement>
+				<text><![CDATA[পার্সোনেল অফিসার, কল্যাণ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="464" y="210" width="100" height="20" uuid="b34c8a3a-3b29-4fce-a668-312924b6dd43"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{signature_date}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="0" width="544" height="20" uuid="f1771694-9402-4a27-89c0-dd68019cbed2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{head_5}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

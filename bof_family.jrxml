@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.0.final using JasperReports Library version 6.19.0-646c68931cebf1a58bc65c4359d1f0ca223c5e94  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="bof_employee" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7dd091b5-6d4f-4133-b7f6-4b1f7d1b1034">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="223"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="764"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="BOF_SERVER"/>
+	<queryString language="SQL">
+		<![CDATA[
+SELECT
+	a.patient_serial, employee_id,
+	epi.chronic_patient_code,
+	case when (epi.relation_type>0) then trim(epi.patient_name)||', '||
+get_com_lookup_name(epi.relation_type)||' of '||(select trim(patient_name) from ehm_patient_info
+where id=epi.patient_id) else trim(epi.patient_name) end patient_name,
+	coalesce(get_com_lookup_name(coalesce(epi.rank_id,epi.designation_id)),epi.designation_name) rank_name,
+case when epi.unit='1' then 
+(select get_com_lookup_name(coalesce(coalesce(coalesce(heoi.shop_id,heoi.group_id), heoi.wing_id),heoi.branch_id)) section_name
+from hrm_employee_official_information heoi , hrm_employee_personal_information hepi 
+where hepi.id=heoi.employee_id 
+and hepi.code=epi.emp_code) when epi.unit='2' then 'JS ARMY'  when
+epi.unit='3' then 'MES ARMY' when epi.unit='4' then 'MODC' when epi.unit='5' then 'IA&E' when epi.unit='6' then 'CNE' end
+section_name,
+case when epi.relation_type>0 then get_com_lookup_name(epi.relation_type) else 'Self' end relation,
+	patient_name,
+	epi.unit, (select string_agg(case when  disease_id=700 then disposal else get_ehm_common_lookup(disease_id) end,',' order by id)
+from ehm_chronic_patients_info ecpi 
+where master_id=epi.id)
+	deases_name
+FROM
+	ehm_chronic_patent_serial a
+LEFT JOIN ehm_patinet_chronic_vw_bof_emp_famiy epi
+    ON epi.chronic_patient_code = a.patient_serial
+    where a.patient_serial<(select max(chronic_patient_code)+2 from ehm_patinet_chronic_vw_bof_emp_famiy)
+ORDER BY patient_serial;]]>
+	</queryString>
+	<field name="patient_serial" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="patient_serial"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_serial"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_chronic_patent_serial"/>
+	</field>
+	<field name="employee_id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.label" value="employee_id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patinet_chronic_vw_bof_emp_famiy"/>
+	</field>
+	<field name="chronic_patient_code" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="chronic_patient_code"/>
+		<property name="com.jaspersoft.studio.field.label" value="chronic_patient_code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patinet_chronic_vw_bof_emp_famiy"/>
+	</field>
+	<field name="patient_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_name"/>
+	</field>
+	<field name="rank_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="rank_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="rank_name"/>
+	</field>
+	<field name="section_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="section_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="section_name"/>
+	</field>
+	<field name="relation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="relation"/>
+		<property name="com.jaspersoft.studio.field.label" value="relation"/>
+	</field>
+	<field name="COLUMN_8" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="patient_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="patient_name"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patinet_chronic_vw_bof_emp_famiy"/>
+	</field>
+	<field name="unit" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="unit"/>
+		<property name="com.jaspersoft.studio.field.label" value="unit"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ehm_patinet_chronic_vw_bof_emp_famiy"/>
+	</field>
+	<field name="deases_name" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="deases_name"/>
+		<property name="com.jaspersoft.studio.field.label" value="deases_name"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="17" uuid="5b220f0b-84d5-40b4-9678-6b8617f267a3">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="NikoshBAN" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[বিওএফ কর্মকর্তা ও কর্মচারীর পরিবারবর্গের তথ্য]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="18" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="18" uuid="0b2c8386-e11b-42bc-885b-28aad07273ea">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="33d66a6a-342a-4648-84b0-46eef7af8837"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[S/No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="60" height="18" uuid="b123f74b-59ba-4786-85e1-4b3ba1a2426e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="00b57081-5a4e-42d0-bb26-6bbfef606ab3"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Per No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="100" y="0" width="100" height="18" uuid="8a04df20-0180-4775-a661-56436093dc41">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f43823e5-8610-419b-8296-a3b10cfa89ec"/>
+				</reportElement>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rank Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="0" width="150" height="18" uuid="511f177f-e077-4f3c-bc32-c7f5faad95a2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e14897e6-308e-4d81-a7e6-38b7ced810df"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Patient Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="0" width="100" height="18" uuid="663807ed-6e87-42ef-a405-167f942b91a1">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="197a9404-6d92-4acd-8eed-b3382594300a"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Section Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="450" y="0" width="105" height="18" uuid="9bea4539-ffae-4fdc-99e2-6ce4a0f4e13a">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1a35040-f8d6-4540-a0d8-521a0381596e"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Deases Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="40" height="17" uuid="a902bc72-e6ec-49a4-b289-9f8a9d9946d3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="33d66a6a-342a-4648-84b0-46eef7af8837"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_serial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="40" y="0" width="60" height="17" uuid="2517066c-c82f-4184-b358-16687d2f91e2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="00b57081-5a4e-42d0-bb26-6bbfef606ab3"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="9" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{employee_id}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="100" y="0" width="100" height="17" uuid="4f2bbcb8-0606-42aa-94b9-3e3842bdbadb">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f43823e5-8610-419b-8296-a3b10cfa89ec"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{rank_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="200" y="0" width="150" height="17" uuid="9b55edd4-399f-436a-b6a7-33bfae1d2dd4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e14897e6-308e-4d81-a7e6-38b7ced810df"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{patient_name}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="350" y="0" width="100" height="17" uuid="95cdd87f-25e7-45f0-8e5c-7e139dab107c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="197a9404-6d92-4acd-8eed-b3382594300a"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{section_name}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="450" y="0" width="105" height="17" uuid="9b20e884-4dc9-4ece-ae62-af353caa3648">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f1a35040-f8d6-4540-a0d8-521a0381596e"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="3">
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{deases_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="12" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="410" height="12" uuid="79cd8b44-8999-4ed6-82d0-9435f80a0ce5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box padding="1"/>
+				<textElement>
+					<font fontName="Arial" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[This Report is Genertaded by BOF-ERP]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="0" width="90" height="12" uuid="fd50c78d-1031-46c5-9b34-4350490e9658">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page No. " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="500" y="0" width="54" height="12" uuid="d3a93e23-5862-4828-8a2c-b8b7be6937ee">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>
